@@ -1,5 +1,12 @@
+/* @file drama.h
+ * @brief The following code gives the declarations of the drama class.
+ *  This class is used to verify dramas and is the child class of movie.
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
+
 #pragma once
-#include "Movie.h"
+#include "movie.h"
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -7,57 +14,28 @@
 
 class Drama : public Movie {
     public: 
-        /**
-         * Standard Constructor
-         * @param: None 
-         * @return: None
-         */
+      //drama constructor
         Drama();
 
-        /**
-         * Destructor
-         * @param: None 
-         * @return: None
-         */
+      //destructor
         ~Drama();
 
-        /**
-         * Gets genre of movie
-         * @param: None 
-         * @return: None
-         */ 
-        string GetGenre();
+        string getGenre();
 
-        /**
-         * Sets data from movie file 
-         * @param: None 
-         * @return: None
-         */ 
-        void SetTransactionData(ifstream&);
+        void setTransactionData(ifstream&);
 
-        /**
-         * Operators 
-         * @param: None 
-         * @return: None
-         */ 
         bool operator==(const Movie&) const;
+
         bool operator<(const Movie&) const;
 
-        /**
-         * Display information about movie
-         * @param: None 
-         * @return: None
-         */ 
-        string TransactionDisplay() const;
+        string transactionDisplay() const;
     
     private:
-        /**
-         * Private variables for Classic
-         * @param: None 
-         * @return: None
-         */ 
-        const string Genre = "D";
-        string ActorFirstName;
-        string ActorLastName;
+
+        const string genre = "D";
+
+        string actorFirstName;
+
+        string actorLastName;
 
 };

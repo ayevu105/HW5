@@ -1,5 +1,12 @@
+/* @file classic.h
+ * @brief The following code gives the declarations of the classic class.
+ *  This class is used to verify classics and is the child class of movie.
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
+
 #pragma once
-#include "Movie.h"
+#include "movie.h"
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -7,60 +14,34 @@
 
 class Classic : public Movie {
     public: 
-        /**
-         * Standard Constructor
-         * @param: None 
-         * @return: None
-         */
+       
+       //classic constructor
         Classic();
 
-        /**
-         * Destructor
-         * @param: None 
-         * @return: None
-         */
+      //destructor
         ~Classic();
 
-        /**
-         * Gets genre of movie
-         * @param: None 
-         * @return: None
-         */ 
-        string GetGenre();
+        string getGenre();
 
-        /**
-         * Sets data from movie file 
-         * @param: None 
-         * @return: None
-         */ 
-        bool SetData(ifstream&);
-        void SetTransactionData(ifstream&);
+        bool setData(ifstream&);
 
-        /**
-         * Operators 
-         * @param: None 
-         * @return: None
-         */ 
+        void setTransactionData(ifstream&);
+
         bool operator==(const Movie&) const;
+        
         bool operator<(const Movie&) const;
 
-        /**
-         * Display information about movie
-         * @param: None 
-         * @return: None
-         */ 
-        void Display() const;
-        string TransactionDisplay() const;
+        void display() const;
+
+        string transactionDisplay() const;
     
     private:
-        /**
-         * Private variables for Classic
-         * @param: None 
-         * @return: None
-         */ 
         const string Genre = "C";
+
         string ActorFirstName;
+
         string ActorLastName;
+
         int Month;
 
 };

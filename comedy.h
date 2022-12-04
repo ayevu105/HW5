@@ -1,5 +1,12 @@
+/* @file comedy.h
+ * @brief The following code gives the declarations of the comedy class.
+ *  This class is used to verify comedies and is the child class of movie.
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
+
 #pragma once
-#include "Movie.h"
+#include "movie.h"
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -7,64 +14,31 @@
 
 class Comedy : public Movie {
     public: 
-        /**
-         * Standard Constructor
-         * @param: None 
-         * @return: None
-         */
+
+      //comedy constructor
         Comedy();
 
-        /**
-         * Constructor to initialize values  
-         * @param: int, string refrence, string refrence, int (order of in file)
-         * @return: None
-         */
+      //intialized constructor
         Comedy(int, const string&, const string&, int);
 
-        /**
-         * Destructor
-         * @param: None 
-         * @return: None
-         */
+      //destructor
         ~Comedy();
 
-        /**
-         * Gets genre of movie
-         * @param: None 
-         * @return: None
-         */ 
-        string GetGenre();
+        string getGenre();
 
-        /**
-         * Sets data from movie file 
-         * @param: None 
-         * @return: None
-         */ 
-        void SetTransactionData(ifstream&);
+        void setTransactionData(ifstream&);
 
-        /**
-         * Operators 
-         * @param: None 
-         * @return: None
-         */ 
         bool operator==(const Movie&) const;
+
         bool operator<(const Movie&) const;
 
-        /**
-         * Display information about movie
-         * @param: None 
-         * @return: None
-         */ 
-        string TransactionDisplay() const;
+        string transactionDisplay() const;
     
     private:
-        /**
-         * Private variables for Classic
-         * @param: None 
-         * @return: None
-         */ 
         const string Genre = "F";
+
         string ActorFirstName;
+
         string ActorLastName;
 
 };

@@ -1,35 +1,50 @@
+/* @file history.cpp
+ * @brief The following code gives the inmplementations of the history class
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
 
-
-#include "History.h"
+#include "history.h"
 
 History::History() {
-    CustomerID = 0;
+    customerID = 0;
 }
 
 History::~History() {}
 
-bool History::SetData(ifstream& FileName)
+/* setData sets the data from the commands file. 
+ * @param commands file
+ */
+bool History::setData(ifstream& fileName)
 {
-    FileName >> CustomerID;
+    fileName >> customerID;
     return true;
 }
 
-void History::DoTransactionCommand(const vector<Movie*>&, 
-                                   const HashTable& Customers)
+/* doTransactionCommand processes the transaction command
+ */
+void History::doTransactionCommand(const vector<Movie*>&, 
+                                   const HashTable& customers)
 {
-    Customer* C = Customers.GetItem(CustomerID);
-    if (C) {
-        C->DisplayHistory();
+    Customer* c = customers.getItem(customerID);
+    if (c) {
+        c->displayHistory();
     }
 }
 
-void History::Display() const {}
+/* display displays the transaction
+ */
+void History::display() const {}
 
-char History::GetCommand() const
+/* getCommand is the getter for command
+ */
+char History::getCommand() const
 {
-  return Command;
+  return command;
 }
 
+/* getTitleMovie finds the movie
+ */
 Movie* History::getTitleMovie() const
 {
   return nullptr;

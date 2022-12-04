@@ -66,7 +66,7 @@ class Transaction {
          * @param: None
          * @return: None 
          */ 
-        Movie* FindMovie(const vector<Movie*>&, Movie*) const;
+        Movie* findMovie(const vector<Movie*>&, Movie*) const;
         
     protected: 
         string MediaType = "D";

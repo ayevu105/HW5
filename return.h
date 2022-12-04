@@ -1,13 +1,9 @@
-/**
- * Mohammed Ali
- * CSS 343 Yusuf Pisan 
- * 11 March 2020
- * 
- * This is the .h file for creating and return commands
- * of customers and movies
- * Child class of transaction
- * When a customer returns a movie to store.
- * this class will deal with that command
+/* @file return.h
+ * @brief The following code gives the declarations of the return class.
+ *  This class processes the data4movies.txt file and is the pareent class 
+ *  of the classic, drama and comedy classes.
+ * @author Anthony Vu
+ * @date 12/05/2022
  */
 
 #pragma once

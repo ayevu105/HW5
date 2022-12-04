@@ -1,74 +1,49 @@
+/* @file borrow.h
+ * @brief The following code gives the declarations of the borrow class.
+ *  When a customer borrows a movie from the store this class deals with that command. 
+ *  The class is also the child class of transaction.
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
+
 #pragma once
-#include "Customer.h"
-#include "HashTable.h"
-#include "Movie.h"
-#include "MovieFactory.h"
-#include "Transaction.h"
+#include "customer.h"
+#include "hashTable.h"
+#include "movie.h"
+#include "movieFactory.h"
+#include "transaction.h"
 #include <fstream>
 #include <set>
 
 class Borrow : public Transaction {
     public:
-        /**
-         * Standard constructor 
-         * @param: None
-         * @return: None 
-         */ 
+       
+        //borrow constructor
         Borrow();
 
-        /**
-         * Main Constructor initializes values 
-         * @param: int and movie* 
-         * @return: None 
-         */ 
+        //initialized constructor
         Borrow(Movie*, int);
 
-        /**
-         * Destructor 
-         * @param: None
-         * @return: None 
-         */ 
+        //destructor
         ~Borrow();
 
-        /**
-         * Sets data from commands file
-         * @param: File
-         * @return: None 
-         */ 
-        virtual bool SetData(ifstream&);
+        virtual bool setData(ifstream&);
 
-        /**
-         * Process transaction command 
-         * @param: None
-         * @return: None 
-         */ 
-        virtual void DoTransactionCommand(const vector<Movie*>&, 
+        virtual void doTransactionCommand(const vector<Movie*>&, 
                                           const HashTable&);
 
-        /**
-         * Getter for command
-         * @param: None
-         * @return: None 
-         */ 
-        virtual char GetCommand() const;
+      
+        virtual void display() const;
 
-        /**
-         * Displays transaction
-         * @param: None
-         * @return: None 
-         */ 
-        virtual void Display() const;
+        virtual char getCommand() const;
 
-        /**
-         * Finds movie
-         * @param: None
-         * @return: None 
-         */ 
         Movie* getTitleMovie() const;
+
     protected:
-        const char Command = 'B';
+        const char command = 'B';
 
     private: 
         Movie* titleMovie;
-        int CustomerID;
+        
+        int customerID;
 };

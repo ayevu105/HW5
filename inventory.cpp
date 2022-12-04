@@ -1,23 +1,41 @@
+/* @file inventory.cpp
+ * @brief The following code gives the inmplementations of the inventory class
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
+ 
+#include "inventory.h"
 
-#include "Inventory.h"
-
+//inventory constructor
 Inventory::Inventory() {}
 
+//inventory destructor
 Inventory::~Inventory() {}
 
-bool Inventory::SetData(ifstream&) {
+/* setData sets the data from the commands file. 
+ * @param commands file
+ */
+bool Inventory::setData(ifstream&) {
   return true;
 }
 
-void Inventory::DoTransactionCommand(const vector<Movie*>&, const HashTable&) {
+/* doTransactionCommand processes the transaction command
+ */
+void Inventory::doTransactionCommand(const vector<Movie*>&, const HashTable&) {
 }
 
-char Inventory::GetCommand() const {
-  return Command;
+/* display displays the transaction
+ */
+void Inventory::display() const {}
+
+/* getCommand is the getter for command
+ */
+char Inventory::getCommand() const {
+  return command;
 }
 
-void Inventory::Display() const {}
-
+/* getTitleMovie finds the movie
+ */
 Movie* Inventory::getTitleMovie() const {
   return nullptr;
 }

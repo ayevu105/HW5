@@ -1,63 +1,37 @@
+/* @file inventory.h
+ * @brief The following code gives the declarations of the inventory class.
+ *  This class creates and retrieves the inventory of customers and is the child class of transacton.
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
+
 #pragma once
-#include "Transaction.h"
-#include "HashTable.h"
-#include "Movie.h"
-#include "Transaction.h"
+#include "transaction.h"
+#include "hashTable.h"
+#include "movie.h"
+#include "transaction.h"
 #include <fstream>
 #include <vector>
 
 class Inventory : public Transaction {
     public:
-        /**
-         * Standard constructor 
-         * @param: None
-         * @return: None 
-         */ 
+      //inventory constructor
         Inventory();
 
-        /**
-         * Destructor 
-         * @param: None
-         * @return: None 
-         */ 
+      //destructor
         ~Inventory();
 
-        /**
-         * Sets data from commands file
-         * @param: File
-         * @return: None 
-         */ 
-        virtual bool SetData(ifstream&);
+        virtual bool setData(ifstream&);
 
-        /**
-         * Process transaction command 
-         * @param: None
-         * @return: None 
-         */ 
-        virtual void DoTransactionCommand(const vector<Movie*>&, 
+        virtual void doTransactionCommand(const vector<Movie*>&, 
                                           const HashTable&);
 
-        /**
-         * Getter for command
-         * @param: None
-         * @return: None 
-         */ 
-        virtual char GetCommand() const;
+        virtual char getCommand() const;
 
-        /**
-         * Displays transaction
-         * @param: None
-         * @return: None 
-         */ 
-        virtual void Display() const;
+        virtual void display() const;
 
-        /**
-         * Finds movie
-         * @param: None
-         * @return: None 
-         */ 
         Movie* getTitleMovie() const;
 
     protected:
-        const char Command = 'I';
+        const char command = 'I';
 };

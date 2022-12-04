@@ -24,7 +24,7 @@ Movie* Transaction::GetTitleMovie() const {
     return nullptr;
 }
 
-Movie* Transaction::FindMovie(const vector<Movie*>& Mov, Movie* Target) const {
+Movie* Transaction::findMovie(const vector<Movie*>& Mov, Movie* Target) const {
     for (auto I : Mov)
         if (*Target == *I) {
             return I;

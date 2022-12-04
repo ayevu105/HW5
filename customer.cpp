@@ -1,52 +1,70 @@
-#include "Customer.h"
-#include "Transaction.h"
+/* @file customer.cpp
+ * @brief The following code gives the inmplementations of the customer class
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
 
+#include "customer.h"
+#include "transaction.h"
+
+//customer constructor
 Customer::Customer() {
     ID = 0;
-    FirstName = "";
-    LastName = "";
+    firstName = "";
+    lastName = "";
 }
 
+//destructor
 Customer::~Customer(){
-    for (auto temp: History) {
+    for (auto temp: history) {
         delete temp;
     }
 }
 
-int Customer::GetID() {
+/* getID retrieves the customer ID
+ */
+int Customer::getID() {
     return ID;
 }
 
-void Customer::AddTransactionHistory(Transaction* Trans){
-    History.push_back(Trans);
+/* addTransactionHistory adds a transaction to history
+ */ 
+void Customer::AddTransactionHistory(Transaction* trans){
+    History.push_back(trans);
 }
 
-void Customer::DisplayHistory(){
+/* displayHistroy displays the history of the item
+ */
+void Customer::displayHistory(){
     cout << "Customer: " << ID << " History" << endl;
-    for (auto temp: History) {
-        temp->Display();
+    for (auto temp: history) {
+        temp->display();
     }
 }
 
-bool Customer::SetData(ifstream& FileName) {
-    FileName >> ID >> LastName >> FirstName;
+/* setData sets the customers data
+ */
+bool Customer::setData(ifstream& fileName) {
+    fileName >> ID >> lastName >> firstName;
     return (ID >= MINID && ID <= MAXID);
 }
 
-bool Customer::isBorrowed(Movie* Mov) {
-    int Borrowed = 0;
-    int NotBorrowed = 0;
-    for (auto temp : History) {
-        if (temp->GetCommand() == 'B' &&
-            temp->GetTitleMovie()->TransactionDisplay() == 
-            Mov->TransactionDisplay()) {
-            Borrowed++;
+/* isBorrowed checks if the movie is being borrowed
+ */
+bool Customer::isBorrowed(Movie* mov) {
+    int borrowed = 0;
+    int notBorrowed = 0;
+    for (auto temp : history) {
+        if (temp->getCommand() == 'B' &&
+            temp->getTitleMovie()->transactionDisplay() == 
+            Mov->transactionDisplay()) {
+            borrowed++;
         }
-        else if (temp->GetCommand() == 'R' &&
-                 temp->GetTitleMovie()->TransactionDisplay() == 
-                 Mov->TransactionDisplay()) {
-            NotBorrowed++;
+        else if (temp->getCommand() == 'R' &&
+                 temp->getTitleMovie()->transactionDisplay() == 
+                 Mov->transactionDisplay()) {
+            notBorrowed++;
         }
     }
-    return NotBorrowed < Borrowed;
+    return notBorrowed < borrowed;
 }

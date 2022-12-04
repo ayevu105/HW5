@@ -41,6 +41,9 @@ void testStoreFinal() {
 
 void testAll() {
   testStore1();
+  cout << endl;
   testStore2();
+  cout << endl;
   testStoreFinal();
+  cout << endl;
 }

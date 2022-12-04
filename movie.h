@@ -1,4 +1,10 @@
-
+/* @file movie.h
+ * @brief The following code gives the declarations of the movie class.
+ *  This class processes the data4movies.txt file and is the pareent class 
+ *  of the classic, drama and comedy classes.
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
 
 #pragma once
 #include <fstream>
@@ -10,106 +16,50 @@ using namespace std;
 
 class Movie {
     public:
-        /**
-         * Standard Constructor
-         * @param: None 
-         * @return: None
-         */ 
+      //movie contstructor
         Movie();
 
-        /**
-         * Destructor
-         * @param: None 
-         * @return: None
-         */ 
+       //destructor
         virtual ~Movie();
 
-        /**
-         * Gets the number of movies in stock
-         * @param: None 
-         * @return: Number of stock remaining
-         */ 
         int getStockQuantity() const;
 
-        /**
-         * Gets the amount that are currently borrowed
-         * @param: None 
-         * @return: Number of stock being borrowed 
-         */ 
-        int GetAmountBorrowed() const;
+        int getAmountBorrowed() const;
 
-        /**
-         * Stock before anything is taken
-         * @param: None 
-         * @return: Number of total stock of movie
-         */ 
-        int GetInitialStock() const; 
+        int getInitialStock() const; 
 
-        /**
-         * Increases number of movies in stock 
-         * if movie is returned
-         * @param: None 
-         * @return: None
-         */ 
-        void IncramentStock();
+        void tncramentStock();
 
-        /**
-         * Decreases number of movies in stock
-         * if movie is taken 
-         * @param: None 
-         * @return: None
-         */ 
-        void DecrementStock();
+        void decrementStock();
 
-        /**
-         * Gets genre of movie
-         * @param: None 
-         * @return: None
-         */ 
-        virtual string GetGenre();
+        virtual string getGenre();
 
-        /**
-         * Sets data from movie file 
-         * @param: None 
-         * @return: None
-         */ 
-        virtual bool SetData(ifstream&);
-        virtual void SetTransactionData(ifstream&);
+        virtual bool setData(ifstream&);
 
-        /**
-         * Operators 
-         * @param: None 
-         * @return: None
-         */ 
+        virtual void setTransactionData(ifstream&);
+
         virtual bool operator==(const Movie&) const;
+
         virtual bool operator<(const Movie&) const;
 
-        /**
-         * Display information about movie
-         * @param: None 
-         * @return: None
-         */ 
-        virtual void Display() const;
-        virtual string TransactionDisplay() const;
+        virtual void display() const;
+
+        virtual string transactionDisplay() const;
 
     protected:
-        /**
-         * Helper functions 
-         * @param: File names  
-         * @return: None
-         */ 
-        void SetDataHelper(ifstream&);
-        void SetDirectorHelper(ifstream&); 
-        void SetTitleHelper(ifstream&);
+        void setDataHelper(ifstream&);
 
-        /**
-         * Protected variables for movies
-         * @param: None 
-         * @return: None
-         */ 
-        int Stock;
-        int InitialStock;
-        string Director;
-        string Title;
-        int Year;
+        void setDirectorHelper(ifstream&);
+
+        void setTitleHelper(ifstream&);
+
+        int stock;
+
+        int initialStock;
+
+        string director;
+        
+        string title;
+
+        int year;
 };

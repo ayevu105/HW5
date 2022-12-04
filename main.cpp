@@ -1,7 +1,7 @@
 /**
  * Driver for starting movie store tests
  */
-
+#include "storetest.cpp" //take out before submission
 #include <iostream>
 
 using namespace std;

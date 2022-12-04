@@ -1,48 +1,62 @@
-#include "Borrow.h"
+/* @file borrow.cpp
+ * @brief The following code gives the inmplementations of the borrow class
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
 
+#include "borrow.h"
+
+//borrow constructor
 Borrow::Borrow() {
-    CustomerID = 0;
+    customerID = 0;
     titleMovie = nullptr;
 }
 
+//initialized constructor
 Borrow::Borrow(Movie* Mov, int ID) {
-    CustomerID = ID;
+    customerID = ID;
     titleMovie = Mov; 
 }
 
+//destructor
 Borrow::~Borrow() {
     delete titleMovie;
 }
 
-bool Borrow::SetData(ifstream& FileName) {
-    string Genre;
-    FileName >> CustomerID >> MediaType >> Genre; 
-    titleMovie = MovieFactory::create(Genre);
+/* SetData sets the data from the commands file. 
+ * @param commands file
+ */
+bool Borrow::setData(ifstream& fileName) {
+    string genre;
+    fileName >> customerID >> mediaType >> genre; 
+    titleMovie = MovieFactory::create(genre);
     if (titleMovie == nullptr) {
         return false;
     }
-    titleMovie->SetTransactionData(FileName);
+    titleMovie->setTransactionData(fileName);
     return true;
 }
 
-void Borrow::DoTransactionCommand(const vector<Movie*>& Mov, 
-                                  const HashTable& Customers) {
-    Customer* TempCustomer; 
-    TempCustomer = Customers.GetItem(CustomerID);
-    if (TempCustomer == nullptr) {
-        cout << "Customer " << CustomerID << " not found!" <<endl;
+/* doTransactionCommand processes the transaction command
+ */
+void Borrow::doTransactionCommand(const vector<Movie*>& mov, 
+                                  const HashTable& customers) {
+    Customer* tempCustomer; 
+    tempCustomer = customers.GetItem(customerID);
+    if (tempCustomer == nullptr) {
+        cout << "Customer " << customerID << " not found!" << endl;
     }
 
-    Movie* Temp = FindMovie(Mov, titleMovie); 
-    if(Temp == nullptr) {
-        cout << "Movie " + titleMovie->TransactionDisplay() << 
+    Movie* temp = findMovie(mov, titleMovie); 
+    if(temp == nullptr) {
+        cout << "Movie " + titleMovie->transactionDisplay() << 
         " not found!" <<endl;
     }
 
-    if (TempCustomer != nullptr && Temp != nullptr) {
-        if (Temp->getStockQuantity() > 0) {
-            TempCustomer->AddTransactionHistory(this);
-            Temp->DecrementStock();
+    if (tempCustomer != nullptr && temp != nullptr) {
+        if (temp->getStockQuantity() > 0) {
+            tempCustomer->addTransactionHistory(this);
+            temp->DecrementStock();
         }
         else {
             cout << "This movie has 0 stock." << endl;
@@ -50,15 +64,21 @@ void Borrow::DoTransactionCommand(const vector<Movie*>& Mov,
     }
 }
 
-void Borrow::Display() const {
-    cout << "Borrow: " << MediaType << " " << 
-    titleMovie->TransactionDisplay() << endl;
+/* display displays the transaction
+ */
+void Borrow::display() const {
+    cout << "Borrow: " << mediaType << " " << 
+    titleMovie->transactionDisplay() << endl;
 }
 
-char Borrow::GetCommand() const {
-  return Command;
+/* getCommand is the getter for command
+ */
+char Borrow::getCommand() const {
+  return command;
 }
 
+/* getTitleMovie finds the movie
+ */
 Movie* Borrow::getTitleMovie() const {
   return titleMovie;
 }

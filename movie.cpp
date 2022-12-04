@@ -1,91 +1,126 @@
+/* @file movie.cpp
+ * @brief The following code gives the inmplementations of the movie class
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
 
-#include "Movie.h"
+#include "movie.h"
 
+//movie constructor
 Movie::Movie() {
-    Stock = 0;
-    InitialStock = 0;
-    Year = 0;
+    stock = 0;
+    initialStock = 0;
+    year = 0;
 }
 
+//destructor
 Movie::~Movie() {}
 
+/* getStockQuantity retrieves the number of movies in stock and returns it
+ */
 int Movie::getStockQuantity() const {
-    return Stock;
+    return stock;
 }
 
-int Movie::GetAmountBorrowed() const {
-    int BorrowAmount = InitialStock - Stock;
-    return BorrowAmount;
+/* getAmountBorrowed retrieves the number of movies currently being borrowed and returns it
+ */
+int Movie::getAmountBorrowed() const {
+    int borrowAmount = initialStock - stock;
+    return borrowAmount;
 }
 
-int Movie::GetInitialStock() const {
-    return InitialStock;
+/* getInitialStocl retrieves the stock before any movies are borrowed and returns it
+ */
+int Movie::getInitialStock() const {
+    return initialStock;
 }
 
-void Movie::IncramentStock() {
-    Stock++;
+/* incrementStock increases the stock if a movie is returned
+ */
+void Movie::incramentStock() {
+    stock++;
 }
 
-void Movie::DecrementStock() {
-    Stock--;
+/* decramentStock decreases the stock if a movie is rented
+ */
+void Movie::decrementStock() {
+    stock--;
 }
 
-string Movie::GetGenre() {
+/* getGenre retrieves the genre of the movie
+ */
+string Movie::getGenre() {
   return string();
 }
 
-bool Movie::SetData(ifstream& FileName) {
-    string Temp;
-    FileName >> Stock >> Temp;
-    SetDataHelper(FileName);
-    FileName >> Year;
-    InitialStock = Stock;
+/* setData sets the data from the movie file.
+ * @param movie file
+ */
+bool Movie::setData(ifstream& fileName) {
+    string temp;
+    fileName >> stock >> temp;
+    setDataHelper(fileName);
+    fileName >> year;
+    initialStock = stock;
     return true;
 }
 
-void Movie::SetTransactionData(ifstream&) {}
+/* setTransactionData sets the transaction data
+ */
+void Movie::setTransactionData(ifstream&) {}
 
+/* operator overloading for comparison
+ */
 bool Movie::operator==(const Movie&) const {
   return false;
 }
 
+/* operator overloading for comparison
+ */
 bool Movie::operator<(const Movie&) const {
   return false;
 }
 
-void Movie::SetDataHelper(ifstream& FileName) {
-    SetDirectorHelper(FileName);
-    SetTitleHelper(FileName);
+// helper function for setData
+void Movie::setDataHelper(ifstream& fileName) {
+    setDirectorHelper(fileName);
+    setTitleHelper(fileName);
 }
 
-void Movie::SetDirectorHelper(ifstream& FileName) {
-    string Temp;
-    FileName >> Director;
-    while (Director.back() == ',') { 
-        FileName >> Temp;
-        Director += " ";
-        Director += Temp;
+// helper function for setDirector
+void Movie::SetDirectorHelper(ifstream& fileName) {
+    string temp;
+    fileName >> director;
+    while (director.back() == ',') { 
+        fileName >> temp;
+        director += " ";
+        director += temp;
     }
-    Director.pop_back();
+    director.pop_back();
 }
 
-void Movie::SetTitleHelper(ifstream& FileName) {
-    string Temp;
-    FileName >> Title;
-    while (Title.back() == ',') { 
-        FileName >> Temp;
-        Title += " ";
-        Title += Temp;
+// helper function for setTitle
+void Movie::setTitleHelper(ifstream& fileName) {
+    string temp;
+    fileName >> title;
+    while (title.back() == ',') { 
+        fileName >> temp;
+        title += " ";
+        title += temp;
     }
-    Title.pop_back();
+    title.pop_back();
 }
 
-void Movie::Display() const {
-    cout << left << setw(35) << Title << setw(19) << Director << setw(5) <<
-    Year << " " << "Borrowed: " << setw(3) << GetAmountBorrowed() << " " <<
-    "Remaining: " << Stock << endl;
+/* display displays the movie information
+ */
+void Movie::display() const {
+    cout << left << setw(35) << title << setw(19) << director << setw(5) <<
+    year << " " << "Borrowed: " << setw(3) << getAmountBorrowed() << " " <<
+    "Remaining: " << stock << endl;
 }
 
-string Movie::TransactionDisplay() const {
+/* transactionDisplay displays the movie information
+ */
+string Movie::transactionDisplay() const {
   return string();
 }

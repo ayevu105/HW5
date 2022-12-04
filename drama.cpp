@@ -1,34 +1,51 @@
-#include "Drama.h"
+/* @file drama.cpp
+ * @brief The following code gives the inmplementations of the drama class
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
 
+#include "drama.h"
+
+//drama constructor
 Drama::Drama() {}
 
+//destructor
 Drama::~Drama() {}
 
-string Drama::GetGenre() {
-    return Genre;
+/* getGenre retrieves the genre of the movie
+ */
+string Drama::getGenre() {
+    return genre;
 }
 
-void Drama::SetTransactionData(ifstream& FileName) {
-    Movie::SetDataHelper(FileName);
+/* setData sets the data from the movie file.
+ */
+void Drama::setTransactionData(ifstream& fileName) {
+    Movie::setDataHelper(fileName);
 }
 
-bool Drama::operator<(const Movie& Movies) const {
-    const auto temp = dynamic_cast<const Drama&>(Movies);
-    if (Director < temp.Director) {
+/* operator overloading for comparison
+ */
+bool Drama::operator<(const Movie& movies) const {
+    const auto temp = dynamic_cast<const Drama&>(movies);
+    if (director < temp.director) {
         return true;
     }
-    return (Director == temp.Director && Title < temp.Title);
+    return (director == temp.director && title < temp.title);
 }
 
-bool Drama::operator==(const Movie& Movies) const {
-    const auto temp = dynamic_cast<const Drama&>(Movies);
-    return (Genre == temp.Genre && Director == temp.Director && 
-            Title == temp.Title);
+/* operator overloading for comparison
+ */
+bool Drama::operator==(const Movie& movies) const {
+    const auto temp = dynamic_cast<const Drama&>(movies);
+    return (genre == temp.genre && director == temp.director && 
+            title == temp.title);
 }
 
-
-string Drama::TransactionDisplay() const {
+/* transactionDisplay displays the movie information
+ */
+string Drama::transactionDisplay() const {
     string temp;
-    temp += Genre + " " + Director + ", " + Title;
+    temp += genre + " " + director + ", " + title;
     return temp;
 }

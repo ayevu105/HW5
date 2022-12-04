@@ -1,68 +1,40 @@
+/* @file history.h
+ * @brief The following code gives the declarations of the history class.
+ *  This class creates and retrieves the history of customers and is the child class of transacton.
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
 
 #pragma once
-#include "Customer.h"
-#include "Transaction.h"
-#include "HashTable.h"
-#include "Movie.h"
-#include "Transaction.h"
+#include "customer.h"
+#include "transaction.h"
+#include "hashTable.h"
+#include "movie.h"
 #include <fstream>
 #include <vector>
 
 class History : public Transaction {
     public:
-        /**
-         * Standard constructor 
-         * @param: None
-         * @return: None 
-         */ 
+      //history contructor
         History();
 
-        /**
-         * Destructor 
-         * @param: None
-         * @return: None 
-         */ 
+       //destructor
         ~History();
 
-        /**
-         * Sets data from commands file
-         * @param: File
-         * @return: None 
-         */ 
-        virtual bool SetData(ifstream&);
+        virtual bool setData(ifstream&);
 
-        /**
-         * Process transaction command 
-         * @param: None
-         * @return: None 
-         */ 
-        virtual void DoTransactionCommand(const vector<Movie*>&, 
+        virtual void doTransactionCommand(const vector<Movie*>&, 
                                           const HashTable&);
 
-        /**
-         * Getter for command
-         * @param: None
-         * @return: None 
-         */ 
-        virtual char GetCommand() const;
+        virtual void display() const;
 
-        /**
-         * Displays transaction
-         * @param: None
-         * @return: None 
-         */ 
-        virtual void Display() const;
+        virtual char getCommand() const;
 
-        /**
-         * Finds movie
-         * @param: None
-         * @return: None 
-         */ 
         Movie* getTitleMovie() const;
 
     protected:
-        const char Command = 'H';
+        const char command = 'H';
 
     private: 
-        int CustomerID;
+        int customerID;
 };

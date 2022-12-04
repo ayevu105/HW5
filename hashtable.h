@@ -1,3 +1,9 @@
+/* @file hashtable.h
+ * @brief The following code gives the declarations of the hashtable class.
+ *  This class is a basic hashtbale that is used for customers who have been tracked.
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
 
 #pragma once
 #include <iostream>
@@ -8,49 +14,22 @@ class Customer;
 
 class HashTable {
     public: 
-        /**
-         * Standard Constructor
-         * @param: None 
-         * @return: None 
-         */ 
+      //hashtable constructor
         HashTable();
 
-        /**
-         * Destructor
-         * @param: None 
-         * @return: None 
-         */ 
+      //destructor
         ~HashTable();
 
-        /**
-         * Creates hash 
-         * @param: None 
-         * @return: int return of Hash  
-         */ 
-        int Hash(int) const;
+        int hash(int) const;
 
-        /**
-         * Adds items into Hashtable
-         * @param: None 
-         * @return: true or false if successfully added or not 
-         */ 
-        bool Add(Customer*); 
+        bool add(Customer*); 
 
-        /**
-         * Getter: Gets specific item from Hashtable
-         * @param: int type of key (associated with index)
-         * @return: returns the item @ that index 
-         */ 
-        Customer* GetItem(int) const;
-
-        /**
-         * Clears hashtable
-         * @param: None 
-         * @return: None 
-         */ 
+        Customer* getItem(int) const;
+ 
         void clear(); 
 
     private: 
         Customer *Table[MAXENTRIES];
-        int NumOfKeys;  
+
+        int numOfKeys;  
 };

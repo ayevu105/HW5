@@ -1,5 +1,12 @@
+/* @file customer.h
+ * @brief The following code gives the declarations of the customer class.
+ *  This class storees the data from the file to be used for customer accounts.
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
+
 #pragma once
-#include "Movie.h"
+#include "movie.h"
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -12,63 +19,29 @@ class Transaction;
 class Customer { 
     public: 
         
-        /**
-         * Standard constructor 
-         * @param: None
-         * @return: None 
-         */ 
+      //customer constructor
         Customer();
 
-        /**
-         * Destructor 
-         * @param: None
-         * @return: None 
-         */ 
+      //destructor
         ~Customer();
 
-        /**
-         * Gets User ID
-         * @param: None
-         * @return: None 
-         */ 
-        int GetID();
+        int getID();
 
-        /**
-         * Adds transaction to history
-         * @param: 
-         * @return: None 
-         */ 
-        void AddTransactionHistory(Transaction*);
+        void addTransactionHistory(Transaction*);
 
-        /**
-         * Displays history of item
-         * @param: None
-         * @return: None 
-         */ 
-        void DisplayHistory();
+        void displayHistory();
 
-        /**
-         * Sets the data
-         * @param: File
-         * @return: None 
-         */ 
-        bool SetData(ifstream&);
+        bool setData(ifstream&);
 
-        /**
-         * Checks if a movie is borrowed 
-         * @param: Passes in movie
-         * @return: None 
-         */ 
         bool isBorrowed(Movie*);
 
     private:
-        /**
-         * Private variables 
-         * @param: None
-         * @return: None 
-         */ 
+
         int ID;
-        string LastName;
-        string FirstName;
-        vector<Transaction*> History;
+
+        string lastName;
+
+        string firstName;
+
+        vector<Transaction*> history;
 };

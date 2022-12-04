@@ -1,9 +1,14 @@
+/* @file hashtable.cpp
+ * @brief The following code gives the inmplementations of the hashtable class
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
 
-#include "Customer.h"
-#include "HashTable.h"
+#include "customer.h"
+#include "hashTable.h"
 
 HashTable::HashTable() {
-    NumOfKeys = 0;
+    numOfKeys = 0;
     for (int I = 0; I < MAXENTRIES; I++) { 
         Table[I] = nullptr;
     }
@@ -13,31 +18,40 @@ HashTable::~HashTable() {
     clear();
 }
 
-bool HashTable::Add(Customer* Cstmr) {
-    if (Cstmr->GetID() < MINID || Cstmr->GetID() > MAXID) {
+/* hash creates a hash and returns an int of that hash
+ */
+int HashTable::hash(int cstmr) const {
+  return cstmr - 1000;
+}
+
+/* add adds items in the hashtable and returns true or false if successfully added
+ */
+bool HashTable::add(Customer* cstmr) {
+    if (cstmr->getID() < MINID || cstmr->getID() > MAXID) {
         return false;
     }
-    if (Table[Hash(Cstmr->GetID())] != nullptr) {
+    if (Table[hash(cstmr->getID())] != nullptr) {
         cout << "Customer already exists" << endl;
-        delete Cstmr;
+        delete cstmr;
         return false;
     }
-    Table[Hash(Cstmr->GetID())] = Cstmr;
-    NumOfKeys++;
+    Table[hash(cstmr->getID())] = cstmr;
+    numOfKeys++;
     return true;
 }
 
-int HashTable::Hash(int Cstmr) const {
-  return Cstmr - 1000;
-}
-
-Customer* HashTable::GetItem(int Cstmr) const {
-    if (Cstmr < MINID || Cstmr > MAXID) {
+/* getItem retrieves an item from the hashtable and returns the item at that index
+ * @param int type of key
+ */
+Customer* HashTable::getItem(int cstmr) const {
+    if (cstmr < MINID || cstmr > MAXID) {
         return nullptr;
     }
-    return Table[Hash(Cstmr)];
+    return Table[hash(cstmr)];
 }
 
+/* clear clears the hashtable
+ */
 void HashTable::clear() {
     for (auto temp : Table) {
         delete temp;
