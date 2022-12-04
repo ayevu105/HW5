@@ -5,7 +5,7 @@
 #include <iostream>
 
 using namespace std;
-//starting
+
 // forward declaration, implementation in store_test.cpp
 void testAll();
 
