@@ -1,8 +1,13 @@
+/* @file drama.cpp
+ * @brief The following code gives the implementations of the drama class
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
+
 #include "drama.h"
 
-//constructor MovieDrama()
-Drama::Drama()
-{
+//drama constructor
+Drama::Drama() {
     this->movieType = MovieType::DramaType;
     this->stock = DEFAULT_STOCK;
     this->title = DEFAULT_TITLE;
@@ -10,9 +15,8 @@ Drama::Drama()
     this->year = DEFAULT_NUM;
 }
 
-//copy constructor MovieDrama
-Drama::Drama(const Drama& other)
-{
+//copy constructor
+Drama::Drama(const Drama& other) {
     this->movieType = other.movieType;
     this->stock = other.stock;
     this->title = other.title;
@@ -23,30 +27,27 @@ Drama::Drama(const Drama& other)
 //destructor
 Drama::~Drama() {}
 
-//getMovieType: getter to return the movie type
-MovieType Drama::getMovieType() const
-{
+/* getMovieType retrieves the movie type
+ */
+MovieType Drama::getMovieType() const {
     return this->movieType;
 }
 
-//setData: read and set the movie according to the input file
-bool Drama::setData(ifstream& stream)
-{
-    //set stock
+/* setData reads ands stores the movie into the system 
+ */
+bool Drama::setData(ifstream& stream) {
     stream.ignore();
     stream >> this->stock;
 
-    //set director
     stream.ignore();
     getline(stream >> ws, this->director, ',');
 
-    //set title
     stream.ignore();
     getline(stream >> ws, this->title, ',');
 
-    //set year
     stream.ignore();
     string toYear;
+    
     getline(stream >> ws, toYear, '\n');
     stringstream ss;
     ss << toYear;
@@ -54,92 +55,85 @@ bool Drama::setData(ifstream& stream)
     return true;
 }
 
-//print method
-void Drama::print(ostream& stream) const
-{
+/* print prints the movie information to the system
+ */
+void Drama::print(ostream& stream) const {
     cout << (char)this->getMovieType() << ", " << this->getStock() << ", "
         << this->getDirector() << ", " << this->getTitle() << ", " << this->getYear();
 }
 
-//operator to compare movies
-bool Drama::operator<(const InventoryDatabase& other) const
-{
-    //compare director
-    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) != 0)
+/* operator< sorts by director then title
+ */
+bool Drama::operator<(const InventoryDatabase& other) const {
+    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) != 0) {
         return this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) < 0;
+    }
 
-    //compare title
-    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) != 0)
+    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) != 0) {
         return this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) < 0;
-
-    //return false when greater
+    }
     return false;
 }
 
-//operator
-bool Drama::operator<=(const InventoryDatabase& other) const
-{
-    //compare director
-    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) > 0)
+/* operator<= sorts by director then title
+ */
+bool Drama::operator<=(const InventoryDatabase& other) const {
+    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) > 0) {
         return false;
+    }
 
-    //compare title
-    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) > 0)
+    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) > 0) {
         return false;
-
-    //return true when less than or equal
+    }
     return true;
 }
 
-//operator 
-bool Drama::operator>(const InventoryDatabase& other) const
-{
-    //compare director
-    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) != 0)
+/* operator> sorts by director then title
+ */
+bool Drama::operator>(const InventoryDatabase& other) const {
+    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) != 0) {
         return this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) > 0;
+    }
 
-    //compare title
-    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) != 0)
+    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) != 0) {
         return this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) > 0;
-
-    // return false when greater
+    }
     return false;
 }
 
-//operator
-bool Drama::operator>=(const InventoryDatabase& other) const
-{
-    //director first
-    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) < 0)
+/* operator>= sorts by director then title
+ */
+bool Drama::operator>=(const InventoryDatabase& other) const {
+    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) < 0) {
         return false;
+    }
 
-    //compare title
-    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) < 0)
+    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) < 0) {
         return false;
-
-    // return true when less than or equal
+    }
     return true;
 }
 
-//operator
-bool Drama::operator==(const InventoryDatabase& other) const
-{
+/* operator== sorts by director then title
+ */
+bool Drama::operator==(const InventoryDatabase& other) const {
     if ((this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) == 0)
         && (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) == 0)
-        && (this->getYear() == dynamic_cast<const Drama&>(other).getYear()))
+        && (this->getYear() == dynamic_cast<const Drama&>(other).getYear())) { 
         return true;
+    }
     return false;
 }
 
-//operator
-bool Drama::operator!=(const InventoryDatabase& other) const
-{
+/* operator!= compares the movies
+ */
+bool Drama::operator!=(const InventoryDatabase& other) const {
     return !(*this == dynamic_cast<const Drama&>(other));
 }
 
-//assign constructor
-InventoryDatabase& Drama::operator=(const InventoryDatabase& other)
-{
+/* operator= assigns the movie
+ */
+InventoryDatabase& Drama::operator=(const InventoryDatabase& other) {
     this->movieType = dynamic_cast<const Drama&>(other).getMovieType();
     this->stock = dynamic_cast<const Drama&>(other).getStock();
     this->director = dynamic_cast<const Drama&>(other).getDirector();
@@ -148,9 +142,9 @@ InventoryDatabase& Drama::operator=(const InventoryDatabase& other)
     return *this;
 }
 
-//operator<< print to the system
-ostream& operator<<(ostream& stream, const Drama& movie)
-{
+/* operator<< prints to the system operator
+ */
+ostream& operator<<(ostream& stream, const Drama& movie) {
     movie.print(stream);
     return stream;
 }

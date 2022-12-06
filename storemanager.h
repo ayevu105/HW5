@@ -1,3 +1,12 @@
+/* @file storemanager.h
+ * @brief The following code gives the declarations of the storemanager class.
+ *  This class is used to read the file from main and initilaize customer, movie, and commands.
+ *  It also processes borrow or return, displays history, inventory and outputs all types of movies. 
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
+
+
 #ifndef _STOREMANAGER_H_
 #define _STOREMANAGER_H_
 #include <fstream>
@@ -7,38 +16,22 @@
 #include "commandtype.h"
 using namespace std;
 
-/*
-StoreManager Class:
- - read file from main to initialize customer, movie, commands
- - Process Borrow or Return
- - Display History
- - Display all borrow and return of a customer
- - Display inventory
- - Output all Comedy movies, then all Dramas, then all Classics
-*/
 class StoreManager 
 {
 public:
-    //constructor
     StoreManager();
 
-    //destructor 
     ~StoreManager();
 
-    //reads customers information from provided text file
     void buildCustomers(ifstream& stream);
 
-    //reads movies information from provided text file
     void buildMovies(ifstream& stream);
 
-    //reads all commands from provided text file
     void processCommands(ifstream& stream);
 
 private:
-    //database of customers
     CustomerDatabase customerDatabase;
 
-    //database of dvd movies
     Database database;
 };
 #endif

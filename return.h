@@ -1,24 +1,26 @@
+/* @file return.h
+ * @brief The following code gives the declarations of the return class.
+ *  This class is the child class of BorrowOrReturn
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
+
 #ifndef _RETURN_H_
 #define _RETURN_H_
 #include "borroworreturn.h"
 
-//Return class: children class of BorrowOrReturn
-class Return : public BorrowOrReturn
-{
-    //print full command
+class Return : public BorrowOrReturn {
     friend ostream& operator<<(ostream&, const Return&);
 
 public:
-    //constructor
     Return();
 
-    //destructor
     ~Return();
 
-    //process
     bool processReturn(Database&, CustomerDatabase&);
 
 private:
+
     virtual ostream& out(ostream&) const override;
 };
 #endif

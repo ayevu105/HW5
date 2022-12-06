@@ -1,5 +1,5 @@
 /* @file comedy.cpp
- * @brief The following code gives the inmplementations of the comedy class
+ * @brief The following code gives the implementations of the comedy class
  * @author Anthony Vu
  * @date 12/05/2022
  */
@@ -26,104 +26,93 @@ Comedy::Comedy(const Comedy& other){
 //destructor
 Comedy::~Comedy(){}
 
-//getMovieType: getter to return the movie type
-MovieType Comedy::getMovieType() const
-{
+/* getMovieType retrieves the movie type
+ */
+MovieType Comedy::getMovieType() const {
     return this->movieType;
 }
 
-//setData: read and set the movie according to the input file
-bool Comedy::setData(ifstream& stream)
-{
-    //set stock
+/* setData reads ands stores the movie into the system 
+ */
+bool Comedy::setData(ifstream& stream) {
     stream.ignore();
     stream >> this->stock;
 
-    //set director
     stream.ignore();
     getline(stream >> ws, this->director, ',');
 
-    //set title
     stream.ignore();
     getline(stream >> ws, this->title, ',');
 
-    //set year
     stream.ignore();
     string toYear;
     getline(stream >> ws, toYear, '\n');
+
     stringstream ss;
     ss << toYear;
     ss >> this->year;
     return true;
 }
 
-//print method
-void Comedy::print(ostream& stream) const
-{
+/* print prints the movie information to the system
+ */
+void Comedy::print(ostream& stream) const {
     cout << (char)this->getMovieType() << ", "<< this->getStock() << ", "
         << this->getDirector() << ", "<< this->getTitle() << ", "<< this->getYear();
 }
 
-//operator to compare movies
-bool Comedy::operator<(const InventoryDatabase& other) const
-{
-    //compare title
-    if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) != 0)
+/* operator< sorts by title then release date
+ */
+bool Comedy::operator<(const InventoryDatabase& other) const {
+    if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) != 0) {
         return this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) < 0;
-
-    //compare year
+    }
     return this->getYear() < dynamic_cast<const Comedy&>(other).getYear();
 }
 
-//operator
-bool Comedy::operator<=(const InventoryDatabase& other) const
-{
-    //compare title
-    if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) > 0)
+/* operator<= sorts by title then release date
+ */
+bool Comedy::operator<=(const InventoryDatabase& other) const {
+    if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) > 0) {
         return false;
-
-    //compare year
+    }
     return this->getYear() <= dynamic_cast<const Comedy&>(other).getYear();
 }
 
-//operator 
-bool Comedy::operator>(const InventoryDatabase& other) const
-{
-    //compare title
-    if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) != 0)
+/* operator> sorts by title then release date
+ */
+bool Comedy::operator>(const InventoryDatabase& other) const {
+    if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) != 0) {
         return this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) > 0;
-
-    //compare year
+    }
     return this->getYear() > dynamic_cast<const Comedy&>(other).getYear();
 }
 
-//operator
-bool Comedy::operator>=(const InventoryDatabase& other) const
-{
-    //compare title
-    if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) < 0)
+/* operator>= sorts by title then release date
+ */
+bool Comedy::operator>=(const InventoryDatabase& other) const {
+    if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) < 0) {
         return false;
-
-    //compare year
+    }
     return this->getYear() >= dynamic_cast<const Comedy&>(other).getYear();
 }
 
-//operator
-bool Comedy::operator==(const InventoryDatabase& other) const
-{
-    return (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) == 0)
+/* operator== sorts by title then release date
+ */
+bool Comedy::operator==(const InventoryDatabase& other) const {
+    return (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) == 0) 
         && (this->getYear() == dynamic_cast<const Comedy&>(other).getYear());
 }
 
-//operator
-bool Comedy::operator!=(const InventoryDatabase& other) const
-{
+/* operator!= compares the movies
+ */
+bool Comedy::operator!=(const InventoryDatabase& other) const {
     return !(*this == dynamic_cast<const Comedy&>(other));
 }
 
-//assign constructor
-InventoryDatabase& Comedy::operator=(const InventoryDatabase& other)
-{
+/* operator= assigns the movie
+ */
+InventoryDatabase& Comedy::operator=(const InventoryDatabase& other) {
     this->movieType = dynamic_cast<const Comedy&>(other).getMovieType();
     this->stock = dynamic_cast<const Comedy&>(other).getStock();
     this->director = dynamic_cast<const Comedy&>(other).getDirector();
@@ -132,9 +121,9 @@ InventoryDatabase& Comedy::operator=(const InventoryDatabase& other)
     return *this;
 }
 
-//operator<< print to the system
-ostream& operator<<(ostream& stream, const Comedy& movie)
-{
+/* operator<< prints to the system operator
+ */
+ostream& operator<<(ostream& stream, const Comedy& movie) {
     movie.print(stream);
     return stream;
 }

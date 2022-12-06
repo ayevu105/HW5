@@ -1,20 +1,20 @@
-Mon Dec  5 19:15:49 PST 2022
+Mon Dec  5 21:11:58 PST 2022
 Linux csslab1 4.18.0-372.32.1.el8_6.x86_64 #1 SMP Thu Oct 27 15:18:36 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
 uid=1003642(ayevu105) gid=2121003642(ayevu105) groups=2121003642(ayevu105),605559(lab-access)
 =====================================================
 1. Compiles without warnings with -Wall -Wextra flags
 =====================================================
 classic.cpp: In member function ‘virtual void Classic::print(std::ostream&) const’:
-classic.cpp:188:30: warning: unused parameter ‘stream’ [-Wunused-parameter]
- void Classic::print(ostream& stream) const
+classic.cpp:107:30: warning: unused parameter ‘stream’ [-Wunused-parameter]
+ void Classic::print(ostream& stream) const {
                      ~~~~~~~~~^~~~~~
 comedy.cpp: In member function ‘virtual void Comedy::print(std::ostream&) const’:
-comedy.cpp:58:29: warning: unused parameter ‘stream’ [-Wunused-parameter]
- void Comedy::print(ostream& stream) const
+comedy.cpp:59:29: warning: unused parameter ‘stream’ [-Wunused-parameter]
+ void Comedy::print(ostream& stream) const {
                     ~~~~~~~~~^~~~~~
 drama.cpp: In member function ‘virtual void Drama::print(std::ostream&) const’:
-drama.cpp:58:28: warning: unused parameter ‘stream’ [-Wunused-parameter]
- void Drama::print(ostream& stream) const
+drama.cpp:60:28: warning: unused parameter ‘stream’ [-Wunused-parameter]
+ void Drama::print(ostream& stream) const {
                    ~~~~~~~~~^~~~~~
 =====================================================
 2. Runs and produces correct output
@@ -242,9 +242,9 @@ Running clang-format on ./borrow.cpp
 >   return stream;
 Running clang-format on ./borroworreturn.cpp
 2c2,3
-<  * @brief The following code gives the inmplementations of the borroworreturn class
+<  * @brief The following code gives the implementations of the borroworreturn class
 ---
->  * @brief The following code gives the inmplementations of the borroworreturn
+>  * @brief The following code gives the implementations of the borroworreturn
 >  * class
 9c10
 < //borroworreturn constructor
@@ -264,88 +264,66 @@ Running clang-format on ./borroworreturn.cpp
 < //destructor
 ---
 > // destructor
-19,108c20,110
-< 	if (this->media != nullptr) 
-< 	{
+19,86c20,89
+< 	if (this->media != nullptr) {
 < 		delete this->media;
 < 		this->media = nullptr;
 < 	}
 < }
 < 
 < bool BorrowOrReturn::setData(ifstream& stream) {
-< 	//create media, and some temporary data
+< 	
 < 	InventoryDatabase* aMedia = nullptr;
 < 	char tempMedia;
 < 	char tempMovie;
 < 	string tempID;
 < 
-< 	//assign comment type to command
 < 	fullCommand = this->commandCase;
 < 	fullCommand += ' ';
 < 
-< 	//assign customer ID to command
 < 	stream.ignore();
 < 	stream >> tempID;
 < 	fullCommand += tempID;
 < 	fullCommand += ' ';
 < 
-< 	//use to convert string to number
 < 	stringstream convert(tempID);
 < 	convert >> this->customerID;
 < 
-< 	//if customer id is invalid
 < 	if(convert.fail() || customerID < 0) {
 < 		processError(stream, tempID, string("customer ID"));
 < 		return false;
 < 	}
 < 
-< 	//read media type
 < 	stream.ignore();
 < 	stream >> tempMedia;
 < 
-< 	//assign media type to command
 < 	fullCommand += tempMedia;
 < 	fullCommand += ' ';
 < 
-< 	//check type of media
 < 	switch (tempMedia) {
-< 		//movie media
 < 	case DVDMovie:
 < 		this->mediaType = DVDMovie;
 < 
-< 		//read file
 < 		stream.ignore();
 < 		stream >> tempMovie;
-< 
-< 		//assign movie type to command
 < 		fullCommand += tempMovie;
 < 		fullCommand += ' ';
 < 
-< 		// check type of movie
 < 		switch (tempMovie) {
-< 			//comedy case
 < 		case ComedyType:
 < 			processComedy(stream, aMedia);
 < 			break;
-< 
-< 			//classic case
 < 		case ClassicType:
 < 			processClassic(stream, aMedia);
 < 			break;
-< 
-< 			//drama case
 < 		case DramaType:
 < 			processDrama(stream, aMedia);
 < 			break;
-< 
-< 			//invalid movie type
 < 		default:
 < 			processError(stream,string().insert(0, 1, tempMovie),string("movie type"));
 < 			break;
 < 		}
 < 		break;
-< 
-< 		// invalid media type
 < 	default:
 < 		processError(stream,string().insert(0, 1, tempMedia),string("media type"));
 < 		break;
@@ -363,80 +341,59 @@ Running clang-format on ./borroworreturn.cpp
 > }
 > 
 > bool BorrowOrReturn::setData(ifstream &stream) {
->   // create media, and some temporary data
+> 
 >   InventoryDatabase *aMedia = nullptr;
 >   char tempMedia;
 >   char tempMovie;
 >   string tempID;
 > 
->   // assign comment type to command
 >   fullCommand = this->commandCase;
 >   fullCommand += ' ';
 > 
->   // assign customer ID to command
 >   stream.ignore();
 >   stream >> tempID;
 >   fullCommand += tempID;
 >   fullCommand += ' ';
 > 
->   // use to convert string to number
 >   stringstream convert(tempID);
 >   convert >> this->customerID;
 > 
->   // if customer id is invalid
 >   if (convert.fail() || customerID < 0) {
 >     processError(stream, tempID, string("customer ID"));
 >     return false;
 >   }
 > 
->   // read media type
 >   stream.ignore();
 >   stream >> tempMedia;
 > 
->   // assign media type to command
 >   fullCommand += tempMedia;
 >   fullCommand += ' ';
 > 
->   // check type of media
 >   switch (tempMedia) {
->     // movie media
 >   case DVDMovie:
 >     this->mediaType = DVDMovie;
 > 
->     // read file
 >     stream.ignore();
 >     stream >> tempMovie;
-> 
->     // assign movie type to command
 >     fullCommand += tempMovie;
 >     fullCommand += ' ';
 > 
->     // check type of movie
 >     switch (tempMovie) {
->       // comedy case
 >     case ComedyType:
 >       processComedy(stream, aMedia);
 >       break;
-> 
->       // classic case
 >     case ClassicType:
 >       processClassic(stream, aMedia);
 >       break;
-> 
->       // drama case
 >     case DramaType:
 >       processDrama(stream, aMedia);
 >       break;
-> 
->       // invalid movie type
 >     default:
 >       processError(stream, string().insert(0, 1, tempMovie),
 >                    string("movie type"));
 >       break;
 >     }
 >     break;
-> 
->     // invalid media type
 >   default:
 >     processError(stream, string().insert(0, 1, tempMedia),
 >                  string("media type"));
@@ -447,7 +404,7 @@ Running clang-format on ./borroworreturn.cpp
 >   this->media = aMedia;
 >   bool isValid = this->media != nullptr;
 >   return isValid;
-113,125c115,128
+91,103c94,107
 < void BorrowOrReturn::processComedy(ifstream& stream, InventoryDatabase*& aMedia) {
 < 	this->movieType = ComedyType;
 < 	aMedia = new Comedy();
@@ -476,11 +433,11 @@ Running clang-format on ./borroworreturn.cpp
 >   stream.ignore();
 >   stream >> tempYear;
 >   dynamic_cast<Comedy *>(aMedia)->setYear(tempYear);
-127c130
+105c109
 < 	fullCommand += tempTitle + ", " + to_string(tempYear);
 ---
 >   fullCommand += tempTitle + ", " + to_string(tempYear);
-132,159c135,161
+110,137c114,140
 < void BorrowOrReturn::processClassic(ifstream& stream, InventoryDatabase*& aMedia) {
 < 	this->movieType = ClassicType;
 < 	aMedia = new Classic();
@@ -537,7 +494,7 @@ Running clang-format on ./borroworreturn.cpp
 > 
 >   fullCommand += to_string(tempMonth) + ' ' + to_string(tempYear) + ' ' +
 >                  tempActorFirst + ' ' + tempActorLast;
-164,176c166,179
+142,154c145,158
 < void BorrowOrReturn::processDrama(ifstream& stream, InventoryDatabase*& aMedia) {
 < 	this->movieType = DramaType;
 < 	aMedia = new Drama();
@@ -566,15 +523,15 @@ Running clang-format on ./borroworreturn.cpp
 >   stream.ignore();
 >   getline(stream >> ws, tempTitle, ',');
 >   dynamic_cast<Drama *>(aMedia)->setTitle(tempTitle);
-178c181
+156c160
 < 	fullCommand += tempDirector + ", " + tempTitle + ", ";
 ---
 >   fullCommand += tempDirector + ", " + tempTitle + ", ";
-182c185
+160c164
 <  *are invalid 
 ---
 >  *are invalid
-184,188c187,192
+162,166c166,171
 < void BorrowOrReturn::processError(ifstream& stream,const string& error,const string& message) {
 < 	string temp;
 < 	stream.ignore();
@@ -587,17 +544,17 @@ Running clang-format on ./borroworreturn.cpp
 >   stream.ignore();
 >   getline(stream, temp, '\n');
 >   this->fullCommand += temp;
-190,191c194,195
+168,169c173,174
 < 	cerr << "Command, invalid " << message << " '" << error << "':"
 < 		<< '\n' << "  " << this->fullCommand << endl;
 ---
 >   cerr << "Command, invalid " << message << " '" << error << "':" << '\n'
 >        << "  " << this->fullCommand << endl;
-194c198
+172c177
 < /* out sets out the stream data 
 ---
 > /* out sets out the stream data
-196,198c200,202
+174,176c179,181
 < ostream& BorrowOrReturn::out(ostream& out) const {
 < 	out << (char)this->commandCase;
 < 	return out;
@@ -605,11 +562,11 @@ Running clang-format on ./borroworreturn.cpp
 > ostream &BorrowOrReturn::out(ostream &out) const {
 >   out << (char)this->commandCase;
 >   return out;
-201c205
+179c184
 < /* operator<< prints out the command borrow data 
 ---
 > /* operator<< prints out the command borrow data
-203,205c207,209
+181,183c186,188
 < ostream& operator<<(ostream& stream, const BorrowOrReturn& command) {
 < 	command.out(stream);
 < 	return stream;
@@ -670,237 +627,218 @@ Running clang-format on ./classic.cpp
 < //destructor
 ---
 > // destructor
-37,42c35,39
-< //setData: read and store the movie to the system
-< bool Classic::setData(ifstream& stream) 
-< {
-<     //set stock
-<     stream.ignore();
-<     stream >> this->stock;
----
-> // setData: read and store the movie to the system
-> bool Classic::setData(ifstream &stream) {
->   // set stock
->   stream.ignore();
->   stream >> this->stock;
-44,46c41,43
-<     //set director
-<     stream.ignore();
-<     getline(stream >> ws, this->director, ',');
----
->   // set director
->   stream.ignore();
->   getline(stream >> ws, this->director, ',');
-48,50c45,47
-<     //set title
-<     stream.ignore();
-<     getline(stream >> ws, this->title, ',');
----
->   // set title
->   stream.ignore();
->   getline(stream >> ws, this->title, ',');
-52,56c49,53
-<     //set major actor
-<     stream.ignore();
-<     stream >> this->majorActorFirst;
-<     stream.ignore();
-<     stream >> this->majorActorLast;
----
->   // set major actor
->   stream.ignore();
->   stream >> this->majorActorFirst;
->   stream.ignore();
->   stream >> this->majorActorLast;
-58,60c55,57
-<     //set month
-<     stream.ignore();
-<     stream >> this->month;
----
->   // set month
->   stream.ignore();
->   stream >> this->month;
-62,64c59,61
-<     // set year
-<     stream.ignore();
-<     stream >> this->year;
----
->   // set year
->   stream.ignore();
->   stream >> this->year;
-66,67c63,64
-<     // end of line
-<     return true;
----
->   // end of line
->   return true;
-70,74c67,68
-< //getMajorActorFirst: return the major actor first name
-< string Classic::getMajorActorFirst() const
-< {
-<     return this->majorActorFirst;
-< }
----
-> // getMajorActorFirst: return the major actor first name
-> string Classic::getMajorActorFirst() const { return this->majorActorFirst; }
-76,79c70,72
-< //setMajorActorFirst: set the major actor first name for the movie
-< void Classic::setMajorActorFirst(string first)
-< {
-<     this->majorActorFirst = first;
----
-> // setMajorActorFirst: set the major actor first name for the movie
-> void Classic::setMajorActorFirst(string first) {
->   this->majorActorFirst = first;
-82,86c75,76
-< //getMajorActorLast: return the major actor last name
-< string Classic::getMajorActorLast() const
-< {
-<     return this->majorActorLast;
-< }
----
-> // getMajorActorLast: return the major actor last name
-> string Classic::getMajorActorLast() const { return this->majorActorLast; }
-88,92c78,79
-< //setMajorActorLast: set the major actor last name for the movie
-< void Classic::setMajorActorLast(string last) 
-< {
-<     this->majorActorLast = last;
-< }
----
-> // setMajorActorLast: set the major actor last name for the movie
-> void Classic::setMajorActorLast(string last) { this->majorActorLast = last; }
-94,98c81,82
-< //getMonth: return the month of the movie
-< int Classic::getMonth() const 
-< {
-<     return this->month;
-< }
----
-> // getMonth: return the month of the movie
-> int Classic::getMonth() const { return this->month; }
-100,104c84,85
-< //setMonth: set the month for the movie
-< void Classic::setMonth(int month) 
-< {
-<     this->month = month;
-< }
----
-> // setMonth: set the month for the movie
-> void Classic::setMonth(int month) { this->month = month; }
-106,110c87,88
-< //getMovieType: return the movie type
-< MovieType Classic::getMovieType() const 
-< {
+39,41c37
+< MovieType Classic::getMovieType() const {
 <     return this->movieType;
 < }
 ---
-> // getMovieType: return the movie type
 > MovieType Classic::getMovieType() const { return this->movieType; }
-112,116c90,93
-< //operator< sort by release date and major actor
-< bool Classic::operator<(const InventoryDatabase& other) const 
-< {
-<     if (this->getYear() != dynamic_cast<const Classic&>(other).getYear())
+45,47c41
+< string Classic::getMajorActorFirst() const {
+<     return this->majorActorFirst;
+< }
+---
+> string Classic::getMajorActorFirst() const { return this->majorActorFirst; }
+52c46
+<     this->majorActorFirst = first;
+---
+>   this->majorActorFirst = first;
+57,59c51
+< string Classic::getMajorActorLast() const {
+<     return this->majorActorLast;
+< }
+---
+> string Classic::getMajorActorLast() const { return this->majorActorLast; }
+63,65c55
+< void Classic::setMajorActorLast(string last) {
+<     this->majorActorLast = last;
+< }
+---
+> void Classic::setMajorActorLast(string last) { this->majorActorLast = last; }
+67c57
+< /* getMonth retrieves the month of the movie 
+---
+> /* getMonth retrieves the month of the movie
+69,71c59
+< int Classic::getMonth() const {
+<     return this->month;
+< }
+---
+> int Classic::getMonth() const { return this->month; }
+75,78c63,64
+< void Classic::setMonth(int month) {
+<     this->month = month;
+< }
+< /* setData reads ands stores the movie into the system 
+---
+> void Classic::setMonth(int month) { this->month = month; }
+> /* setData reads ands stores the movie into the system
+80,82c66,68
+< bool Classic::setData(ifstream& stream) {
+<     stream.ignore();
+<     stream >> this->stock;
+---
+> bool Classic::setData(ifstream &stream) {
+>   stream.ignore();
+>   stream >> this->stock;
+84,85c70,71
+<     stream.ignore();
+<     getline(stream >> ws, this->director, ',');
+---
+>   stream.ignore();
+>   getline(stream >> ws, this->director, ',');
+87,88c73,74
+<     stream.ignore();
+<     getline(stream >> ws, this->title, ',');
+---
+>   stream.ignore();
+>   getline(stream >> ws, this->title, ',');
+90,91c76,77
+<     stream.ignore();
+<     stream >> this->majorActorFirst;
+---
+>   stream.ignore();
+>   stream >> this->majorActorFirst;
+93,94c79,80
+<     stream.ignore();
+<     stream >> this->majorActorLast;
+---
+>   stream.ignore();
+>   stream >> this->majorActorLast;
+96,97c82,83
+<     stream.ignore();
+<     stream >> this->month;
+---
+>   stream.ignore();
+>   stream >> this->month;
+99,100c85,86
+<     stream.ignore();
+<     stream >> this->year;
+---
+>   stream.ignore();
+>   stream >> this->year;
+102c88
+<     return true;
+---
+>   return true;
+107,110c93,97
+< void Classic::print(ostream& stream) const {
+<     cout << (char)this->getMovieType() << ", " << this->getStock() << ", " << this->getDirector() << ", "
+<         << this->getTitle() << ", " << this->getMajorActorFirst() << " " << this->getMajorActorLast() << ", "
+<         << this->getMonth() << ", " << this->getYear();
+---
+> void Classic::print(ostream &stream) const {
+>   cout << (char)this->getMovieType() << ", " << this->getStock() << ", "
+>        << this->getDirector() << ", " << this->getTitle() << ", "
+>        << this->getMajorActorFirst() << " " << this->getMajorActorLast() << ", "
+>        << this->getMonth() << ", " << this->getYear();
+113d99
+< 
+116,123c102,109
+< bool Classic::operator<(const InventoryDatabase& other) const {
+<     if (this->getYear() != dynamic_cast<const Classic&>(other).getYear()) {
 <         return this->getYear() < dynamic_cast<const Classic&>(other).getYear();
----
-> // operator< sort by release date and major actor
-> bool Classic::operator<(const InventoryDatabase &other) const {
->   if (this->getYear() != dynamic_cast<const Classic &>(other).getYear())
->     return this->getYear() < dynamic_cast<const Classic &>(other).getYear();
-118,119c95,96
-<     if (this->getMonth() != dynamic_cast<const Classic&>(other).getMonth())
+<     }
+< 
+<     if (this->getMonth() != dynamic_cast<const Classic&>(other).getMonth()) {
 <         return this->getMonth() < dynamic_cast<const Classic&>(other).getMonth();
+<     }
 ---
->   if (this->getMonth() != dynamic_cast<const Classic &>(other).getMonth())
+> bool Classic::operator<(const InventoryDatabase &other) const {
+>   if (this->getYear() != dynamic_cast<const Classic &>(other).getYear()) {
+>     return this->getYear() < dynamic_cast<const Classic &>(other).getYear();
+>   }
+> 
+>   if (this->getMonth() != dynamic_cast<const Classic &>(other).getMonth()) {
 >     return this->getMonth() < dynamic_cast<const Classic &>(other).getMonth();
-121c98,99
+>   }
+125c111,112
 <     return this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) < 0;
 ---
 >   return this->getMajorActorFirst().compare(
 >              dynamic_cast<const Classic &>(other).getMajorActorFirst()) < 0;
-124,128c102,105
-< //operator<= arithmetic operator, sort by release date and major actor
-< bool Classic::operator<=(const InventoryDatabase& other) const 
-< {
-<     if (this->getYear() > dynamic_cast<const Classic&>(other).getYear())
+130,138c117,126
+< bool Classic::operator<=(const InventoryDatabase& other) const {
+<     if (this->getYear() > dynamic_cast<const Classic&>(other).getYear()) {
 <         return false;
----
-> // operator<= arithmetic operator, sort by release date and major actor
-> bool Classic::operator<=(const InventoryDatabase &other) const {
->   if (this->getYear() > dynamic_cast<const Classic &>(other).getYear())
->     return false;
-130,131c107,108
-<     if (this->getMonth() > dynamic_cast<const Classic&>(other).getMonth())
+<     }
+< 
+<     if (this->getMonth() > dynamic_cast<const Classic&>(other).getMonth()) {
 <         return false;
----
->   if (this->getMonth() > dynamic_cast<const Classic &>(other).getMonth())
->     return false;
-133c110,111
+<     }
 <     return this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) <= 0;
 ---
+> bool Classic::operator<=(const InventoryDatabase &other) const {
+>   if (this->getYear() > dynamic_cast<const Classic &>(other).getYear()) {
+>     return false;
+>   }
+> 
+>   if (this->getMonth() > dynamic_cast<const Classic &>(other).getMonth()) {
+>     return false;
+>   }
 >   return this->getMajorActorFirst().compare(
 >              dynamic_cast<const Classic &>(other).getMajorActorFirst()) <= 0;
-136,140c114,117
-< //operator> arithmetic operator, sort by release date and major actor
-< bool Classic::operator>(const InventoryDatabase& other) const 
-< {
-<     if (this->getYear() != dynamic_cast<const Classic&>(other).getYear())
+143,151c131,140
+< bool Classic::operator>(const InventoryDatabase& other) const {
+<     if (this->getYear() != dynamic_cast<const Classic&>(other).getYear()) {
 <         return this->getYear() > dynamic_cast<const Classic&>(other).getYear();
----
-> // operator> arithmetic operator, sort by release date and major actor
-> bool Classic::operator>(const InventoryDatabase &other) const {
->   if (this->getYear() != dynamic_cast<const Classic &>(other).getYear())
->     return this->getYear() > dynamic_cast<const Classic &>(other).getYear();
-142,143c119,120
-<     if (this->getMonth() != dynamic_cast<const Classic&>(other).getMonth())
+<     }
+< 
+<     if (this->getMonth() != dynamic_cast<const Classic&>(other).getMonth()) {
 <         return this->getMonth() > dynamic_cast<const Classic&>(other).getMonth();
----
->   if (this->getMonth() != dynamic_cast<const Classic &>(other).getMonth())
->     return this->getMonth() > dynamic_cast<const Classic &>(other).getMonth();
-145c122,123
+<     }
 <     return this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) > 0;
 ---
+> bool Classic::operator>(const InventoryDatabase &other) const {
+>   if (this->getYear() != dynamic_cast<const Classic &>(other).getYear()) {
+>     return this->getYear() > dynamic_cast<const Classic &>(other).getYear();
+>   }
+> 
+>   if (this->getMonth() != dynamic_cast<const Classic &>(other).getMonth()) {
+>     return this->getMonth() > dynamic_cast<const Classic &>(other).getMonth();
+>   }
 >   return this->getMajorActorFirst().compare(
 >              dynamic_cast<const Classic &>(other).getMajorActorFirst()) > 0;
-148,152c126,129
-< //operator>= arithmetic operator, sort by release date and major actor
-< bool Classic::operator>=(const InventoryDatabase& other) const 
-< {
-<     if (this->getYear() < dynamic_cast<const Classic&>(other).getYear())
+156,164c145,154
+< bool Classic::operator>=(const InventoryDatabase& other) const {
+<     if (this->getYear() < dynamic_cast<const Classic&>(other).getYear()) {
 <         return false;
----
-> // operator>= arithmetic operator, sort by release date and major actor
-> bool Classic::operator>=(const InventoryDatabase &other) const {
->   if (this->getYear() < dynamic_cast<const Classic &>(other).getYear())
->     return false;
-154,155c131,132
-<     if (this->getMonth() < dynamic_cast<const Classic&>(other).getMonth())
+<     }
+< 
+<     if (this->getMonth() < dynamic_cast<const Classic&>(other).getMonth()) {
 <         return false;
----
->   if (this->getMonth() < dynamic_cast<const Classic &>(other).getMonth())
->     return false;
-157c134,135
+<     }
 <     return this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) >= 0;
 ---
+> bool Classic::operator>=(const InventoryDatabase &other) const {
+>   if (this->getYear() < dynamic_cast<const Classic &>(other).getYear()) {
+>     return false;
+>   }
+> 
+>   if (this->getMonth() < dynamic_cast<const Classic &>(other).getMonth()) {
+>     return false;
+>   }
 >   return this->getMajorActorFirst().compare(
 >              dynamic_cast<const Classic &>(other).getMajorActorFirst()) >= 0;
-160,164c138,144
-< //operator== arithmetic operator, sort by release date and major actor
-< bool Classic::operator==(const InventoryDatabase& other) const 
-< {
-<     return (this->getYear() == dynamic_cast<const Classic&>(other).getYear())&& (this->getMonth() == dynamic_cast<const Classic&>(other).getMonth()
+169,171c159,164
+< bool Classic::operator==(const InventoryDatabase& other) const {
+<     return (this->getYear() == dynamic_cast<const Classic&>(other).getYear()) && (this->getMonth() == dynamic_cast<const Classic&>(other).getMonth()
 <             && (this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) == 0));
 ---
-> // operator== arithmetic operator, sort by release date and major actor
 > bool Classic::operator==(const InventoryDatabase &other) const {
 >   return (this->getYear() == dynamic_cast<const Classic &>(other).getYear()) &&
 >          (this->getMonth() == dynamic_cast<const Classic &>(other).getMonth() &&
 >           (this->getMajorActorFirst().compare(
 >                dynamic_cast<const Classic &>(other).getMajorActorFirst()) ==
 >            0));
-168,178c148,159
-< InventoryDatabase& Classic::operator=(const InventoryDatabase& other)
-< {
+176,177c169,170
+< bool Classic::operator!=(const InventoryDatabase& other) const {
+<     return !(*this == dynamic_cast<const Classic&>(other));
+---
+> bool Classic::operator!=(const InventoryDatabase &other) const {
+>   return !(*this == dynamic_cast<const Classic &>(other));
+182,191c175,186
+< InventoryDatabase& Classic::operator=(const InventoryDatabase& other) {
 <     this->movieType = dynamic_cast<const Classic&>(other).getMovieType();
 <     this->stock = dynamic_cast<const Classic&>(other).getStock();
 <     this->director = dynamic_cast<const Classic&>(other).getDirector();
@@ -923,30 +861,8 @@ Running clang-format on ./classic.cpp
 >   this->month = dynamic_cast<const Classic &>(other).getMonth();
 >   this->year = dynamic_cast<const Classic &>(other).getYear();
 >   return *this;
-182,184c163,164
-< bool Classic::operator!=(const InventoryDatabase& other) const 
-< {
-<     return !(*this == dynamic_cast<const Classic&>(other));
----
-> bool Classic::operator!=(const InventoryDatabase &other) const {
->   return !(*this == dynamic_cast<const Classic &>(other));
-187,192c167,172
-< //print the movie information to the system
-< void Classic::print(ostream& stream) const 
-< {
-<     cout << (char)this->getMovieType() << ", " << this->getStock() << ", " << this->getDirector() << ", "
-<         << this->getTitle() << ", " << this->getMajorActorFirst() << " " << this->getMajorActorLast() << ", "
-<         << this->getMonth() << ", " << this->getYear();
----
-> // print the movie information to the system
-> void Classic::print(ostream &stream) const {
->   cout << (char)this->getMovieType() << ", " << this->getStock() << ", "
->        << this->getDirector() << ", " << this->getTitle() << ", "
->        << this->getMajorActorFirst() << " " << this->getMajorActorLast() << ", "
->        << this->getMonth() << ", " << this->getYear();
-196,199c176,178
-< ostream& operator<<(ostream& out, const Classic& movie) 
-< {
+196,198c191,193
+< ostream& operator<<(ostream& out, const Classic& movie) {
 <     movie.print(out);
 <     return out;
 ---
@@ -954,10 +870,9 @@ Running clang-format on ./classic.cpp
 >   movie.print(out);
 >   return out;
 Running clang-format on ./comedy.cpp
-3,136c3,129
-< //constructor MovieComedy()
-< Comedy::Comedy()
-< {
+8,23c8,23
+< //comedy constructor
+< Comedy::Comedy(){
 <     this->movieType = MovieType::ComedyType;
 <     this->stock = DEFAULT_STOCK;
 <     this->title = DEFAULT_TITLE;
@@ -965,132 +880,15 @@ Running clang-format on ./comedy.cpp
 <     this->year = DEFAULT_NUM;
 < }
 < 
-< //copy constructor MovieComedy
-< Comedy::Comedy(const Comedy& other)
-< {
+< //copy constructor
+< Comedy::Comedy(const Comedy& other){
 <     this->movieType = other.movieType;
 <     this->stock = other.stock;
 <     this->title = other.title;
 <     this->director = other.director;
 <     this->year = other.year;
-< }
-< 
-< //destructor
-< Comedy::~Comedy(){}
-< 
-< //getMovieType: getter to return the movie type
-< MovieType Comedy::getMovieType() const
-< {
-<     return this->movieType;
-< }
-< 
-< //setData: read and set the movie according to the input file
-< bool Comedy::setData(ifstream& stream)
-< {
-<     //set stock
-<     stream.ignore();
-<     stream >> this->stock;
-< 
-<     //set director
-<     stream.ignore();
-<     getline(stream >> ws, this->director, ',');
-< 
-<     //set title
-<     stream.ignore();
-<     getline(stream >> ws, this->title, ',');
-< 
-<     //set year
-<     stream.ignore();
-<     string toYear;
-<     getline(stream >> ws, toYear, '\n');
-<     stringstream ss;
-<     ss << toYear;
-<     ss >> this->year;
-<     return true;
-< }
-< 
-< //print method
-< void Comedy::print(ostream& stream) const
-< {
-<     cout << (char)this->getMovieType() << ", "<< this->getStock() << ", "
-<         << this->getDirector() << ", "<< this->getTitle() << ", "<< this->getYear();
-< }
-< 
-< //operator to compare movies
-< bool Comedy::operator<(const InventoryDatabase& other) const
-< {
-<     //compare title
-<     if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) != 0)
-<         return this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) < 0;
-< 
-<     //compare year
-<     return this->getYear() < dynamic_cast<const Comedy&>(other).getYear();
-< }
-< 
-< //operator
-< bool Comedy::operator<=(const InventoryDatabase& other) const
-< {
-<     //compare title
-<     if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) > 0)
-<         return false;
-< 
-<     //compare year
-<     return this->getYear() <= dynamic_cast<const Comedy&>(other).getYear();
-< }
-< 
-< //operator 
-< bool Comedy::operator>(const InventoryDatabase& other) const
-< {
-<     //compare title
-<     if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) != 0)
-<         return this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) > 0;
-< 
-<     //compare year
-<     return this->getYear() > dynamic_cast<const Comedy&>(other).getYear();
-< }
-< 
-< //operator
-< bool Comedy::operator>=(const InventoryDatabase& other) const
-< {
-<     //compare title
-<     if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) < 0)
-<         return false;
-< 
-<     //compare year
-<     return this->getYear() >= dynamic_cast<const Comedy&>(other).getYear();
-< }
-< 
-< //operator
-< bool Comedy::operator==(const InventoryDatabase& other) const
-< {
-<     return (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) == 0)
-<         && (this->getYear() == dynamic_cast<const Comedy&>(other).getYear());
-< }
-< 
-< //operator
-< bool Comedy::operator!=(const InventoryDatabase& other) const
-< {
-<     return !(*this == dynamic_cast<const Comedy&>(other));
-< }
-< 
-< //assign constructor
-< InventoryDatabase& Comedy::operator=(const InventoryDatabase& other)
-< {
-<     this->movieType = dynamic_cast<const Comedy&>(other).getMovieType();
-<     this->stock = dynamic_cast<const Comedy&>(other).getStock();
-<     this->director = dynamic_cast<const Comedy&>(other).getDirector();
-<     this->title = dynamic_cast<const Comedy&>(other).getTitle();
-<     this->year = dynamic_cast<const Comedy&>(other).getYear();
-<     return *this;
-< }
-< 
-< //operator<< print to the system
-< ostream& operator<<(ostream& stream, const Comedy& movie)
-< {
-<     movie.print(stream);
-<     return stream;
 ---
-> // constructor MovieComedy()
+> // comedy constructor
 > Comedy::Comedy() {
 >   this->movieType = MovieType::ComedyType;
 >   this->stock = DEFAULT_STOCK;
@@ -1099,111 +897,154 @@ Running clang-format on ./comedy.cpp
 >   this->year = DEFAULT_NUM;
 > }
 > 
-> // copy constructor MovieComedy
+> // copy constructor
 > Comedy::Comedy(const Comedy &other) {
 >   this->movieType = other.movieType;
 >   this->stock = other.stock;
 >   this->title = other.title;
 >   this->director = other.director;
 >   this->year = other.year;
-> }
-> 
+26,27c26,27
+< //destructor
+< Comedy::~Comedy(){}
+---
 > // destructor
 > Comedy::~Comedy() {}
-> 
-> // getMovieType: getter to return the movie type
+31,33c31
+< MovieType Comedy::getMovieType() const {
+<     return this->movieType;
+< }
+---
 > MovieType Comedy::getMovieType() const { return this->movieType; }
-> 
-> // setData: read and set the movie according to the input file
+35c33
+< /* setData reads ands stores the movie into the system 
+---
+> /* setData reads ands stores the movie into the system
+37,39c35,37
+< bool Comedy::setData(ifstream& stream) {
+<     stream.ignore();
+<     stream >> this->stock;
+---
 > bool Comedy::setData(ifstream &stream) {
->   // set stock
 >   stream.ignore();
 >   stream >> this->stock;
-> 
->   // set director
+41,42c39,40
+<     stream.ignore();
+<     getline(stream >> ws, this->director, ',');
+---
 >   stream.ignore();
 >   getline(stream >> ws, this->director, ',');
-> 
->   // set title
+44,45c42,43
+<     stream.ignore();
+<     getline(stream >> ws, this->title, ',');
+---
 >   stream.ignore();
 >   getline(stream >> ws, this->title, ',');
-> 
->   // set year
+47,49c45,47
+<     stream.ignore();
+<     string toYear;
+<     getline(stream >> ws, toYear, '\n');
+---
 >   stream.ignore();
 >   string toYear;
 >   getline(stream >> ws, toYear, '\n');
+51,54c49,52
+<     stringstream ss;
+<     ss << toYear;
+<     ss >> this->year;
+<     return true;
+---
 >   stringstream ss;
 >   ss << toYear;
 >   ss >> this->year;
 >   return true;
-> }
-> 
-> // print method
+59,61c57,60
+< void Comedy::print(ostream& stream) const {
+<     cout << (char)this->getMovieType() << ", "<< this->getStock() << ", "
+<         << this->getDirector() << ", "<< this->getTitle() << ", "<< this->getYear();
+---
 > void Comedy::print(ostream &stream) const {
 >   cout << (char)this->getMovieType() << ", " << this->getStock() << ", "
 >        << this->getDirector() << ", " << this->getTitle() << ", "
 >        << this->getYear();
-> }
-> 
-> // operator to compare movies
+66,70c65,71
+< bool Comedy::operator<(const InventoryDatabase& other) const {
+<     if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) != 0) {
+<         return this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) < 0;
+<     }
+<     return this->getYear() < dynamic_cast<const Comedy&>(other).getYear();
+---
 > bool Comedy::operator<(const InventoryDatabase &other) const {
->   // compare title
 >   if (this->getTitle().compare(
->           dynamic_cast<const Comedy &>(other).getTitle()) != 0)
+>           dynamic_cast<const Comedy &>(other).getTitle()) != 0) {
 >     return this->getTitle().compare(
 >                dynamic_cast<const Comedy &>(other).getTitle()) < 0;
-> 
->   // compare year
+>   }
 >   return this->getYear() < dynamic_cast<const Comedy &>(other).getYear();
-> }
-> 
-> // operator
+75,79c76,81
+< bool Comedy::operator<=(const InventoryDatabase& other) const {
+<     if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) > 0) {
+<         return false;
+<     }
+<     return this->getYear() <= dynamic_cast<const Comedy&>(other).getYear();
+---
 > bool Comedy::operator<=(const InventoryDatabase &other) const {
->   // compare title
 >   if (this->getTitle().compare(dynamic_cast<const Comedy &>(other).getTitle()) >
->       0)
+>       0) {
 >     return false;
-> 
->   // compare year
+>   }
 >   return this->getYear() <= dynamic_cast<const Comedy &>(other).getYear();
-> }
-> 
-> // operator
+84,88c86,92
+< bool Comedy::operator>(const InventoryDatabase& other) const {
+<     if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) != 0) {
+<         return this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) > 0;
+<     }
+<     return this->getYear() > dynamic_cast<const Comedy&>(other).getYear();
+---
 > bool Comedy::operator>(const InventoryDatabase &other) const {
->   // compare title
 >   if (this->getTitle().compare(
->           dynamic_cast<const Comedy &>(other).getTitle()) != 0)
+>           dynamic_cast<const Comedy &>(other).getTitle()) != 0) {
 >     return this->getTitle().compare(
 >                dynamic_cast<const Comedy &>(other).getTitle()) > 0;
-> 
->   // compare year
+>   }
 >   return this->getYear() > dynamic_cast<const Comedy &>(other).getYear();
-> }
-> 
-> // operator
+93,97c97,102
+< bool Comedy::operator>=(const InventoryDatabase& other) const {
+<     if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) < 0) {
+<         return false;
+<     }
+<     return this->getYear() >= dynamic_cast<const Comedy&>(other).getYear();
+---
 > bool Comedy::operator>=(const InventoryDatabase &other) const {
->   // compare title
 >   if (this->getTitle().compare(dynamic_cast<const Comedy &>(other).getTitle()) <
->       0)
+>       0) {
 >     return false;
-> 
->   // compare year
+>   }
 >   return this->getYear() >= dynamic_cast<const Comedy &>(other).getYear();
-> }
-> 
-> // operator
+102,104c107,110
+< bool Comedy::operator==(const InventoryDatabase& other) const {
+<     return (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) == 0) 
+<         && (this->getYear() == dynamic_cast<const Comedy&>(other).getYear());
+---
 > bool Comedy::operator==(const InventoryDatabase &other) const {
 >   return (this->getTitle().compare(
 >               dynamic_cast<const Comedy &>(other).getTitle()) == 0) &&
 >          (this->getYear() == dynamic_cast<const Comedy &>(other).getYear());
-> }
-> 
-> // operator
+109,110c115,116
+< bool Comedy::operator!=(const InventoryDatabase& other) const {
+<     return !(*this == dynamic_cast<const Comedy&>(other));
+---
 > bool Comedy::operator!=(const InventoryDatabase &other) const {
 >   return !(*this == dynamic_cast<const Comedy &>(other));
-> }
-> 
-> // assign constructor
+115,121c121,127
+< InventoryDatabase& Comedy::operator=(const InventoryDatabase& other) {
+<     this->movieType = dynamic_cast<const Comedy&>(other).getMovieType();
+<     this->stock = dynamic_cast<const Comedy&>(other).getStock();
+<     this->director = dynamic_cast<const Comedy&>(other).getDirector();
+<     this->title = dynamic_cast<const Comedy&>(other).getTitle();
+<     this->year = dynamic_cast<const Comedy&>(other).getYear();
+<     return *this;
+---
 > InventoryDatabase &Comedy::operator=(const InventoryDatabase &other) {
 >   this->movieType = dynamic_cast<const Comedy &>(other).getMovieType();
 >   this->stock = dynamic_cast<const Comedy &>(other).getStock();
@@ -1211,9 +1052,11 @@ Running clang-format on ./comedy.cpp
 >   this->title = dynamic_cast<const Comedy &>(other).getTitle();
 >   this->year = dynamic_cast<const Comedy &>(other).getYear();
 >   return *this;
-> }
-> 
-> // operator<< print to the system
+126,128c132,134
+< ostream& operator<<(ostream& stream, const Comedy& movie) {
+<     movie.print(stream);
+<     return stream;
+---
 > ostream &operator<<(ostream &stream, const Comedy &movie) {
 >   movie.print(stream);
 >   return stream;
@@ -1275,77 +1118,57 @@ Running clang-format on ./command.cpp
 < }
 ---
 > void Command::setCommandType(CommandCase in) { this->commandCase = in; }
-52,82c44,45
+52,75c44,67
 < void Command::process(Database& Datab, CustomerDatabase& cusDatab)
 < {
 < 	bool flag = false;
 < 
 < 	switch (this->commandCase) {
-< 		//borrow
 < 	case BorrowCase:
 < 		flag = dynamic_cast<Borrow*>(this)->processBorrow(Datab, cusDatab);
 < 		break;
-< 
-< 		//return
 < 	case ReturnCase:
 < 		flag = dynamic_cast<Return*>(this)->processReturn(Datab, cusDatab);
 < 		break;
-< 
-< 		//display history
 < 	case HistoryCase:
 < 		flag = dynamic_cast<History*>(this)->processHistory(cusDatab);
 < 		break;
-< 
-< 		//check inventory
 < 	case InventoryCase:
 < 		dynamic_cast<Inventory*>(this)->processInventory(Datab);
 < 		break;
-< 
-< 		//default case
 < 	default:
 < 		cerr << "Command, nothing to process" << endl;
 < 		flag = false;
 < 		break;
 < 	}
----
-> void Command::process(Database &Datab, CustomerDatabase &cusDatab) {
->   bool flag = false;
-84,85c47,77
 < 	if (!flag|| this->commandCase == HistoryCase || this->commandCase == InventoryCase)
 < 		delete this;
 ---
+> void Command::process(Database &Datab, CustomerDatabase &cusDatab) {
+>   bool flag = false;
+> 
 >   switch (this->commandCase) {
->     // borrow
 >   case BorrowCase:
 >     flag = dynamic_cast<Borrow *>(this)->processBorrow(Datab, cusDatab);
 >     break;
-> 
->     // return
 >   case ReturnCase:
 >     flag = dynamic_cast<Return *>(this)->processReturn(Datab, cusDatab);
 >     break;
-> 
->     // display history
 >   case HistoryCase:
 >     flag = dynamic_cast<History *>(this)->processHistory(cusDatab);
 >     break;
-> 
->     // check inventory
 >   case InventoryCase:
 >     dynamic_cast<Inventory *>(this)->processInventory(Datab);
 >     break;
-> 
->     // default case
 >   default:
 >     cerr << "Command, nothing to process" << endl;
 >     flag = false;
 >     break;
 >   }
-> 
 >   if (!flag || this->commandCase == HistoryCase ||
 >       this->commandCase == InventoryCase)
 >     delete this;
-90,92c82,84
+80,82c72,74
 < ostream& Command::out(ostream& out) const {
 < 	out << (char)this->commandCase;
 < 	return out;
@@ -1353,7 +1176,7 @@ Running clang-format on ./command.cpp
 > ostream &Command::out(ostream &out) const {
 >   out << (char)this->commandCase;
 >   return out;
-96,99c88,91
+86,89c78,81
 <  */ 
 < ostream& operator<<(ostream& stream, const Command& comm) {
 < 	comm.out(stream);
@@ -1780,9 +1603,9 @@ Running clang-format on ./customer.cpp
 >   return out;
 Running clang-format on ./customersdatabase.cpp
 2c2,3
-<  * @brief The following code gives the inmplementations of the customersdatabase class
+<  * @brief The following code gives the implementations of the customersdatabase class
 ---
->  * @brief The following code gives the inmplementations of the customersdatabase
+>  * @brief The following code gives the implementations of the customersdatabase
 >  * class
 9c10
 < //customersdatabase constructor
@@ -1984,10 +1807,11 @@ Running clang-format on ./database.cpp
 >           movies.at(MovieType::ClassicType).getTotalNode();
 >   return t;
 Running clang-format on ./drama.cpp
-3,20c3,18
-< //constructor MovieDrama()
-< Drama::Drama()
-< {
+9c9
+< //drama constructor
+---
+> // drama constructor
+11,24c11,24
 <     this->movieType = MovieType::DramaType;
 <     this->stock = DEFAULT_STOCK;
 <     this->title = DEFAULT_TITLE;
@@ -1995,17 +1819,14 @@ Running clang-format on ./drama.cpp
 <     this->year = DEFAULT_NUM;
 < }
 < 
-< //copy constructor MovieDrama
-< Drama::Drama(const Drama& other)
-< {
+< //copy constructor
+< Drama::Drama(const Drama& other) {
 <     this->movieType = other.movieType;
 <     this->stock = other.stock;
 <     this->title = other.title;
 <     this->director = other.director;
 <     this->year = other.year;
 ---
-> // constructor MovieDrama()
-> Drama::Drama() {
 >   this->movieType = MovieType::DramaType;
 >   this->stock = DEFAULT_STOCK;
 >   this->title = DEFAULT_TITLE;
@@ -2013,237 +1834,199 @@ Running clang-format on ./drama.cpp
 >   this->year = DEFAULT_NUM;
 > }
 > 
-> // copy constructor MovieDrama
+> // copy constructor
 > Drama::Drama(const Drama &other) {
 >   this->movieType = other.movieType;
 >   this->stock = other.stock;
 >   this->title = other.title;
 >   this->director = other.director;
 >   this->year = other.year;
-23c21
+27c27
 < //destructor
 ---
 > // destructor
-26,73c24,25
-< //getMovieType: getter to return the movie type
-< MovieType Drama::getMovieType() const
-< {
+32,34c32
+< MovieType Drama::getMovieType() const {
 <     return this->movieType;
 < }
-< 
-< //setData: read and set the movie according to the input file
-< bool Drama::setData(ifstream& stream)
-< {
-<     //set stock
+---
+> MovieType Drama::getMovieType() const { return this->movieType; }
+36c34
+< /* setData reads ands stores the movie into the system 
+---
+> /* setData reads ands stores the movie into the system
+38,40c36,38
+< bool Drama::setData(ifstream& stream) {
 <     stream.ignore();
 <     stream >> this->stock;
-< 
-<     //set director
+---
+> bool Drama::setData(ifstream &stream) {
+>   stream.ignore();
+>   stream >> this->stock;
+42,43c40,41
 <     stream.ignore();
 <     getline(stream >> ws, this->director, ',');
-< 
-<     //set title
+---
+>   stream.ignore();
+>   getline(stream >> ws, this->director, ',');
+45,46c43,44
 <     stream.ignore();
 <     getline(stream >> ws, this->title, ',');
-< 
-<     //set year
+---
+>   stream.ignore();
+>   getline(stream >> ws, this->title, ',');
+48,55c46,53
 <     stream.ignore();
 <     string toYear;
+<     
 <     getline(stream >> ws, toYear, '\n');
 <     stringstream ss;
 <     ss << toYear;
 <     ss >> this->year;
 <     return true;
-< }
-< 
-< //print method
-< void Drama::print(ostream& stream) const
-< {
-<     cout << (char)this->getMovieType() << ", " << this->getStock() << ", "
-<         << this->getDirector() << ", " << this->getTitle() << ", " << this->getYear();
-< }
-< 
-< //operator to compare movies
-< bool Drama::operator<(const InventoryDatabase& other) const
-< {
-<     //compare director
-<     if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) != 0)
-<         return this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) < 0;
-< 
-<     //compare title
-<     if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) != 0)
-<         return this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) < 0;
 ---
-> // getMovieType: getter to return the movie type
-> MovieType Drama::getMovieType() const { return this->movieType; }
-75c27,80
-<     //return false when greater
----
-> // setData: read and set the movie according to the input file
-> bool Drama::setData(ifstream &stream) {
->   // set stock
->   stream.ignore();
->   stream >> this->stock;
-> 
->   // set director
->   stream.ignore();
->   getline(stream >> ws, this->director, ',');
-> 
->   // set title
->   stream.ignore();
->   getline(stream >> ws, this->title, ',');
-> 
->   // set year
 >   stream.ignore();
 >   string toYear;
+> 
 >   getline(stream >> ws, toYear, '\n');
 >   stringstream ss;
 >   ss << toYear;
 >   ss >> this->year;
 >   return true;
-> }
-> 
-> // print method
+60,62c58,61
+< void Drama::print(ostream& stream) const {
+<     cout << (char)this->getMovieType() << ", " << this->getStock() << ", "
+<         << this->getDirector() << ", " << this->getTitle() << ", " << this->getYear();
+---
 > void Drama::print(ostream &stream) const {
 >   cout << (char)this->getMovieType() << ", " << this->getStock() << ", "
 >        << this->getDirector() << ", " << this->getTitle() << ", "
 >        << this->getYear();
-> }
-> 
-> // operator to compare movies
+67,75c66,78
+< bool Drama::operator<(const InventoryDatabase& other) const {
+<     if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) != 0) {
+<         return this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) < 0;
+<     }
+< 
+<     if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) != 0) {
+<         return this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) < 0;
+<     }
+<     return false;
+---
 > bool Drama::operator<(const InventoryDatabase &other) const {
->   // compare director
 >   if (this->getDirector().compare(
->           dynamic_cast<const Drama &>(other).getDirector()) != 0)
+>           dynamic_cast<const Drama &>(other).getDirector()) != 0) {
 >     return this->getDirector().compare(
 >                dynamic_cast<const Drama &>(other).getDirector()) < 0;
+>   }
 > 
->   // compare title
 >   if (this->getTitle().compare(dynamic_cast<const Drama &>(other).getTitle()) !=
->       0)
+>       0) {
 >     return this->getTitle().compare(
 >                dynamic_cast<const Drama &>(other).getTitle()) < 0;
-> 
->   // return false when greater
+>   }
 >   return false;
-> }
-> 
-> // operator
-> bool Drama::operator<=(const InventoryDatabase &other) const {
->   // compare director
->   if (this->getDirector().compare(
->           dynamic_cast<const Drama &>(other).getDirector()) > 0)
-77d81
-< }
-79,88c83,86
-< //operator
-< bool Drama::operator<=(const InventoryDatabase& other) const
-< {
-<     //compare director
-<     if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) > 0)
+80,88c83,93
+< bool Drama::operator<=(const InventoryDatabase& other) const {
+<     if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) > 0) {
 <         return false;
+<     }
 < 
-<     //compare title
-<     if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) > 0)
+<     if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) > 0) {
 <         return false;
----
->   // compare title
->   if (this->getTitle().compare(dynamic_cast<const Drama &>(other).getTitle()) >
->       0)
->     return false;
-90,91c88,89
-<     //return true when less than or equal
+<     }
 <     return true;
 ---
->   // return true when less than or equal
->   return true;
-94,103c92,115
-< //operator 
-< bool Drama::operator>(const InventoryDatabase& other) const
-< {
-<     //compare director
-<     if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) != 0)
-<         return this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) > 0;
-< 
-<     //compare title
-<     if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) != 0)
-<         return this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) > 0;
----
-> // operator
-> bool Drama::operator>(const InventoryDatabase &other) const {
->   // compare director
+> bool Drama::operator<=(const InventoryDatabase &other) const {
 >   if (this->getDirector().compare(
->           dynamic_cast<const Drama &>(other).getDirector()) != 0)
+>           dynamic_cast<const Drama &>(other).getDirector()) > 0) {
+>     return false;
+>   }
+> 
+>   if (this->getTitle().compare(dynamic_cast<const Drama &>(other).getTitle()) >
+>       0) {
+>     return false;
+>   }
+>   return true;
+93,101c98,110
+< bool Drama::operator>(const InventoryDatabase& other) const {
+<     if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) != 0) {
+<         return this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) > 0;
+<     }
+< 
+<     if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) != 0) {
+<         return this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) > 0;
+<     }
+<     return false;
+---
+> bool Drama::operator>(const InventoryDatabase &other) const {
+>   if (this->getDirector().compare(
+>           dynamic_cast<const Drama &>(other).getDirector()) != 0) {
 >     return this->getDirector().compare(
 >                dynamic_cast<const Drama &>(other).getDirector()) > 0;
+>   }
 > 
->   // compare title
 >   if (this->getTitle().compare(dynamic_cast<const Drama &>(other).getTitle()) !=
->       0)
+>       0) {
 >     return this->getTitle().compare(
 >                dynamic_cast<const Drama &>(other).getTitle()) > 0;
-> 
->   // return false when greater
+>   }
 >   return false;
-> }
-> 
-> // operator
-> bool Drama::operator>=(const InventoryDatabase &other) const {
->   // director first
->   if (this->getDirector().compare(
->           dynamic_cast<const Drama &>(other).getDirector()) < 0)
->     return false;
-105c117,119
-<     // return false when greater
----
->   // compare title
->   if (this->getTitle().compare(dynamic_cast<const Drama &>(other).getTitle()) <
->       0)
-107d120
-< }
-109,118c122,124
-< //operator
-< bool Drama::operator>=(const InventoryDatabase& other) const
-< {
-<     //director first
-<     if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) < 0)
+106,114c115,125
+< bool Drama::operator>=(const InventoryDatabase& other) const {
+<     if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) < 0) {
 <         return false;
+<     }
 < 
-<     //compare title
-<     if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) < 0)
+<     if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) < 0) {
 <         return false;
+<     }
+<     return true;
 ---
->   // return true when less than or equal
+> bool Drama::operator>=(const InventoryDatabase &other) const {
+>   if (this->getDirector().compare(
+>           dynamic_cast<const Drama &>(other).getDirector()) < 0) {
+>     return false;
+>   }
+> 
+>   if (this->getTitle().compare(dynamic_cast<const Drama &>(other).getTitle()) <
+>       0) {
+>     return false;
+>   }
 >   return true;
-> }
-120c126,132
-<     // return true when less than or equal
+119,125c130,138
+< bool Drama::operator==(const InventoryDatabase& other) const {
+<     if ((this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) == 0)
+<         && (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) == 0)
+<         && (this->getYear() == dynamic_cast<const Drama&>(other).getYear())) { 
+<         return true;
+<     }
+<     return false;
 ---
-> // operator
 > bool Drama::operator==(const InventoryDatabase &other) const {
 >   if ((this->getDirector().compare(
 >            dynamic_cast<const Drama &>(other).getDirector()) == 0) &&
 >       (this->getTitle().compare(
 >            dynamic_cast<const Drama &>(other).getTitle()) == 0) &&
->       (this->getYear() == dynamic_cast<const Drama &>(other).getYear()))
-121a134
+>       (this->getYear() == dynamic_cast<const Drama &>(other).getYear())) {
+>     return true;
+>   }
 >   return false;
-124,131c137,149
-< //operator
-< bool Drama::operator==(const InventoryDatabase& other) const
-< {
-<     if ((this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) == 0)
-<         && (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) == 0)
-<         && (this->getYear() == dynamic_cast<const Drama&>(other).getYear()))
-<         return true;
-<     return false;
+130,131c143,144
+< bool Drama::operator!=(const InventoryDatabase& other) const {
+<     return !(*this == dynamic_cast<const Drama&>(other));
 ---
-> // operator
 > bool Drama::operator!=(const InventoryDatabase &other) const {
 >   return !(*this == dynamic_cast<const Drama &>(other));
-> }
-> 
-> // assign constructor
+136,142c149,155
+< InventoryDatabase& Drama::operator=(const InventoryDatabase& other) {
+<     this->movieType = dynamic_cast<const Drama&>(other).getMovieType();
+<     this->stock = dynamic_cast<const Drama&>(other).getStock();
+<     this->director = dynamic_cast<const Drama&>(other).getDirector();
+<     this->title = dynamic_cast<const Drama&>(other).getTitle();
+<     this->year = dynamic_cast<const Drama&>(other).getYear();
+<     return *this;
+---
 > InventoryDatabase &Drama::operator=(const InventoryDatabase &other) {
 >   this->movieType = dynamic_cast<const Drama &>(other).getMovieType();
 >   this->stock = dynamic_cast<const Drama &>(other).getStock();
@@ -2251,64 +2034,37 @@ Running clang-format on ./drama.cpp
 >   this->title = dynamic_cast<const Drama &>(other).getTitle();
 >   this->year = dynamic_cast<const Drama &>(other).getYear();
 >   return *this;
-134,155c152,155
-< //operator
-< bool Drama::operator!=(const InventoryDatabase& other) const
-< {
-<     return !(*this == dynamic_cast<const Drama&>(other));
-< }
-< 
-< //assign constructor
-< InventoryDatabase& Drama::operator=(const InventoryDatabase& other)
-< {
-<     this->movieType = dynamic_cast<const Drama&>(other).getMovieType();
-<     this->stock = dynamic_cast<const Drama&>(other).getStock();
-<     this->director = dynamic_cast<const Drama&>(other).getDirector();
-<     this->title = dynamic_cast<const Drama&>(other).getTitle();
-<     this->year = dynamic_cast<const Drama&>(other).getYear();
-<     return *this;
-< }
-< 
-< //operator<< print to the system
-< ostream& operator<<(ostream& stream, const Drama& movie)
-< {
+147,149c160,162
+< ostream& operator<<(ostream& stream, const Drama& movie) {
 <     movie.print(stream);
 <     return stream;
 ---
-> // operator<< print to the system
 > ostream &operator<<(ostream &stream, const Drama &movie) {
 >   movie.print(stream);
 >   return stream;
 Running clang-format on ./genre.cpp
-3,36c3,33
-< //buildMovie: read from input file and create corresponding movie type
-< Movie* Genre::buildMovie(ifstream& stream)
-< {
+11,37c11,37
+< Movie* Genre::buildMovie(ifstream& stream) {
 <     Movie* newMovie = nullptr;
 <     char movieType;
 < 
-<     //set movie type
 <     stream >> movieType;
 < 
-<     //if fail to read movie type
-<     if (stream.fail()) 
-<     {
+<     if (stream.fail()) {
 <         stream.clear();
 <         stream.ignore(99, '\n');
 <         return nullptr;
 <     }
 < 
-<     //build specific type movie based on the input file
-<     switch (movieType) 
-<     {
+<     switch (movieType) {
 <     case MovieType::ComedyType:
-<         newMovie = buildMovieComedy(stream);
+<         newMovie = buildComedy(stream);
 <         break;
 <     case MovieType::ClassicType:
-<         newMovie = buildMovieClassic(stream);
+<         newMovie = buildClassic(stream);
 <         break;
 <     case MovieType::DramaType:
-<         newMovie = buildMovieDrama(stream);
+<         newMovie = buildDrama(stream);
 <         break;
 <     default:
 <         error(movieType, stream);
@@ -2316,99 +2072,92 @@ Running clang-format on ./genre.cpp
 <     }
 <     return newMovie;
 ---
-> // buildMovie: read from input file and create corresponding movie type
 > Movie *Genre::buildMovie(ifstream &stream) {
 >   Movie *newMovie = nullptr;
 >   char movieType;
 > 
->   // set movie type
 >   stream >> movieType;
 > 
->   // if fail to read movie type
 >   if (stream.fail()) {
 >     stream.clear();
 >     stream.ignore(99, '\n');
 >     return nullptr;
 >   }
 > 
->   // build specific type movie based on the input file
 >   switch (movieType) {
 >   case MovieType::ComedyType:
->     newMovie = buildMovieComedy(stream);
+>     newMovie = buildComedy(stream);
 >     break;
 >   case MovieType::ClassicType:
->     newMovie = buildMovieClassic(stream);
+>     newMovie = buildClassic(stream);
 >     break;
 >   case MovieType::DramaType:
->     newMovie = buildMovieDrama(stream);
+>     newMovie = buildDrama(stream);
 >     break;
 >   default:
 >     error(movieType, stream);
 >     break;
 >   }
 >   return newMovie;
-39,46c36,42
-< //buildMovieComedy: create a comedy type movie from the input file
-< Movie* Genre::buildMovieComedy (ifstream& stream)
-< {
+42,48c42,48
+< Movie* Genre::buildComedy (ifstream& stream) {
 <     Movie* comedy = new Comedy();
-<     if (comedy->setData(stream))
+<     if (comedy->setData(stream)) {
 <         return comedy;
+<     }
 <     delete comedy;
 <     return nullptr;
 ---
-> // buildMovieComedy: create a comedy type movie from the input file
-> Movie *Genre::buildMovieComedy(ifstream &stream) {
+> Movie *Genre::buildComedy(ifstream &stream) {
 >   Movie *comedy = new Comedy();
->   if (comedy->setData(stream))
+>   if (comedy->setData(stream)) {
 >     return comedy;
+>   }
 >   delete comedy;
 >   return nullptr;
-49,56c45,51
-< //buildMovieDrama: create a drama type movie from the input file
-< Movie* Genre::buildMovieDrama(ifstream& stream) 
-< {
+53,59c53,59
+< Movie* Genre::buildDrama(ifstream& stream) {
 <     Movie* drama = new Drama();
-<     if (drama->setData(stream))
+<     if (drama->setData(stream)) {
 <         return drama;
+<     }
 <     delete drama;
 <     return nullptr;
 ---
-> // buildMovieDrama: create a drama type movie from the input file
-> Movie *Genre::buildMovieDrama(ifstream &stream) {
+> Movie *Genre::buildDrama(ifstream &stream) {
 >   Movie *drama = new Drama();
->   if (drama->setData(stream))
+>   if (drama->setData(stream)) {
 >     return drama;
+>   }
 >   delete drama;
 >   return nullptr;
-59,66c54,60
-< //buildMovieClassic: create a classic type movie from the input file
-< Movie* Genre::buildMovieClassic(ifstream& stream) 
-< {
+64,70c64,70
+< Movie* Genre::buildClassic(ifstream& stream) {
 <     Movie* classic = new Classic();
-<     if (classic->setData(stream))
+<     if (classic->setData(stream)) {
 <         return classic;
+<     }
 <     delete classic;
 <     return nullptr;
 ---
-> // buildMovieClassic: create a classic type movie from the input file
-> Movie *Genre::buildMovieClassic(ifstream &stream) {
+> Movie *Genre::buildClassic(ifstream &stream) {
 >   Movie *classic = new Classic();
->   if (classic->setData(stream))
+>   if (classic->setData(stream)) {
 >     return classic;
+>   }
 >   delete classic;
 >   return nullptr;
-69,75c63,69
-< //error: check and show error message to the user if the movie type is not included
-< void Genre::error(const char& mType, ifstream& stream) 
-< {
+73c73
+< /* error checks if the movie type is not included 
+---
+> /* error checks if the movie type is not included
+75,79c75,79
+< void Genre::error(const char& mType, ifstream& stream) {
 <     string fullInfo;
 <     getline(stream, fullInfo);
 <     cerr << "Media, type \'" << mType << "\' is not recognized:"
 <         << '\n' << "  " << mType << fullInfo << endl;
 ---
-> // error: check and show error message to the user if the movie type is not
-> // included
 > void Genre::error(const char &mType, ifstream &stream) {
 >   string fullInfo;
 >   getline(stream, fullInfo);
@@ -2554,9 +2303,9 @@ Running clang-format on ./inventory.cpp
 >   return stream;
 Running clang-format on ./inventorydatabase.cpp
 2c2,3
-<  * @brief The following code gives the inmplementations of the inventorydatabase class
+<  * @brief The following code gives the implementations of the inventorydatabase class
 ---
->  * @brief The following code gives the inmplementations of the inventorydatabase
+>  * @brief The following code gives the implementations of the inventorydatabase
 >  * class
 9,10c10,11
 < //destructor
@@ -2751,126 +2500,95 @@ Running clang-format on ./movie.cpp
 >   movie.print(stream);
 >   return stream;
 Running clang-format on ./return.cpp
-3,4c3,4
-< //constructor
+9,10c9,10
+< //return constructor
 < Return::Return(){}
 ---
-> // constructor
+> // return constructor
 > Return::Return() {}
-6,7c6,7
+12,13c12,13
 < //destructor
 < Return::~Return(){}
 ---
 > // destructor
 > Return::~Return() {}
-9,52c9,50
-< //processReturn: process the return command
-< bool Return::processReturn(Database& Datab, CustomerDatabase& cusDatab)
-< {
+15c15
+< /* processReturn is the processecing of the return command 
+---
+> /* processReturn is the processecing of the return command
+17,41c17,44
+< bool Return::processReturn(Database& Datab, CustomerDatabase& cusDatab) {
 < 	Customer* cusRetriever;
-< 
-< 	//check if customer exist
-< 	if (cusDatab.retrieveCustomer(this->getCustomerID(), cusRetriever))
-< 	{
-< 		//check if command contain media
-< 		if (this->media != nullptr) 
-< 		{
-< 			//check if media exist
+< 	if (cusDatab.retrieveCustomer(this->getCustomerID(), cusRetriever)) {
+< 		if (this->media != nullptr) {
 < 			InventoryDatabase* meRetriever = nullptr;
-< 			if (Datab.retrieve(*this->media, meRetriever)) 
-< 			{
-< 				//customer return media
-< 				if (cusRetriever->returnMedia(this->media)) 
-< 				{
-< 					//delete command media
+< 			if (Datab.retrieve(*this->media, meRetriever)) {
+< 				if (cusRetriever->returnMedia(this->media)) {
 < 					delete this->media;
 < 					this->media = nullptr;
 < 
-< 					//add 1 to the stock
 < 					meRetriever->addStock(1);
 < 
-< 					//add to the customer history
 < 					cusRetriever->addHistory(this);
 < 					return true;
 < 				}
-< 			}
-< 
-< 			//media doesn't exist
-< 			else
+< 			} else {
 < 				cerr << "Command, media is not in the Database:" << '\n' << "  " << this->fullCommand << endl;
-< 		}
-< 
-< 		// command doesn't contain media
-< 		else
+< 			}
+< 		} else {
 < 			cerr << "Command, this command doesn't contain media:" << '\n' << "  " << this->fullCommand << endl;
-< 	}
-< 
-< 	//customer doesn't exist
-< 	else
+< 		}
+< 	} else {
 < 		cerr << "Command, customer does not exist:" << '\n' << "  " << this->fullCommand << endl;
+< 	}
+< 	return false;
 ---
-> // processReturn: process the return command
 > bool Return::processReturn(Database &Datab, CustomerDatabase &cusDatab) {
 >   Customer *cusRetriever;
-> 
->   // check if customer exist
 >   if (cusDatab.retrieveCustomer(this->getCustomerID(), cusRetriever)) {
->     // check if command contain media
 >     if (this->media != nullptr) {
->       // check if media exist
 >       InventoryDatabase *meRetriever = nullptr;
 >       if (Datab.retrieve(*this->media, meRetriever)) {
->         // customer return media
 >         if (cusRetriever->returnMedia(this->media)) {
->           // delete command media
 >           delete this->media;
 >           this->media = nullptr;
 > 
->           // add 1 to the stock
 >           meRetriever->addStock(1);
 > 
->           // add to the customer history
 >           cusRetriever->addHistory(this);
 >           return true;
 >         }
->       }
-> 
->       // media doesn't exist
->       else
+>       } else {
 >         cerr << "Command, media is not in the Database:" << '\n'
 >              << "  " << this->fullCommand << endl;
->     }
-> 
->     // command doesn't contain media
->     else
+>       }
+>     } else {
 >       cerr << "Command, this command doesn't contain media:" << '\n'
 >            << "  " << this->fullCommand << endl;
->   }
-> 
->   // customer doesn't exist
->   else
+>     }
+>   } else {
 >     cerr << "Command, customer does not exist:" << '\n'
 >          << "  " << this->fullCommand << endl;
-54,55c52,53
-< 	//fail to return
-< 	return false;
----
->   // fail to return
+>   }
 >   return false;
-58,62c56,59
-< //out: use to set ostream data
-< ostream& Return::out(ostream& out) const 
-< {
+44c47
+< /* out sets out the stream data 
+---
+> /* out sets out the stream data
+46,48c49,51
+< ostream& Return::out(ostream& out) const {
 < 	out << this->fullCommand;
 < 	return out;
 ---
-> // out: use to set ostream data
 > ostream &Return::out(ostream &out) const {
 >   out << this->fullCommand;
 >   return out;
-66,69c63,65
-< ostream& operator<<(ostream& stream, const Return& r) 
-< {
+51c54
+< /* operator<< prints out the command borrow data 
+---
+> /* operator<< prints out the command borrow data
+53,55c56,58
+< ostream& operator<<(ostream& stream, const Return& r) {
 < 	r.out(stream);
 < 	return stream;
 ---
@@ -2878,208 +2596,144 @@ Running clang-format on ./return.cpp
 >   r.out(stream);
 >   return stream;
 Running clang-format on ./storemanager.cpp
-4,5c4,5
-< //constructor
+10,11c10,11
+< //storemanager constructor
 < StoreManager::StoreManager(){}
 ---
-> // constructor
+> // storemanager constructor
 > StoreManager::StoreManager() {}
-7,8c7,8
+13,14c13,14
 < //destructor
 < StoreManager::~StoreManager(){}
 ---
 > // destructor
 > StoreManager::~StoreManager() {}
-10,17c10,33
-< //buildCustomers: read data from the provided text file and build a list of customers from that
-< void StoreManager::buildCustomers(ifstream& stream)
-< {
-<     //if file can't be read then display error message 
-<     if (!stream) 
-<     {
+16c16,17
+< /* buildCustomers reads the data from the text files and builds a list of customers 
+---
+> /* buildCustomers reads the data from the text files and builds a list of
+>  * customers
+18,21c19,34
+< void StoreManager::buildCustomers(ifstream& stream) {
+<     if (!stream) {
 <         cout << "Cannot read customer file!" << endl;
 <         return;
 ---
-> // buildCustomers: read data from the provided text file and build a list of
-> // customers from that
 > void StoreManager::buildCustomers(ifstream &stream) {
->   // if file can't be read then display error message
 >   if (!stream) {
 >     cout << "Cannot read customer file!" << endl;
 >     return;
 >   }
 > 
->   Customer *ptr; // used for create new customer
+>   Customer *ptr;
 >   while (!stream.eof()) {
->     ptr = new Customer(); // create new customer object
+>     ptr = new Customer();
 > 
->     // set data for customer
 >     if (ptr->setData(stream)) {
->       // ignore duplicate
 >       if (!customerDatabase.insertCustomer(ptr)) {
 >         delete ptr;
 >       }
->     }
-> 
->     // else invalid data
->     else {
+>     } else {
 >       delete ptr;
-18a35
->   }
-20,43c37,38
-<     Customer* ptr;                                  //used for create new customer
-<     while (!stream.eof()) 
-<     {
-<         ptr = new Customer();                       //create new customer object
+23,36c36,37
 < 
-<         //set data for customer
-<         if (ptr->setData(stream)) 
-<         {
-<             //ignore duplicate
-<             if (!customerDatabase.insertCustomer(ptr)) 
-<             {
+<     Customer* ptr;                                 
+<     while (!stream.eof()) {
+<         ptr = new Customer();                       
+< 
+<         if (ptr->setData(stream)) {
+<             if (!customerDatabase.insertCustomer(ptr)) {
 <                 delete ptr;
 <             }
-<         }
-< 
-<         //else invalid data
-<         else 
-<         {
+<         } else {
 <             delete ptr;
 <         }
 <     }
-< 
-<     //close files
 <     stream.close();
 ---
->   // close files
+>   }
 >   stream.close();
-46,77c41,65
-< //buildMovies: read data from the provided text file and build a list of movies
-< void StoreManager::buildMovies(ifstream& stream)
-< {
-<     //if file can't be read then display error message 
-<     if (!stream) 
-<     {
+39c40
+< /* buildMovies reads the data from the text files and builds a list of movies 
+---
+> /* buildMovies reads the data from the text files and builds a list of movies
+41,58c42,57
+< void StoreManager::buildMovies(ifstream& stream) {
+<     if (!stream) {
 <         cout << "Cannot read Movies file" << endl;
 <         return;
 <     }
 < 
-<     //create, and retrieve movie object    
 <     InventoryDatabase* obj;
 <     InventoryDatabase* dup;
 < 
-<     //read file till the last line
-<     while (!stream.eof()) 
-<     {
-<         //create new object in the inventory database
+<     while (!stream.eof()) {
 <         obj = Media::buildDVDMovie(stream);
-< 
-<         //if object exist
 <         if (obj != nullptr) {
-< 
-<             //insert, if duplicate add more stock
-<             if (!database.insert(obj)) 
-<             {
-<                 if (database.retrieve(*obj, dup)) 
-<                 {
+<             if (!database.insert(obj)) {
+<                 if (database.retrieve(*obj, dup)) {
 <                     dup->addStock(obj->getStock());
 <                     delete obj;
 <                 }
 <             }
 ---
-> // buildMovies: read data from the provided text file and build a list of movies
 > void StoreManager::buildMovies(ifstream &stream) {
->   // if file can't be read then display error message
 >   if (!stream) {
 >     cout << "Cannot read Movies file" << endl;
 >     return;
 >   }
 > 
->   // create, and retrieve movie object
 >   InventoryDatabase *obj;
 >   InventoryDatabase *dup;
 > 
->   // read file till the last line
 >   while (!stream.eof()) {
->     // create new object in the inventory database
 >     obj = Media::buildDVDMovie(stream);
-> 
->     // if object exist
 >     if (obj != nullptr) {
-> 
->       // insert, if duplicate add more stock
 >       if (!database.insert(obj)) {
 >         if (database.retrieve(*obj, dup)) {
 >           dup->addStock(obj->getStock());
 >           delete obj;
-79c67
+60c59
 <         obj = dup = nullptr;
 ---
 >       }
-80a69,70
->     obj = dup = nullptr;
->   }
-82,83c72,73
-<     // close file
+62c61,63
 <     stream.close();
 ---
->   // close file
+>     obj = dup = nullptr;
+>   }
 >   stream.close();
-86,110c76,95
-< //processCommands: get customer commands from the file to process
-< void StoreManager::processCommands(ifstream& stream) 
-< {
-<     //if file can't be read then display error message 
-<     if (!stream) 
-<     {
+67,79c68,79
+< void StoreManager::processCommands(ifstream& stream) {
+<     if (!stream) {
 <         cout << "Cannot read command file" << endl;
 <         return;
 <     }
 < 
-<     //create command object
 <     Command* command;
-< 
-<     //read file till the last line
-<     while (!stream.eof()) 
-<     {
-<         //create command
+<     while (!stream.eof()) {
 <         command = CommandType::createCommand(stream);
-< 
-<         //process command
-<         if (command != nullptr) 
-<         {
+<         if (command != nullptr) {
 <             command->process(database, customerDatabase);
 <             command = nullptr;
 <         }
 ---
-> // processCommands: get customer commands from the file to process
 > void StoreManager::processCommands(ifstream &stream) {
->   // if file can't be read then display error message
 >   if (!stream) {
 >     cout << "Cannot read command file" << endl;
 >     return;
 >   }
 > 
->   // create command object
 >   Command *command;
-> 
->   // read file till the last line
 >   while (!stream.eof()) {
->     // create command
 >     command = CommandType::createCommand(stream);
-> 
->     // process command
 >     if (command != nullptr) {
 >       command->process(database, customerDatabase);
 >       command = nullptr;
-111a97
->   }
-113,114c99,100
-<     // close file
+81c81,82
 <     stream.close();
 ---
->   // close file
+>   }
 >   stream.close();
 =====================================================
 5. No memory leaks using g++
@@ -3087,21 +2741,21 @@ Running clang-format on ./storemanager.cpp
 =====================================================
 6. No memory leaks using valgrind, look for "definitely lost" 
 =====================================================
-==3062359== Memcheck, a memory error detector
-==3062359== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==3062359== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==3062359== Command: ./a.out
-==3062359== Parent PID: 3062053
-==3062359== 
-==3062359== 
-==3062359== HEAP SUMMARY:
-==3062359==     in use at exit: 0 bytes in 0 blocks
-==3062359==   total heap usage: 740 allocs, 740 frees, 135,226 bytes allocated
-==3062359== 
-==3062359== All heap blocks were freed -- no leaks are possible
-==3062359== 
-==3062359== For lists of detected and suppressed errors, rerun with: -s
-==3062359== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==3085667== Memcheck, a memory error detector
+==3085667== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3085667== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==3085667== Command: ./a.out
+==3085667== Parent PID: 3085278
+==3085667== 
+==3085667== 
+==3085667== HEAP SUMMARY:
+==3085667==     in use at exit: 0 bytes in 0 blocks
+==3085667==   total heap usage: 740 allocs, 740 frees, 135,226 bytes allocated
+==3085667== 
+==3085667== All heap blocks were freed -- no leaks are possible
+==3085667== 
+==3085667== For lists of detected and suppressed errors, rerun with: -s
+==3085667== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 =====================================================
 7. Tests have full code coverage
 =====================================================
@@ -3120,7 +2774,7 @@ File '/home/NETID/ayevu105/HW5-1/borroworreturn.cpp':
 Name                                                                                                                                                                                                                                                                Regions    Miss   Cover     Lines    Miss   Cover  Branches    Miss   Cover
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 BorrowOrReturn::BorrowOrReturn()                                                                                                                                                                                                                                          1       0 100.00%         6       0 100.00%         0       0   0.00%
-BorrowOrReturn::~BorrowOrReturn()                                                                                                                                                                                                                                         3       0 100.00%         7       0 100.00%         2       0 100.00%
+BorrowOrReturn::~BorrowOrReturn()                                                                                                                                                                                                                                         3       0 100.00%         6       0 100.00%         2       0 100.00%
 BorrowOrReturn::setData(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                             14       1  92.86%        52       3  94.23%        16       2  87.50%
 BorrowOrReturn::processComedy(std::basic_ifstream<char, std::char_traits<char> >&, InventoryDatabase*&)                                                                                                                                                                   1       0 100.00%        13       0 100.00%         0       0   0.00%
 BorrowOrReturn::processClassic(std::basic_ifstream<char, std::char_traits<char> >&, InventoryDatabase*&)                                                                                                                                                                  1       0 100.00%        24       0 100.00%         0       0   0.00%
@@ -3129,7 +2783,7 @@ BorrowOrReturn::processError(std::basic_ifstream<char, std::char_traits<char> >&
 BorrowOrReturn::out(std::ostream&) const                                                                                                                                                                                                                                  1       1   0.00%         4       4   0.00%         0       0   0.00%
 operator<<(std::ostream&, BorrowOrReturn const&)                                                                                                                                                                                                                          1       1   0.00%         4       4   0.00%         0       0   0.00%
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-TOTAL                                                                                                                                                                                                                                                                    24       3  87.50%       131      11  91.60%        18       2  88.89%
+TOTAL                                                                                                                                                                                                                                                                    24       3  87.50%       130      11  91.54%        18       2  88.89%
 
 File '/home/NETID/ayevu105/HW5-1/classic.cpp':
 Name                                                                                                                                                                                                                                                                Regions    Miss   Cover     Lines    Miss   Cover  Branches    Miss   Cover
@@ -3137,25 +2791,25 @@ Name                                                                            
 Classic::Classic()                                                                                                                                                                                                                                                        1       0 100.00%        10       0 100.00%         0       0   0.00%
 Classic::Classic(Classic const&)                                                                                                                                                                                                                                          1       1   0.00%        10      10   0.00%         0       0   0.00%
 Classic::~Classic()                                                                                                                                                                                                                                                       1       0 100.00%         1       0 100.00%         0       0   0.00%
-Classic::setData(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                                     1       0 100.00%        17       0 100.00%         0       0   0.00%
+Classic::getMovieType() const                                                                                                                                                                                                                                             1       0 100.00%         3       0 100.00%         0       0   0.00%
 Classic::getMajorActorFirst[abi:cxx11]() const                                                                                                                                                                                                                            1       0 100.00%         3       0 100.00%         0       0   0.00%
 Classic::setMajorActorFirst(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)                                                                                                                                                              1       0 100.00%         3       0 100.00%         0       0   0.00%
 Classic::getMajorActorLast[abi:cxx11]() const                                                                                                                                                                                                                             1       0 100.00%         3       0 100.00%         0       0   0.00%
 Classic::setMajorActorLast(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)                                                                                                                                                               1       0 100.00%         3       0 100.00%         0       0   0.00%
 Classic::getMonth() const                                                                                                                                                                                                                                                 1       0 100.00%         3       0 100.00%         0       0   0.00%
 Classic::setMonth(int)                                                                                                                                                                                                                                                    1       0 100.00%         3       0 100.00%         0       0   0.00%
-Classic::getMovieType() const                                                                                                                                                                                                                                             1       0 100.00%         3       0 100.00%         0       0   0.00%
-Classic::operator<(InventoryDatabase const&) const                                                                                                                                                                                                                        7       0 100.00%         7       0 100.00%         4       0 100.00%
-Classic::operator<=(InventoryDatabase const&) const                                                                                                                                                                                                                       7       7   0.00%         7       7   0.00%         4       4   0.00%
-Classic::operator>(InventoryDatabase const&) const                                                                                                                                                                                                                        7       1  85.71%         7       1  85.71%         4       1  75.00%
-Classic::operator>=(InventoryDatabase const&) const                                                                                                                                                                                                                       7       7   0.00%         7       7   0.00%         4       4   0.00%
-Classic::operator==(InventoryDatabase const&) const                                                                                                                                                                                                                       5       0 100.00%         4       0 100.00%         6       3  50.00%
-Classic::operator=(InventoryDatabase const&)                                                                                                                                                                                                                              1       1   0.00%        11      11   0.00%         0       0   0.00%
-Classic::operator!=(InventoryDatabase const&) const                                                                                                                                                                                                                       1       1   0.00%         3       3   0.00%         0       0   0.00%
+Classic::setData(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                                     1       0 100.00%        17       0 100.00%         0       0   0.00%
 Classic::print(std::ostream&) const                                                                                                                                                                                                                                       1       0 100.00%         5       0 100.00%         0       0   0.00%
+Classic::operator<(InventoryDatabase const&) const                                                                                                                                                                                                                        7       0 100.00%         9       0 100.00%         4       0 100.00%
+Classic::operator<=(InventoryDatabase const&) const                                                                                                                                                                                                                       7       7   0.00%         9       9   0.00%         4       4   0.00%
+Classic::operator>(InventoryDatabase const&) const                                                                                                                                                                                                                        7       1  85.71%         9       2  77.78%         4       1  75.00%
+Classic::operator>=(InventoryDatabase const&) const                                                                                                                                                                                                                       7       7   0.00%         9       9   0.00%         4       4   0.00%
+Classic::operator==(InventoryDatabase const&) const                                                                                                                                                                                                                       5       0 100.00%         4       0 100.00%         6       3  50.00%
+Classic::operator!=(InventoryDatabase const&) const                                                                                                                                                                                                                       1       1   0.00%         3       3   0.00%         0       0   0.00%
+Classic::operator=(InventoryDatabase const&)                                                                                                                                                                                                                              1       1   0.00%        11      11   0.00%         0       0   0.00%
 operator<<(std::ostream&, Classic const&)                                                                                                                                                                                                                                 1       1   0.00%         4       4   0.00%         0       0   0.00%
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-TOTAL                                                                                                                                                                                                                                                                    48      19  60.42%       114      43  62.28%        22      12  45.45%
+TOTAL                                                                                                                                                                                                                                                                    48      19  60.42%       122      48  60.66%        22      12  45.45%
 
 File '/home/NETID/ayevu105/HW5-1/comedy.cpp':
 Name                                                                                                                                                                                                                                                                Regions    Miss   Cover     Lines    Miss   Cover  Branches    Miss   Cover
@@ -3166,16 +2820,16 @@ Comedy::~Comedy()                                                               
 Comedy::getMovieType() const                                                                                                                                                                                                                                              1       0 100.00%         3       0 100.00%         0       0   0.00%
 Comedy::setData(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                                      1       0 100.00%        15       0 100.00%         0       0   0.00%
 Comedy::print(std::ostream&) const                                                                                                                                                                                                                                        1       0 100.00%         4       0 100.00%         0       0   0.00%
-Comedy::operator<(InventoryDatabase const&) const                                                                                                                                                                                                                         4       0 100.00%         5       0 100.00%         2       0 100.00%
-Comedy::operator<=(InventoryDatabase const&) const                                                                                                                                                                                                                        4       4   0.00%         5       5   0.00%         2       2   0.00%
-Comedy::operator>(InventoryDatabase const&) const                                                                                                                                                                                                                         4       0 100.00%         5       0 100.00%         2       0 100.00%
-Comedy::operator>=(InventoryDatabase const&) const                                                                                                                                                                                                                        4       4   0.00%         5       5   0.00%         2       2   0.00%
+Comedy::operator<(InventoryDatabase const&) const                                                                                                                                                                                                                         4       0 100.00%         6       0 100.00%         2       0 100.00%
+Comedy::operator<=(InventoryDatabase const&) const                                                                                                                                                                                                                        4       4   0.00%         6       6   0.00%         2       2   0.00%
+Comedy::operator>(InventoryDatabase const&) const                                                                                                                                                                                                                         4       0 100.00%         6       0 100.00%         2       0 100.00%
+Comedy::operator>=(InventoryDatabase const&) const                                                                                                                                                                                                                        4       4   0.00%         6       6   0.00%         2       2   0.00%
 Comedy::operator==(InventoryDatabase const&) const                                                                                                                                                                                                                        3       0 100.00%         4       0 100.00%         4       2  50.00%
 Comedy::operator!=(InventoryDatabase const&) const                                                                                                                                                                                                                        1       1   0.00%         3       3   0.00%         0       0   0.00%
 Comedy::operator=(InventoryDatabase const&)                                                                                                                                                                                                                               1       1   0.00%         8       8   0.00%         0       0   0.00%
 operator<<(std::ostream&, Comedy const&)                                                                                                                                                                                                                                  1       1   0.00%         4       4   0.00%         0       0   0.00%
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-TOTAL                                                                                                                                                                                                                                                                    28      12  57.14%        76      32  57.89%        12       6  50.00%
+TOTAL                                                                                                                                                                                                                                                                    28      12  57.14%        80      34  57.50%        12       6  50.00%
 
 File '/home/NETID/ayevu105/HW5-1/command.cpp':
 Name                                                                                                                                                                                                                                                                Regions    Miss   Cover     Lines    Miss   Cover  Branches    Miss   Cover
@@ -3273,27 +2927,27 @@ Drama::~Drama()                                                                 
 Drama::getMovieType() const                                                                                                                                                                                                                                               1       0 100.00%         3       0 100.00%         0       0   0.00%
 Drama::setData(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                                       1       0 100.00%        15       0 100.00%         0       0   0.00%
 Drama::print(std::ostream&) const                                                                                                                                                                                                                                         1       0 100.00%         4       0 100.00%         0       0   0.00%
-Drama::operator<(InventoryDatabase const&) const                                                                                                                                                                                                                          7       0 100.00%         7       0 100.00%         4       0 100.00%
-Drama::operator<=(InventoryDatabase const&) const                                                                                                                                                                                                                         7       7   0.00%         7       7   0.00%         4       4   0.00%
-Drama::operator>(InventoryDatabase const&) const                                                                                                                                                                                                                          7       1  85.71%         7       1  85.71%         4       1  75.00%
-Drama::operator>=(InventoryDatabase const&) const                                                                                                                                                                                                                         7       7   0.00%         7       7   0.00%         4       4   0.00%
-Drama::operator==(InventoryDatabase const&) const                                                                                                                                                                                                                         8       8   0.00%         7       7   0.00%         8       8   0.00%
+Drama::operator<(InventoryDatabase const&) const                                                                                                                                                                                                                          7       0 100.00%         9       0 100.00%         4       0 100.00%
+Drama::operator<=(InventoryDatabase const&) const                                                                                                                                                                                                                         7       7   0.00%         9       9   0.00%         4       4   0.00%
+Drama::operator>(InventoryDatabase const&) const                                                                                                                                                                                                                          7       1  85.71%         9       2  77.78%         4       1  75.00%
+Drama::operator>=(InventoryDatabase const&) const                                                                                                                                                                                                                         7       7   0.00%         9       9   0.00%         4       4   0.00%
+Drama::operator==(InventoryDatabase const&) const                                                                                                                                                                                                                         8       8   0.00%         8       8   0.00%         8       8   0.00%
 Drama::operator!=(InventoryDatabase const&) const                                                                                                                                                                                                                         1       1   0.00%         3       3   0.00%         0       0   0.00%
 Drama::operator=(InventoryDatabase const&)                                                                                                                                                                                                                                1       1   0.00%         8       8   0.00%         0       0   0.00%
 operator<<(std::ostream&, Drama const&)                                                                                                                                                                                                                                   1       1   0.00%         4       4   0.00%         0       0   0.00%
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-TOTAL                                                                                                                                                                                                                                                                    45      27  40.00%        87      44  49.43%        24      17  29.17%
+TOTAL                                                                                                                                                                                                                                                                    45      27  40.00%        96      50  47.92%        24      17  29.17%
 
 File '/home/NETID/ayevu105/HW5-1/genre.cpp':
 Name                                                                                                                                                                                                                                                                Regions    Miss   Cover     Lines    Miss   Cover  Branches    Miss   Cover
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Genre::buildMovie(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                                    9       0 100.00%        27       0 100.00%        10       0 100.00%
-Genre::buildMovieComedy(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                              4       1  75.00%         7       2  71.43%         2       1  50.00%
-Genre::buildMovieDrama(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                               4       1  75.00%         7       2  71.43%         2       1  50.00%
-Genre::buildMovieClassic(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                             4       1  75.00%         7       2  71.43%         2       1  50.00%
+Genre::buildMovie(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                                    9       0 100.00%        25       0 100.00%        10       0 100.00%
+Genre::buildComedy(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                                   4       1  75.00%         8       2  75.00%         2       1  50.00%
+Genre::buildDrama(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                                    4       1  75.00%         8       2  75.00%         2       1  50.00%
+Genre::buildClassic(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                                  4       1  75.00%         8       2  75.00%         2       1  50.00%
 Genre::error(char const&, std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                            1       0 100.00%         6       0 100.00%         0       0   0.00%
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-TOTAL                                                                                                                                                                                                                                                                    22       3  86.36%        54       6  88.89%        16       3  81.25%
+TOTAL                                                                                                                                                                                                                                                                    22       3  86.36%        55       6  89.09%        16       3  81.25%
 
 File '/home/NETID/ayevu105/HW5-1/history.cpp':
 Name                                                                                                                                                                                                                                                                Regions    Miss   Cover     Lines    Miss   Cover  Branches    Miss   Cover
@@ -3363,22 +3017,22 @@ Name                                                                            
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Return::Return()                                                                                                                                                                                                                                                          1       0 100.00%         1       0 100.00%         0       0   0.00%
 Return::~Return()                                                                                                                                                                                                                                                         1       0 100.00%         1       0 100.00%         0       0   0.00%
-Return::processReturn(Database&, CustomerDatabase&)                                                                                                                                                                                                                      13       4  69.23%        28       7  75.00%         8       4  50.00%
+Return::processReturn(Database&, CustomerDatabase&)                                                                                                                                                                                                                      13       4  69.23%        24       7  70.83%         8       4  50.00%
 Return::out(std::ostream&) const                                                                                                                                                                                                                                          1       0 100.00%         4       0 100.00%         0       0   0.00%
 operator<<(std::ostream&, Return const&)                                                                                                                                                                                                                                  1       1   0.00%         4       4   0.00%         0       0   0.00%
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-TOTAL                                                                                                                                                                                                                                                                    17       5  70.59%        38      11  71.05%         8       4  50.00%
+TOTAL                                                                                                                                                                                                                                                                    17       5  70.59%        34      11  67.65%         8       4  50.00%
 
 File '/home/NETID/ayevu105/HW5-1/storemanager.cpp':
 Name                                                                                                                                                                                                                                                                Regions    Miss   Cover     Lines    Miss   Cover  Branches    Miss   Cover
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 StoreManager::StoreManager()                                                                                                                                                                                                                                              1       0 100.00%         1       0 100.00%         0       0   0.00%
 StoreManager::~StoreManager()                                                                                                                                                                                                                                             1       0 100.00%         1       0 100.00%         0       0   0.00%
-StoreManager::buildCustomers(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                        11       2  81.82%        24       7  70.83%         8       2  75.00%
-StoreManager::buildMovies(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                           12       4  66.67%        25      11  56.00%        10       4  60.00%
-StoreManager::processCommands(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                        8       1  87.50%        18       4  77.78%         6       1  83.33%
+StoreManager::buildCustomers(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                        11       2  81.82%        18       5  72.22%         8       2  75.00%
+StoreManager::buildMovies(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                           12       4  66.67%        21       8  61.90%        10       4  60.00%
+StoreManager::processCommands(std::basic_ifstream<char, std::char_traits<char> >&)                                                                                                                                                                                        8       1  87.50%        15       3  80.00%         6       1  83.33%
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-TOTAL                                                                                                                                                                                                                                                                    33       7  78.79%        69      22  68.12%        24       7  70.83%
+TOTAL                                                                                                                                                                                                                                                                    33       7  78.79%        56      16  71.43%        24       7  70.83%
 =====================================================
 The lines below were never executed
 =====================================================
@@ -3388,17 +3042,17 @@ The lines below were never executed
    54|      0|	b.out(stream);
    55|      0|	return stream;
    56|      0|}
-   49|      0|		processError(stream, tempID, string("customer ID"));
-   50|      0|		return false;
-   51|      0|	}
-  196|      0|ostream& BorrowOrReturn::out(ostream& out) const {
-  197|      0|	out << (char)this->commandCase;
-  198|      0|	return out;
-  199|      0|}
-  203|      0|ostream& operator<<(ostream& stream, const BorrowOrReturn& command) {
-  204|      0|	command.out(stream);
-  205|      0|	return stream;
-  206|      0|}
+   44|      0|		processError(stream, tempID, string("customer ID"));
+   45|      0|		return false;
+   46|      0|	}
+  174|      0|ostream& BorrowOrReturn::out(ostream& out) const {
+  175|      0|	out << (char)this->commandCase;
+  176|      0|	return out;
+  177|      0|}
+  181|      0|ostream& operator<<(ostream& stream, const BorrowOrReturn& command) {
+  182|      0|	command.out(stream);
+  183|      0|	return stream;
+  184|      0|}
    78|      0|        totalNode++;
    85|      0|        return false;
   |   78|      0|        totalNode++;
@@ -3475,71 +3129,78 @@ The lines below were never executed
    30|      0|    this->month = other.month;
    31|      0|    this->year = other.year;
    32|      0|}
-  127|      0|{
-  128|      0|    if (this->getYear() > dynamic_cast<const Classic&>(other).getYear())
-  129|      0|        return false;
-  131|      0|    if (this->getMonth() > dynamic_cast<const Classic&>(other).getMonth())
+  130|      0|bool Classic::operator<=(const InventoryDatabase& other) const {
+  131|      0|    if (this->getYear() > dynamic_cast<const Classic&>(other).getYear()) {
   132|      0|        return false;
-  134|      0|    return this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) <= 0;
-  135|      0|}
-  144|      0|        return this->getMonth() > dynamic_cast<const Classic&>(other).getMonth();
-  151|      0|{
-  152|      0|    if (this->getYear() < dynamic_cast<const Classic&>(other).getYear())
-  153|      0|        return false;
-  155|      0|    if (this->getMonth() < dynamic_cast<const Classic&>(other).getMonth())
-  156|      0|        return false;
-  158|      0|    return this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) >= 0;
-  159|      0|}
-  170|      0|{
-  171|      0|    this->movieType = dynamic_cast<const Classic&>(other).getMovieType();
-  172|      0|    this->stock = dynamic_cast<const Classic&>(other).getStock();
-  173|      0|    this->director = dynamic_cast<const Classic&>(other).getDirector();
-  174|      0|    this->title = dynamic_cast<const Classic&>(other).getTitle();
-  175|      0|    this->majorActorFirst = dynamic_cast<const Classic&>(other).getMajorActorFirst();
-  176|      0|    this->majorActorLast = dynamic_cast<const Classic&>(other).getMajorActorLast();
-  177|      0|    this->month = dynamic_cast<const Classic&>(other).getMonth();
-  178|      0|    this->year = dynamic_cast<const Classic&>(other).getYear();
-  179|      0|    return *this;
-  180|      0|}
-  184|      0|{
-  185|      0|    return !(*this == dynamic_cast<const Classic&>(other));
-  186|      0|}
-  198|      0|{
-  199|      0|    movie.print(out);
-  200|      0|    return out;
-  201|      0|}
-   15|      0|{
-   16|      0|    this->movieType = other.movieType;
-   17|      0|    this->stock = other.stock;
-   18|      0|    this->title = other.title;
-   19|      0|    this->director = other.director;
-   20|      0|    this->year = other.year;
-   21|      0|}
-   77|      0|{
-   79|      0|    if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) > 0)
-   80|      0|        return false;
-   83|      0|    return this->getYear() <= dynamic_cast<const Comedy&>(other).getYear();
-   84|      0|}
-   99|      0|{
-  101|      0|    if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) < 0)
-  102|      0|        return false;
-  105|      0|    return this->getYear() >= dynamic_cast<const Comedy&>(other).getYear();
-  106|      0|}
-  117|      0|{
-  118|      0|    return !(*this == dynamic_cast<const Comedy&>(other));
-  119|      0|}
-  123|      0|{
-  124|      0|    this->movieType = dynamic_cast<const Comedy&>(other).getMovieType();
-  125|      0|    this->stock = dynamic_cast<const Comedy&>(other).getStock();
-  126|      0|    this->director = dynamic_cast<const Comedy&>(other).getDirector();
-  127|      0|    this->title = dynamic_cast<const Comedy&>(other).getTitle();
-  128|      0|    this->year = dynamic_cast<const Comedy&>(other).getYear();
-  129|      0|    return *this;
-  130|      0|}
-  134|      0|{
-  135|      0|    movie.print(stream);
-  136|      0|    return stream;
-  137|      0|}
+  133|      0|    }
+  135|      0|    if (this->getMonth() > dynamic_cast<const Classic&>(other).getMonth()) {
+  136|      0|        return false;
+  137|      0|    }
+  138|      0|    return this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) <= 0;
+  139|      0|}
+  149|      0|        return this->getMonth() > dynamic_cast<const Classic&>(other).getMonth();
+  150|      0|    }
+  156|      0|bool Classic::operator>=(const InventoryDatabase& other) const {
+  157|      0|    if (this->getYear() < dynamic_cast<const Classic&>(other).getYear()) {
+  158|      0|        return false;
+  159|      0|    }
+  161|      0|    if (this->getMonth() < dynamic_cast<const Classic&>(other).getMonth()) {
+  162|      0|        return false;
+  163|      0|    }
+  164|      0|    return this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) >= 0;
+  165|      0|}
+  176|      0|bool Classic::operator!=(const InventoryDatabase& other) const {
+  177|      0|    return !(*this == dynamic_cast<const Classic&>(other));
+  178|      0|}
+  182|      0|InventoryDatabase& Classic::operator=(const InventoryDatabase& other) {
+  183|      0|    this->movieType = dynamic_cast<const Classic&>(other).getMovieType();
+  184|      0|    this->stock = dynamic_cast<const Classic&>(other).getStock();
+  185|      0|    this->director = dynamic_cast<const Classic&>(other).getDirector();
+  186|      0|    this->title = dynamic_cast<const Classic&>(other).getTitle();
+  187|      0|    this->majorActorFirst = dynamic_cast<const Classic&>(other).getMajorActorFirst();
+  188|      0|    this->majorActorLast = dynamic_cast<const Classic&>(other).getMajorActorLast();
+  189|      0|    this->month = dynamic_cast<const Classic&>(other).getMonth();
+  190|      0|    this->year = dynamic_cast<const Classic&>(other).getYear();
+  191|      0|    return *this;
+  192|      0|}
+  196|      0|ostream& operator<<(ostream& out, const Classic& movie) {
+  197|      0|    movie.print(out);
+  198|      0|    return out;
+  199|      0|}
+   18|      0|Comedy::Comedy(const Comedy& other){
+   19|      0|    this->movieType = other.movieType;
+   20|      0|    this->stock = other.stock;
+   21|      0|    this->title = other.title;
+   22|      0|    this->director = other.director;
+   23|      0|    this->year = other.year;
+   24|      0|}
+   75|      0|bool Comedy::operator<=(const InventoryDatabase& other) const {
+   76|      0|    if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) > 0) {
+   77|      0|        return false;
+   78|      0|    }
+   79|      0|    return this->getYear() <= dynamic_cast<const Comedy&>(other).getYear();
+   80|      0|}
+   93|      0|bool Comedy::operator>=(const InventoryDatabase& other) const {
+   94|      0|    if (this->getTitle().compare(dynamic_cast<const Comedy&>(other).getTitle()) < 0) {
+   95|      0|        return false;
+   96|      0|    }
+   97|      0|    return this->getYear() >= dynamic_cast<const Comedy&>(other).getYear();
+   98|      0|}
+  109|      0|bool Comedy::operator!=(const InventoryDatabase& other) const {
+  110|      0|    return !(*this == dynamic_cast<const Comedy&>(other));
+  111|      0|}
+  115|      0|InventoryDatabase& Comedy::operator=(const InventoryDatabase& other) {
+  116|      0|    this->movieType = dynamic_cast<const Comedy&>(other).getMovieType();
+  117|      0|    this->stock = dynamic_cast<const Comedy&>(other).getStock();
+  118|      0|    this->director = dynamic_cast<const Comedy&>(other).getDirector();
+  119|      0|    this->title = dynamic_cast<const Comedy&>(other).getTitle();
+  120|      0|    this->year = dynamic_cast<const Comedy&>(other).getYear();
+  121|      0|    return *this;
+  122|      0|}
+  126|      0|ostream& operator<<(ostream& stream, const Comedy& movie) {
+  127|      0|    movie.print(stream);
+  128|      0|    return stream;
+  129|      0|}
    17|      0|Command::Command(const Command& other) {
    18|      0|	this->commandCase = other.commandCase;
    19|      0|	this->customerID = other.customerID;
@@ -3551,14 +3212,14 @@ The lines below were never executed
    40|      0|CommandCase Command::getCommandType() const {
    41|      0|	return this->commandCase;
    42|      0|}
-   78|      0|	default:
-   79|      0|		cerr << "Command, nothing to process" << endl;
-   80|      0|		flag = false;
-   81|      0|		break;
-   90|      0|ostream& Command::out(ostream& out) const {
-   91|      0|	out << (char)this->commandCase;
-   92|      0|	return out;
-   93|      0|}
+   69|      0|	default:
+   70|      0|		cerr << "Command, nothing to process" << endl;
+   71|      0|		flag = false;
+   72|      0|		break;
+   80|      0|ostream& Command::out(ostream& out) const {
+   81|      0|	out << (char)this->commandCase;
+   82|      0|	return out;
+   83|      0|}
    72|      0|    delete cReturn;
    73|      0|    return nullptr;
    84|      0|    delete cHistory;
@@ -3644,56 +3305,62 @@ The lines below were never executed
   109|      0|    int t = movies.at(MovieType::ComedyType).getTotalNode() + movies.at(MovieType::DramaType).getTotalNode() + movies.at(MovieType::ClassicType).getTotalNode();
   110|      0|    return t;
   111|      0|}
-   15|      0|{
-   16|      0|    this->movieType = other.movieType;
-   17|      0|    this->stock = other.stock;
-   18|      0|    this->title = other.title;
-   19|      0|    this->director = other.director;
-   20|      0|    this->year = other.year;
-   21|      0|}
-   81|      0|{
-   83|      0|    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) > 0)
-   84|      0|        return false;
-   87|      0|    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) > 0)
-   88|      0|        return false;
-   91|      0|    return true;
-   92|      0|}
-  103|      0|        return this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) > 0;
-  111|      0|{
-  113|      0|    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) < 0)
-  114|      0|        return false;
-  117|      0|    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) < 0)
-  118|      0|        return false;
-  121|      0|    return true;
-  122|      0|}
-  126|      0|{
-  127|      0|    if ((this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) == 0)
-  128|      0|        && (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) == 0)
-  129|      0|        && (this->getYear() == dynamic_cast<const Drama&>(other).getYear()))
-  130|      0|        return true;
-  131|      0|    return false;
+   19|      0|Drama::Drama(const Drama& other) {
+   20|      0|    this->movieType = other.movieType;
+   21|      0|    this->stock = other.stock;
+   22|      0|    this->title = other.title;
+   23|      0|    this->director = other.director;
+   24|      0|    this->year = other.year;
+   25|      0|}
+   80|      0|bool Drama::operator<=(const InventoryDatabase& other) const {
+   81|      0|    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) > 0) {
+   82|      0|        return false;
+   83|      0|    }
+   85|      0|    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) > 0) {
+   86|      0|        return false;
+   87|      0|    }
+   88|      0|    return true;
+   89|      0|}
+   99|      0|        return this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) > 0;
+  100|      0|    }
+  106|      0|bool Drama::operator>=(const InventoryDatabase& other) const {
+  107|      0|    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) < 0) {
+  108|      0|        return false;
+  109|      0|    }
+  111|      0|    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) < 0) {
+  112|      0|        return false;
+  113|      0|    }
+  114|      0|    return true;
+  115|      0|}
+  119|      0|bool Drama::operator==(const InventoryDatabase& other) const {
+  120|      0|    if ((this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) == 0)
+  121|      0|        && (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) == 0)
+  122|      0|        && (this->getYear() == dynamic_cast<const Drama&>(other).getYear())) { 
+  123|      0|        return true;
+  124|      0|    }
+  125|      0|    return false;
+  126|      0|}
+  130|      0|bool Drama::operator!=(const InventoryDatabase& other) const {
+  131|      0|    return !(*this == dynamic_cast<const Drama&>(other));
   132|      0|}
-  136|      0|{
-  137|      0|    return !(*this == dynamic_cast<const Drama&>(other));
-  138|      0|}
-  142|      0|{
-  143|      0|    this->movieType = dynamic_cast<const Drama&>(other).getMovieType();
-  144|      0|    this->stock = dynamic_cast<const Drama&>(other).getStock();
-  145|      0|    this->director = dynamic_cast<const Drama&>(other).getDirector();
-  146|      0|    this->title = dynamic_cast<const Drama&>(other).getTitle();
-  147|      0|    this->year = dynamic_cast<const Drama&>(other).getYear();
-  148|      0|    return *this;
-  149|      0|}
-  153|      0|{
-  154|      0|    movie.print(stream);
-  155|      0|    return stream;
-  156|      0|}
-   45|      0|    delete comedy;
-   46|      0|    return nullptr;
-   55|      0|    delete drama;
-   56|      0|    return nullptr;
-   65|      0|    delete classic;
-   66|      0|    return nullptr;
+  136|      0|InventoryDatabase& Drama::operator=(const InventoryDatabase& other) {
+  137|      0|    this->movieType = dynamic_cast<const Drama&>(other).getMovieType();
+  138|      0|    this->stock = dynamic_cast<const Drama&>(other).getStock();
+  139|      0|    this->director = dynamic_cast<const Drama&>(other).getDirector();
+  140|      0|    this->title = dynamic_cast<const Drama&>(other).getTitle();
+  141|      0|    this->year = dynamic_cast<const Drama&>(other).getYear();
+  142|      0|    return *this;
+  143|      0|}
+  147|      0|ostream& operator<<(ostream& stream, const Drama& movie) {
+  148|      0|    movie.print(stream);
+  149|      0|    return stream;
+  150|      0|}
+   47|      0|    delete comedy;
+   48|      0|    return nullptr;
+   58|      0|    delete drama;
+   59|      0|    return nullptr;
+   69|      0|    delete classic;
+   70|      0|    return nullptr;
    62|      0|        return false;
    63|      0|    }
    69|      0|        return table[hash]->insert(val);
@@ -3764,40 +3431,34 @@ The lines below were never executed
    57|      0|    movie.print(stream);
    58|      0|    return stream;
    59|      0|}
-   41|      0|			else
-   42|      0|				cerr << "Command, media is not in the Database:" << '\n' << "  " << this->fullCommand << endl;
-   46|      0|		else
-   47|      0|			cerr << "Command, this command doesn't contain media:" << '\n' << "  " << this->fullCommand << endl;
-   51|      0|	else
-   52|      0|		cerr << "Command, customer does not exist:" << '\n' << "  " << this->fullCommand << endl;
-   55|      0|	return false;
-   67|      0|{
-   68|      0|	r.out(stream);
-   69|      0|	return stream;
-   70|      0|}
-   15|      0|    {
-   16|      0|        cout << "Cannot read customer file!" << endl;
-   17|      0|        return;
-   18|      0|    }
-   30|      0|            {
-   31|      0|                delete ptr;
-   32|      0|            }
-   51|      0|    {
-   52|      0|        cout << "Cannot read Movies file" << endl;
-   53|      0|        return;
-   54|      0|    }
-   71|      0|            {
-   72|      0|                if (database.retrieve(*obj, dup)) 
-   73|      0|                {
-   74|      0|                    dup->addStock(obj->getStock());
-   75|      0|                    delete obj;
-   76|      0|                }
-   77|      0|            }
-   91|      0|    {
-   92|      0|        cout << "Cannot read command file" << endl;
-   93|      0|        return;
-   94|      0|    }
-Mon Dec  5 19:16:40 PST 2022
+   33|      0|				cerr << "Command, media is not in the Database:" << '\n' << "  " << this->fullCommand << endl;
+   34|      0|			}
+   36|      0|			cerr << "Command, this command doesn't contain media:" << '\n' << "  " << this->fullCommand << endl;
+   37|      0|		}
+   39|      0|		cerr << "Command, customer does not exist:" << '\n' << "  " << this->fullCommand << endl;
+   40|      0|	}
+   41|      0|	return false;
+   53|      0|ostream& operator<<(ostream& stream, const Return& r) {
+   54|      0|	r.out(stream);
+   55|      0|	return stream;
+   56|      0|}
+   20|      0|        cout << "Cannot read customer file!" << endl;
+   21|      0|        return;
+   22|      0|    }
+   30|      0|                delete ptr;
+   31|      0|            }
+   43|      0|        cout << "Cannot read Movies file" << endl;
+   44|      0|        return;
+   45|      0|    }
+   54|      0|                if (database.retrieve(*obj, dup)) {
+   55|      0|                    dup->addStock(obj->getStock());
+   56|      0|                    delete obj;
+   57|      0|                }
+   58|      0|            }
+   69|      0|        cout << "Cannot read command file" << endl;
+   70|      0|        return;
+   71|      0|    }
+Mon Dec  5 21:12:51 PST 2022
 =====================================================
 To create an output.txt file with all the output from this script
 Run the below command

@@ -1,5 +1,5 @@
 /* @file borroworreturn.cpp
- * @brief The following code gives the inmplementations of the borroworreturn class
+ * @brief The following code gives the implementations of the borroworreturn class
  * @author Anthony Vu
  * @date 12/05/2022
  */
@@ -16,87 +16,65 @@ BorrowOrReturn::BorrowOrReturn() {
 
 //destructor
 BorrowOrReturn::~BorrowOrReturn() {
-	if (this->media != nullptr) 
-	{
+	if (this->media != nullptr) {
 		delete this->media;
 		this->media = nullptr;
 	}
 }
 
 bool BorrowOrReturn::setData(ifstream& stream) {
-	//create media, and some temporary data
+	
 	InventoryDatabase* aMedia = nullptr;
 	char tempMedia;
 	char tempMovie;
 	string tempID;
 
-	//assign comment type to command
 	fullCommand = this->commandCase;
 	fullCommand += ' ';
 
-	//assign customer ID to command
 	stream.ignore();
 	stream >> tempID;
 	fullCommand += tempID;
 	fullCommand += ' ';
 
-	//use to convert string to number
 	stringstream convert(tempID);
 	convert >> this->customerID;
 
-	//if customer id is invalid
 	if(convert.fail() || customerID < 0) {
 		processError(stream, tempID, string("customer ID"));
 		return false;
 	}
 
-	//read media type
 	stream.ignore();
 	stream >> tempMedia;
 
-	//assign media type to command
 	fullCommand += tempMedia;
 	fullCommand += ' ';
 
-	//check type of media
 	switch (tempMedia) {
-		//movie media
 	case DVDMovie:
 		this->mediaType = DVDMovie;
 
-		//read file
 		stream.ignore();
 		stream >> tempMovie;
-
-		//assign movie type to command
 		fullCommand += tempMovie;
 		fullCommand += ' ';
 
-		// check type of movie
 		switch (tempMovie) {
-			//comedy case
 		case ComedyType:
 			processComedy(stream, aMedia);
 			break;
-
-			//classic case
 		case ClassicType:
 			processClassic(stream, aMedia);
 			break;
-
-			//drama case
 		case DramaType:
 			processDrama(stream, aMedia);
 			break;
-
-			//invalid movie type
 		default:
 			processError(stream,string().insert(0, 1, tempMovie),string("movie type"));
 			break;
 		}
 		break;
-
-		// invalid media type
 	default:
 		processError(stream,string().insert(0, 1, tempMedia),string("media type"));
 		break;

@@ -1,5 +1,5 @@
 /* @file classic.cpp
- * @brief The following code gives the inmplementations of the classic class
+ * @brief The following code gives the implementations of the classic class
  * @author Anthony Vu
  * @date 12/05/2022
  */
@@ -34,24 +34,10 @@ Classic::Classic(const Classic& other)
 //destructor
 Classic::~Classic() {}
 
-/* setData reads ands stores the movie into the system 
+/* getMovieType retrieves the movie type
  */
-bool Classic::setData(ifstream& stream) {
-    stream.ignore();
-    stream >> this->stock;
-    stream.ignore();
-    getline(stream >> ws, this->director, ',');
-    stream.ignore();
-    getline(stream >> ws, this->title, ',');
-    stream.ignore();
-    stream >> this->majorActorFirst;
-    stream.ignore();
-    stream >> this->majorActorLast;
-    stream.ignore();
-    stream >> this->month;
-    stream.ignore();
-    stream >> this->year;
-    return true;
+MovieType Classic::getMovieType() const {
+    return this->movieType;
 }
 
 /* getMajorActorFirst retrieves the major actors first name
@@ -89,12 +75,41 @@ int Classic::getMonth() const {
 void Classic::setMonth(int month) {
     this->month = month;
 }
-
-/* getMovieType retrieves the movie type
+/* setData reads ands stores the movie into the system 
  */
-MovieType Classic::getMovieType() const {
-    return this->movieType;
+bool Classic::setData(ifstream& stream) {
+    stream.ignore();
+    stream >> this->stock;
+
+    stream.ignore();
+    getline(stream >> ws, this->director, ',');
+
+    stream.ignore();
+    getline(stream >> ws, this->title, ',');
+
+    stream.ignore();
+    stream >> this->majorActorFirst;
+
+    stream.ignore();
+    stream >> this->majorActorLast;
+
+    stream.ignore();
+    stream >> this->month;
+
+    stream.ignore();
+    stream >> this->year;
+
+    return true;
 }
+
+/* print prints the movie information to the system
+ */
+void Classic::print(ostream& stream) const {
+    cout << (char)this->getMovieType() << ", " << this->getStock() << ", " << this->getDirector() << ", "
+        << this->getTitle() << ", " << this->getMajorActorFirst() << " " << this->getMajorActorLast() << ", "
+        << this->getMonth() << ", " << this->getYear();
+}
+
 
 /* operator< sorts by release date and major actor
  */
@@ -156,6 +171,12 @@ bool Classic::operator==(const InventoryDatabase& other) const {
             && (this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) == 0));
 }
 
+/* operator!= compares the movies
+ */
+bool Classic::operator!=(const InventoryDatabase& other) const {
+    return !(*this == dynamic_cast<const Classic&>(other));
+}
+
 /* operator= assigns the movie
  */
 InventoryDatabase& Classic::operator=(const InventoryDatabase& other) {
@@ -168,20 +189,6 @@ InventoryDatabase& Classic::operator=(const InventoryDatabase& other) {
     this->month = dynamic_cast<const Classic&>(other).getMonth();
     this->year = dynamic_cast<const Classic&>(other).getYear();
     return *this;
-}
-
-/* operator!= compares the movies
- */
-bool Classic::operator!=(const InventoryDatabase& other) const {
-    return !(*this == dynamic_cast<const Classic&>(other));
-}
-
-/* print prints the movie information to the system
- */
-void Classic::print(ostream& stream) const {
-    cout << (char)this->getMovieType() << ", " << this->getStock() << ", " << this->getDirector() << ", "
-        << this->getTitle() << ", " << this->getMajorActorFirst() << " " << this->getMajorActorLast() << ", "
-        << this->getMonth() << ", " << this->getYear();
 }
 
 /* operator<< prints to the system operator

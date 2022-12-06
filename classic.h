@@ -19,20 +19,20 @@ public:
     Classic(const Classic& classic);
 
     virtual ~Classic();
-
-    int getMonth() const;
+    
+    virtual MovieType getMovieType() const;
 
     string getMajorActorFirst() const;
 
-    string getMajorActorLast() const;
-
-    virtual MovieType getMovieType() const;
-
-    void setMonth(int month);
-
     void setMajorActorFirst(string first);
 
+    string getMajorActorLast() const;
+
     void setMajorActorLast(string last);
+
+    int getMonth() const;
+
+    void setMonth(int month);
 
     bool setData(ifstream& stream);
 
@@ -56,7 +56,7 @@ private:
     string majorActorFirst;
 
     string majorActorLast;
-    
+
     int month;
 };
 #endif

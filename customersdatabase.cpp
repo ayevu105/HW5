@@ -1,5 +1,5 @@
 /* @file customersdatabase.cpp
- * @brief The following code gives the inmplementations of the customersdatabase class
+ * @brief The following code gives the implementations of the customersdatabase class
  * @author Anthony Vu
  * @date 12/05/2022
  */

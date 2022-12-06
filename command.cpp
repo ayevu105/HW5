@@ -1,5 +1,5 @@
 /* @file command.cpp
- * @brief The following code gives the inmplementations of the command class
+ * @brief The following code gives the implementations of the command class
  * @author Anthony Vu
  * @date 12/05/2022
  */
@@ -54,33 +54,23 @@ void Command::process(Database& Datab, CustomerDatabase& cusDatab)
 	bool flag = false;
 
 	switch (this->commandCase) {
-		//borrow
 	case BorrowCase:
 		flag = dynamic_cast<Borrow*>(this)->processBorrow(Datab, cusDatab);
 		break;
-
-		//return
 	case ReturnCase:
 		flag = dynamic_cast<Return*>(this)->processReturn(Datab, cusDatab);
 		break;
-
-		//display history
 	case HistoryCase:
 		flag = dynamic_cast<History*>(this)->processHistory(cusDatab);
 		break;
-
-		//check inventory
 	case InventoryCase:
 		dynamic_cast<Inventory*>(this)->processInventory(Datab);
 		break;
-
-		//default case
 	default:
 		cerr << "Command, nothing to process" << endl;
 		flag = false;
 		break;
 	}
-
 	if (!flag|| this->commandCase == HistoryCase || this->commandCase == InventoryCase)
 		delete this;
 }
