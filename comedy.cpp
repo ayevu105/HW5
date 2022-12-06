@@ -1,8 +1,12 @@
+/* @file comedy.cpp
+ * @brief The following code gives the inmplementations of the comedy class
+ * @author Anthony Vu
+ * @date 12/05/2022
+ */
 #include "comedy.h"
 
-//constructor MovieComedy()
-Comedy::Comedy()
-{
+//comedy constructor
+Comedy::Comedy(){
     this->movieType = MovieType::ComedyType;
     this->stock = DEFAULT_STOCK;
     this->title = DEFAULT_TITLE;
@@ -10,9 +14,8 @@ Comedy::Comedy()
     this->year = DEFAULT_NUM;
 }
 
-//copy constructor MovieComedy
-Comedy::Comedy(const Comedy& other)
-{
+//copy constructor
+Comedy::Comedy(const Comedy& other){
     this->movieType = other.movieType;
     this->stock = other.stock;
     this->title = other.title;

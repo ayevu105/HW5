@@ -56,106 +56,109 @@ bool Classic::setData(ifstream& stream) {
 
 /* getMajorActorFirst retrieves the major actors first name
  */
-//getMajorActorFirst: return the major actor first name
-string Classic::getMajorActorFirst() const
-{
+string Classic::getMajorActorFirst() const {
     return this->majorActorFirst;
 }
 
-//setMajorActorFirst: set the major actor first name for the movie
-void Classic::setMajorActorFirst(string first)
-{
+/* setMajorActorFirst sets the major actors first name
+ */
+void Classic::setMajorActorFirst(string first) {
     this->majorActorFirst = first;
 }
 
-//getMajorActorLast: return the major actor last name
-string Classic::getMajorActorLast() const
-{
+/* getMajorActorLast retrieves the major actors last name
+ */
+string Classic::getMajorActorLast() const {
     return this->majorActorLast;
 }
 
-//setMajorActorLast: set the major actor last name for the movie
-void Classic::setMajorActorLast(string last) 
-{
+/* setMajorActorLastsets the major actors last name
+ */
+void Classic::setMajorActorLast(string last) {
     this->majorActorLast = last;
 }
 
-//getMonth: return the month of the movie
-int Classic::getMonth() const 
-{
+/* getMonth retrieves the month of the movie 
+ */
+int Classic::getMonth() const {
     return this->month;
 }
 
-//setMonth: set the month for the movie
-void Classic::setMonth(int month) 
-{
+/* setMonth sets the month of the movie
+ */
+void Classic::setMonth(int month) {
     this->month = month;
 }
 
-//getMovieType: return the movie type
-MovieType Classic::getMovieType() const 
-{
+/* getMovieType retrieves the movie type
+ */
+MovieType Classic::getMovieType() const {
     return this->movieType;
 }
 
-//operator< sort by release date and major actor
-bool Classic::operator<(const InventoryDatabase& other) const 
-{
-    if (this->getYear() != dynamic_cast<const Classic&>(other).getYear())
+/* operator< sorts by release date and major actor
+ */
+bool Classic::operator<(const InventoryDatabase& other) const {
+    if (this->getYear() != dynamic_cast<const Classic&>(other).getYear()) {
         return this->getYear() < dynamic_cast<const Classic&>(other).getYear();
+    }
 
-    if (this->getMonth() != dynamic_cast<const Classic&>(other).getMonth())
+    if (this->getMonth() != dynamic_cast<const Classic&>(other).getMonth()) {
         return this->getMonth() < dynamic_cast<const Classic&>(other).getMonth();
+    }
 
     return this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) < 0;
 }
 
-//operator<= arithmetic operator, sort by release date and major actor
-bool Classic::operator<=(const InventoryDatabase& other) const 
-{
-    if (this->getYear() > dynamic_cast<const Classic&>(other).getYear())
+/* operator<= sorts by release date and major actor
+ */
+bool Classic::operator<=(const InventoryDatabase& other) const {
+    if (this->getYear() > dynamic_cast<const Classic&>(other).getYear()) {
         return false;
+    }
 
-    if (this->getMonth() > dynamic_cast<const Classic&>(other).getMonth())
+    if (this->getMonth() > dynamic_cast<const Classic&>(other).getMonth()) {
         return false;
-
+    }
     return this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) <= 0;
 }
 
-//operator> arithmetic operator, sort by release date and major actor
-bool Classic::operator>(const InventoryDatabase& other) const 
-{
-    if (this->getYear() != dynamic_cast<const Classic&>(other).getYear())
+/* operator> sorts by release date and major actor
+ */
+bool Classic::operator>(const InventoryDatabase& other) const {
+    if (this->getYear() != dynamic_cast<const Classic&>(other).getYear()) {
         return this->getYear() > dynamic_cast<const Classic&>(other).getYear();
+    }
 
-    if (this->getMonth() != dynamic_cast<const Classic&>(other).getMonth())
+    if (this->getMonth() != dynamic_cast<const Classic&>(other).getMonth()) {
         return this->getMonth() > dynamic_cast<const Classic&>(other).getMonth();
-
+    }
     return this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) > 0;
 }
 
-//operator>= arithmetic operator, sort by release date and major actor
-bool Classic::operator>=(const InventoryDatabase& other) const 
-{
-    if (this->getYear() < dynamic_cast<const Classic&>(other).getYear())
+/* operator>= sorts by release date and major actor
+ */
+bool Classic::operator>=(const InventoryDatabase& other) const {
+    if (this->getYear() < dynamic_cast<const Classic&>(other).getYear()) {
         return false;
+    }
 
-    if (this->getMonth() < dynamic_cast<const Classic&>(other).getMonth())
+    if (this->getMonth() < dynamic_cast<const Classic&>(other).getMonth()) {
         return false;
-
+    }
     return this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) >= 0;
 }
 
-//operator== arithmetic operator, sort by release date and major actor
-bool Classic::operator==(const InventoryDatabase& other) const 
-{
-    return (this->getYear() == dynamic_cast<const Classic&>(other).getYear())&& (this->getMonth() == dynamic_cast<const Classic&>(other).getMonth()
+/* operator== sorts by release date and major actor
+ */
+bool Classic::operator==(const InventoryDatabase& other) const {
+    return (this->getYear() == dynamic_cast<const Classic&>(other).getYear()) && (this->getMonth() == dynamic_cast<const Classic&>(other).getMonth()
             && (this->getMajorActorFirst().compare(dynamic_cast<const Classic&>(other).getMajorActorFirst()) == 0));
 }
 
-// operator= movie assign operator
-InventoryDatabase& Classic::operator=(const InventoryDatabase& other)
-{
+/* operator= assigns the movie
+ */
+InventoryDatabase& Classic::operator=(const InventoryDatabase& other) {
     this->movieType = dynamic_cast<const Classic&>(other).getMovieType();
     this->stock = dynamic_cast<const Classic&>(other).getStock();
     this->director = dynamic_cast<const Classic&>(other).getDirector();
@@ -167,23 +170,23 @@ InventoryDatabase& Classic::operator=(const InventoryDatabase& other)
     return *this;
 }
 
-// operator!= movie comparison operator
-bool Classic::operator!=(const InventoryDatabase& other) const 
-{
+/* operator!= compares the movies
+ */
+bool Classic::operator!=(const InventoryDatabase& other) const {
     return !(*this == dynamic_cast<const Classic&>(other));
 }
 
-//print the movie information to the system
-void Classic::print(ostream& stream) const 
-{
+/* print prints the movie information to the system
+ */
+void Classic::print(ostream& stream) const {
     cout << (char)this->getMovieType() << ", " << this->getStock() << ", " << this->getDirector() << ", "
         << this->getTitle() << ", " << this->getMajorActorFirst() << " " << this->getMajorActorLast() << ", "
         << this->getMonth() << ", " << this->getYear();
 }
 
-// operator<< print to the system operator
-ostream& operator<<(ostream& out, const Classic& movie) 
-{
+/* operator<< prints to the system operator
+ */
+ostream& operator<<(ostream& out, const Classic& movie) {
     movie.print(out);
     return out;
 }
