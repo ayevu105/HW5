@@ -12,7 +12,7 @@ Q: Does the program compile and run to completion: Yes
 - If the program does not compile or gives a segmentation error when run, 
 the maximum possible grade is 50%. No need to continue with the rest of self-evaluation
 
-Q: All public functions have been implemented: ENTER_NUMBER
+Q: All public functions have been implemented: 0
 
 - -2 for each functionality not implemented
 
@@ -26,7 +26,9 @@ Borrow: Done (Anthony Vu)
 Return: Done (Anthony Vu)
 
 
-Q: -1 for each compilation warning, min -3: -3
+Q: -1 for each compilation warning, min -3: 0
+
+Could not figure how to remove parameter without breaking the code, as it is needed to print out to the system. 
 
 - Check under *1. Compiles without warnings*
 - If the warning message is addressed in README.md, including how the programmer tried to address it, no deductions
@@ -86,7 +88,7 @@ container used for customer history: customer contains a vector that holds all c
 
 functions called when borrowing a movie: This can be found in the borrow class where processBorrow checks the inventory and then processes the borrow command when it is made. 
 
-explain borrowing a movie that does not exist: When a movie that does not exist is trying to be borrowed, the borrow class prints out a phrase stating that the media is not int he store database. 
+explain borrowing a movie that does not exist: When a movie that does not exist is trying to be borrowed, the borrow class prints out a phrase stating that the media is not in the store database. 
 
 explain borrowing a movie that has 0 stock: When a movie that does not exist is trying to be borrowed, the borrow class prints out a phrase stating that the movie has no stock. 
 
@@ -95,4 +97,4 @@ explain returning a movie that customer has not checked out: When a customer is 
 any static_cast or dynamic_cast used: Used in operation functions in classic, comedy, drama as well as process in command. 
 
 
-Q: Total points: ADD_ALL_POINTS (max 25)
+Q: Total points: 22

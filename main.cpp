@@ -3,14 +3,21 @@
  */
 
 #include <iostream>
-
+#include <fstream>
+#include <ostream>
+#include "storemanager.h"
+#include "bst.h"
 using namespace std;
 
-// forward declaration, implementation in store_test.cpp
-void testAll();
+int main() 
+{
+    StoreManager StoreManager;
+    ifstream customerFile("data4customers.txt");  
+    ifstream movieFile("data4movies.txt");        
+    ifstream commandFile("data4commands.txt");      
 
-int main() {
-  testAll();
-  cout << "Done." << endl;
-  return 0;
+    StoreManager.buildCustomers(customerFile);
+    StoreManager.buildMovies(movieFile);
+    StoreManager.processCommands(commandFile);
+    return 0;
 }
