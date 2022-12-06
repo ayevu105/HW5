@@ -48,7 +48,7 @@ Q: -2 for any detected memory leak: 0
 - Check under *5. No memory leaks using g++*
 - Check under *6. No memory leaks using valgrind*
 
-Q: Do the tests sufficiently test the code: -2
+Q: Do the tests sufficiently test the code: -4
 
 - -1 for each large block of code not executed
 - -2 for each function that is never called when testing
@@ -97,4 +97,4 @@ explain returning a movie that customer has not checked out: When a customer is 
 any static_cast or dynamic_cast used: Used in operation functions in classic, comedy, drama as well as process in command. 
 
 
-Q: Total points: 22
+Q: Total points: 20
