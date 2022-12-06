@@ -6,121 +6,54 @@
 
 #include "movie.h"
 
-//movie constructor
-Movie::Movie() {
-    stock = 0;
-    initialStock = 0;
-    year = 0;
-}
-
 //destructor
 Movie::~Movie() {}
 
-/* getStockQuantity retrieves the number of movies in stock and returns it
+/* getDirector retrieves the director of the movie
  */
-int Movie::getStockQuantity() const {
-    return stock;
+string Movie::getDirector() const {
+    return this->director;
 }
 
-/* getAmountBorrowed retrieves the number of movies currently being borrowed and returns it
+/* setDirector sets the director of the movie
  */
-int Movie::getAmountBorrowed() const {
-    int borrowAmount = initialStock - stock;
-    return borrowAmount;
+void Movie::setDirector(string director) {
+    this->director = director;
 }
 
-/* getInitialStocl retrieves the stock before any movies are borrowed and returns it
+/* getTitle retrieves the title of the movie
  */
-int Movie::getInitialStock() const {
-    return initialStock;
+string Movie::getTitle() const {
+    return this->title;
 }
 
-/* incrementStock increases the stock if a movie is returned
+/* setTitle sets the title of the movie
  */
-void Movie::incramentStock() {
-    stock++;
+void Movie::setTitle(string title) {
+    this->title = title;
 }
 
-/* decramentStock decreases the stock if a movie is rented
+/* getYear retrieves the year of the movie 
  */
-void Movie::decrementStock() {
-    stock--;
+int Movie::getYear() const {
+    return this->year;
 }
 
-/* getGenre retrieves the genre of the movie
+/* setYear sets the year of the movie 
  */
-string Movie::getGenre() {
-  return string();
+void Movie::setYear(int year) {
+    this->year = year;
 }
 
-/* setData sets the data from the movie file.
- * @param movie file
+/* getDVD returns the media of the movie 
  */
-bool Movie::setData(ifstream& fileName) {
-    string temp;
-    fileName >> stock >> temp;
-    setDataHelper(fileName);
-    fileName >> year;
-    initialStock = stock;
-    return true;
+MediaType Movie::getMediaType() const {
+    return MediaType::DVDMovie;
 }
 
-/* setTransactionData sets the transaction data
+/* operator<< prints the movie data 
  */
-void Movie::setTransactionData(ifstream&) {}
-
-/* operator overloading for comparison
- */
-bool Movie::operator==(const Movie&) const {
-  return false;
-}
-
-/* operator overloading for comparison
- */
-bool Movie::operator<(const Movie&) const {
-  return false;
-}
-
-// helper function for setData
-void Movie::setDataHelper(ifstream& fileName) {
-    setDirectorHelper(fileName);
-    setTitleHelper(fileName);
-}
-
-// helper function for setDirector
-void Movie::SetDirectorHelper(ifstream& fileName) {
-    string temp;
-    fileName >> director;
-    while (director.back() == ',') { 
-        fileName >> temp;
-        director += " ";
-        director += temp;
-    }
-    director.pop_back();
-}
-
-// helper function for setTitle
-void Movie::setTitleHelper(ifstream& fileName) {
-    string temp;
-    fileName >> title;
-    while (title.back() == ',') { 
-        fileName >> temp;
-        title += " ";
-        title += temp;
-    }
-    title.pop_back();
-}
-
-/* display displays the movie information
- */
-void Movie::display() const {
-    cout << left << setw(35) << title << setw(19) << director << setw(5) <<
-    year << " " << "Borrowed: " << setw(3) << getAmountBorrowed() << " " <<
-    "Remaining: " << stock << endl;
-}
-
-/* transactionDisplay displays the movie information
- */
-string Movie::transactionDisplay() const {
-  return string();
+ostream& operator<<(ostream& stream, const Movie& movie) {
+    movie.print(stream);
+    return stream;
 }

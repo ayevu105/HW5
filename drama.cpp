@@ -1,51 +1,156 @@
-/* @file drama.cpp
- * @brief The following code gives the inmplementations of the drama class
- * @author Anthony Vu
- * @date 12/05/2022
- */
-
 #include "drama.h"
 
-//drama constructor
-Drama::Drama() {}
+//constructor MovieDrama()
+Drama::Drama()
+{
+    this->movieType = MovieType::DramaType;
+    this->stock = DEFAULT_STOCK;
+    this->title = DEFAULT_TITLE;
+    this->director = DEFAULT_PERSON;
+    this->year = DEFAULT_NUM;
+}
+
+//copy constructor MovieDrama
+Drama::Drama(const Drama& other)
+{
+    this->movieType = other.movieType;
+    this->stock = other.stock;
+    this->title = other.title;
+    this->director = other.director;
+    this->year = other.year;
+}
 
 //destructor
 Drama::~Drama() {}
 
-/* getGenre retrieves the genre of the movie
- */
-string Drama::getGenre() {
-    return genre;
+//getMovieType: getter to return the movie type
+MovieType Drama::getMovieType() const
+{
+    return this->movieType;
 }
 
-/* setData sets the data from the movie file.
- */
-void Drama::setTransactionData(ifstream& fileName) {
-    Movie::setDataHelper(fileName);
+//setData: read and set the movie according to the input file
+bool Drama::setData(ifstream& stream)
+{
+    //set stock
+    stream.ignore();
+    stream >> this->stock;
+
+    //set director
+    stream.ignore();
+    getline(stream >> ws, this->director, ',');
+
+    //set title
+    stream.ignore();
+    getline(stream >> ws, this->title, ',');
+
+    //set year
+    stream.ignore();
+    string toYear;
+    getline(stream >> ws, toYear, '\n');
+    stringstream ss;
+    ss << toYear;
+    ss >> this->year;
+    return true;
 }
 
-/* operator overloading for comparison
- */
-bool Drama::operator<(const Movie& movies) const {
-    const auto temp = dynamic_cast<const Drama&>(movies);
-    if (director < temp.director) {
+//print method
+void Drama::print(ostream& stream) const
+{
+    cout << (char)this->getMovieType() << ", " << this->getStock() << ", "
+        << this->getDirector() << ", " << this->getTitle() << ", " << this->getYear();
+}
+
+//operator to compare movies
+bool Drama::operator<(const InventoryDatabase& other) const
+{
+    //compare director
+    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) != 0)
+        return this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) < 0;
+
+    //compare title
+    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) != 0)
+        return this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) < 0;
+
+    //return false when greater
+    return false;
+}
+
+//operator
+bool Drama::operator<=(const InventoryDatabase& other) const
+{
+    //compare director
+    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) > 0)
+        return false;
+
+    //compare title
+    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) > 0)
+        return false;
+
+    //return true when less than or equal
+    return true;
+}
+
+//operator 
+bool Drama::operator>(const InventoryDatabase& other) const
+{
+    //compare director
+    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) != 0)
+        return this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) > 0;
+
+    //compare title
+    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) != 0)
+        return this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) > 0;
+
+    // return false when greater
+    return false;
+}
+
+//operator
+bool Drama::operator>=(const InventoryDatabase& other) const
+{
+    //director first
+    if (this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) < 0)
+        return false;
+
+    //compare title
+    if (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) < 0)
+        return false;
+
+    // return true when less than or equal
+    return true;
+}
+
+//operator
+bool Drama::operator==(const InventoryDatabase& other) const
+{
+    if ((this->getDirector().compare(dynamic_cast<const Drama&>(other).getDirector()) == 0)
+        && (this->getTitle().compare(dynamic_cast<const Drama&>(other).getTitle()) == 0)
+        && (this->getYear() == dynamic_cast<const Drama&>(other).getYear()))
         return true;
-    }
-    return (director == temp.director && title < temp.title);
+    return false;
 }
 
-/* operator overloading for comparison
- */
-bool Drama::operator==(const Movie& movies) const {
-    const auto temp = dynamic_cast<const Drama&>(movies);
-    return (genre == temp.genre && director == temp.director && 
-            title == temp.title);
+//operator
+bool Drama::operator!=(const InventoryDatabase& other) const
+{
+    return !(*this == dynamic_cast<const Drama&>(other));
 }
 
-/* transactionDisplay displays the movie information
- */
-string Drama::transactionDisplay() const {
-    string temp;
-    temp += genre + " " + director + ", " + title;
-    return temp;
+//assign constructor
+InventoryDatabase& Drama::operator=(const InventoryDatabase& other)
+{
+    this->movieType = dynamic_cast<const Drama&>(other).getMovieType();
+    this->stock = dynamic_cast<const Drama&>(other).getStock();
+    this->director = dynamic_cast<const Drama&>(other).getDirector();
+    this->title = dynamic_cast<const Drama&>(other).getTitle();
+    this->year = dynamic_cast<const Drama&>(other).getYear();
+    return *this;
+}
+
+//operator<< print to the system
+ostream& operator<<(ostream& stream, const Drama& movie)
+{
+    movie.print(stream);
+    return stream;
 }

@@ -1,41 +1,36 @@
-/* @file drama.h
- * @brief The following code gives the declarations of the drama class.
- *  This class is used to verify dramas and is the child class of movie.
- * @author Anthony Vu
- * @date 12/05/2022
- */
-
-#pragma once
+#ifndef _DRAMA_H_
+#define	_DRAMA_H_
 #include "movie.h"
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <string>
 
-class Drama : public Movie {
-    public: 
-      //drama constructor
-        Drama();
+class Drama : public Movie
+{
+    friend ostream& operator<<(ostream&, const Drama&);
 
-      //destructor
-        ~Drama();
+public:
+    //constructor
+    Drama();
 
-        string getGenre();
+    //copy constructor
+    Drama(const Drama& other);
 
-        void setTransactionData(ifstream&);
+    //destructor
+    virtual ~Drama();
 
-        bool operator==(const Movie&) const;
+    //getter
+    virtual MovieType getMovieType() const;
 
-        bool operator<(const Movie&) const;
+    //setter
+    bool setData(ifstream& stream);
 
-        string transactionDisplay() const;
-    
-    private:
+    void print(ostream& stream) const;
 
-        const string genre = "D";
-
-        string actorFirstName;
-
-        string actorLastName;
-
+    // arithmetic operator, sort by title and then year release
+    virtual bool operator<(const InventoryDatabase&) const;
+    virtual bool operator<=(const InventoryDatabase&) const;
+    virtual bool operator>(const InventoryDatabase&) const;
+    virtual bool operator>=(const InventoryDatabase&) const;
+    virtual bool operator==(const InventoryDatabase&) const;
+    virtual bool operator!=(const InventoryDatabase&) const;
+    virtual InventoryDatabase& operator=(const InventoryDatabase&);
 };
+#endif

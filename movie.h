@@ -1,65 +1,66 @@
 /* @file movie.h
  * @brief The following code gives the declarations of the movie class.
- *  This class processes the data4movies.txt file and is the pareent class 
- *  of the classic, drama and comedy classes.
+ *  This class is used to control the movie object and is the parent class of Comedy, Drama, and Classic. 
  * @author Anthony Vu
  * @date 12/05/2022
  */
 
-#pragma once
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <string>
+#ifndef _MOVIE_H_
+#define _MOVIE_H_
+#include "inventorydatabase.h"
 
-using namespace std;
+class Movie: public InventoryDatabase {
 
-class Movie {
-    public:
-      //movie contstructor
-        Movie();
+	friend ostream& operator<<(ostream& stream, const Movie& Movie);
 
-       //destructor
-        virtual ~Movie();
+public:
 
-        int getStockQuantity() const;
+	virtual ~Movie();
 
-        int getAmountBorrowed() const;
+	virtual string getDirector() const;
 
-        int getInitialStock() const; 
+	virtual string getTitle() const;
 
-        void tncramentStock();
+	virtual int getYear() const;
 
-        void decrementStock();
+	virtual void setDirector(string director);
 
-        virtual string getGenre();
+	virtual void setTitle(string title);
 
-        virtual bool setData(ifstream&);
+	virtual void setYear(int year);
 
-        virtual void setTransactionData(ifstream&);
+	virtual bool setData(ifstream& stream) = 0;
 
-        virtual bool operator==(const Movie&) const;
+	virtual MovieType getMovieType() const = 0;
 
-        virtual bool operator<(const Movie&) const;
+	virtual MediaType getMediaType() const;
 
-        virtual void display() const;
+	virtual bool operator<(const InventoryDatabase&) const = 0;
 
-        virtual string transactionDisplay() const;
+	virtual bool operator<=(const InventoryDatabase&) const = 0;
 
-    protected:
-        void setDataHelper(ifstream&);
+	virtual bool operator>(const InventoryDatabase&) const = 0;
 
-        void setDirectorHelper(ifstream&);
+	virtual bool operator>=(const InventoryDatabase&) const = 0;
 
-        void setTitleHelper(ifstream&);
+	virtual bool operator==(const InventoryDatabase&) const = 0;
 
-        int stock;
+	virtual bool operator!=(const InventoryDatabase&) const = 0;
 
-        int initialStock;
+	virtual InventoryDatabase& operator=(const InventoryDatabase&) = 0;
 
-        string director;
-        
-        string title;
+protected:
+	MovieType movieType;
 
-        int year;
+	string director;
+
+	string title;
+
+	int year;
+
+	virtual void print(ostream& stream) const = 0;
 };
+#include "comedy.h"
+#include "drama.h"
+#include "classic.h"
+#endif

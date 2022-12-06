@@ -6,46 +6,63 @@
 
 #include "history.h"
 
+//history constructor
 History::History() {
-    customerID = 0;
+	this->commandCase = CommandCase::HistoryCase;
+	this->customerID = DEFAULT_ID;
 }
 
-History::~History() {}
+//destructor
+History::~History(){}
 
-/* setData sets the data from the commands file. 
- * @param commands file
+/* setData sets the history data of the customer
  */
-bool History::setData(ifstream& fileName)
+bool History::setData(ifstream& stream) 
 {
-    fileName >> customerID;
-    return true;
+	stream.ignore();
+	stream >> this->customerID;
+	if (stream.fail()) {
+		cout << "Customer ID is invalid" << endl;
+		stream.clear();
+		stream.ignore(99, '\n');
+		return false;
+	}
+	return true;
 }
 
-/* doTransactionCommand processes the transaction command
+/* processHistory creates the history command
  */
-void History::doTransactionCommand(const vector<Movie*>&, 
-                                   const HashTable& customers)
-{
-    Customer* c = customers.getItem(customerID);
-    if (c) {
-        c->displayHistory();
-    }
+bool History::processHistory(CustomerDatabase& cusDatab) {
+	Customer* cusRetriver = nullptr;
+	if (cusDatab.retrieveCustomer(this->getCustomerID(), cusRetriver)) {
+		cout << "History of " << this->getCustomerID()
+			<< " " << cusRetriver->getFirstName()
+			<< " " << cusRetriver->getLastName() << ':' << endl;
+		if (cusRetriver->getHistories().empty()) {
+			cout << "  " << "Empty!" << endl;
+		} else {
+			for (int i = 0; i < cusRetriver->getHistories().size(); i++) {
+				cout << "  " << *cusRetriver->getHistories().at(i) << endl;
+			}
+			return true;
+		}
+	} else {
+		cerr << "Command, customer not found to show history:"
+			<< '\n' << "  " << this->fullCommand << endl;
+	}
+	return false;
 }
 
-/* display displays the transaction
+/* out sets out the stream data 
  */
-void History::display() const {}
-
-/* getCommand is the getter for command
- */
-char History::getCommand() const
-{
-  return command;
+ostream& History::out(ostream& out) const {
+	out << (char)this->commandCase << " " << this->getCustomerID();
+	return out;
 }
 
-/* getTitleMovie finds the movie
+/* operator<< prints out the command borrow data 
  */
-Movie* History::getTitleMovie() const
-{
-  return nullptr;
+ostream& operator<<(ostream& stream, const History& command) {
+	command.out(stream);
+	return stream;
 }

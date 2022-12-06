@@ -1,37 +1,24 @@
 /* @file inventory.h
  * @brief The following code gives the declarations of the inventory class.
- *  This class creates and retrieves the inventory of customers and is the child class of transacton.
+ *  This class shows the current state of inventory and is the child class of command
  * @author Anthony Vu
  * @date 12/05/2022
  */
 
-#pragma once
-#include "transaction.h"
-#include "hashTable.h"
-#include "movie.h"
-#include "transaction.h"
-#include <fstream>
-#include <vector>
+#ifndef _INVENTORY_H_
+#define _INVENTORY_H_
+#include "command.h"
 
-class Inventory : public Transaction {
-    public:
-      //inventory constructor
-        Inventory();
+class Inventory : public Command {
 
-      //destructor
-        ~Inventory();
+    friend ostream& operator<<(ostream&, const Inventory&);
 
-        virtual bool setData(ifstream&);
+public:
 
-        virtual void doTransactionCommand(const vector<Movie*>&, 
-                                          const HashTable&);
+    Inventory();
 
-        virtual char getCommand() const;
+    ~Inventory();
 
-        virtual void display() const;
-
-        Movie* getTitleMovie() const;
-
-    protected:
-        const char command = 'I';
+    void processInventory(Database&);
 };
+#endif

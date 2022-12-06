@@ -1,47 +1,86 @@
 /* @file customer.h
  * @brief The following code gives the declarations of the customer class.
- *  This class storees the data from the file to be used for customer accounts.
+ *  This class creates a new list of customers into the system
  * @author Anthony Vu
  * @date 12/05/2022
  */
 
-#pragma once
-#include "movie.h"
-#include <fstream>
+#ifndef _CUSTOMER_H_
+#define _CUSTOMER_H_
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
+#include <list>
+#include <algorithm>
+#include "inventorydatabase.h"
 
-const int MINID = 1000;
-const int MAXID = 9999;
-class Transaction; 
+using namespace std;
 
-class Customer { 
-    public: 
-        
-      //customer constructor
-        Customer();
+const int MINID = 1;                    
+const int MAXID = 9999;                 
+const int DEFAULT_ID = 0;               
+const string DEFAULT_NAME = "DEFAULT"; 
 
-      //destructor
-        ~Customer();
+class Command;
 
-        int getID();
+class Customer {
+    friend ostream& operator<<(ostream&, const Customer&);
 
-        void addTransactionHistory(Transaction*);
+public:
+    Customer();
 
-        void displayHistory();
+    Customer(int id);
 
-        bool setData(ifstream&);
+    Customer(int id, string first, string last);
 
-        bool isBorrowed(Movie*);
+    Customer(const Customer& other);
 
-    private:
+    ~Customer();
 
-        int ID;
+    int getId() const;
 
-        string lastName;
+    string getFirstName() const;
 
-        string firstName;
+    string getLastName() const;
 
-        vector<Transaction*> history;
+    const vector<Command*> getHistories() const;
+
+    void setID(int id);
+
+    void setFirstName(string first);
+
+    void setLastName(string last);
+
+    bool setData(ifstream& infile);
+
+    void borrowMedia(InventoryDatabase* media);
+
+    bool returnMedia(InventoryDatabase* target);
+
+    void addHistory(Command* command);
+
+    bool operator<(const Customer&) const;
+
+    bool operator<=(const Customer&) const;
+
+    bool operator>(const Customer&) const;
+
+    bool operator>=(const Customer&) const;
+
+    bool operator==(const Customer&) const;
+
+    bool operator!=(const Customer&) const;
+
+private:
+    int id;                          
+
+    string firstName;                 
+         
+    string lastName;                     
+       
+    vector<InventoryDatabase*> borrowing;   
+
+    vector<Command*> history;              
 };
+#endif

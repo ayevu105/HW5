@@ -1,44 +1,39 @@
-/* @file comedy.h
- * @brief The following code gives the declarations of the comedy class.
- *  This class is used to verify comedies and is the child class of movie.
- * @author Anthony Vu
- * @date 12/05/2022
- */
-
-#pragma once
+#ifndef _COMEDY_H_
+#define _COMEDY_H_
 #include "movie.h"
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <string>
 
-class Comedy : public Movie {
-    public: 
+/*
+MovieComedy class: creates a comedy type of movie
+*/
+class Comedy : public Movie
+{
+    friend ostream& operator<<(ostream&, const Comedy&);
 
-      //comedy constructor
-        Comedy();
+public:
+    //constructor
+    Comedy();
 
-      //intialized constructor
-        Comedy(int, const string&, const string&, int);
+    //copy constructor
+    Comedy(const Comedy& other);
 
-      //destructor
-        ~Comedy();
+    //destructor
+    virtual ~Comedy();
 
-        string getGenre();
+    //getter
+    virtual MovieType getMovieType() const;
 
-        void setTransactionData(ifstream&);
+    //setter
+    bool setData(ifstream& stream);
 
-        bool operator==(const Movie&) const;
+    void print(ostream& stream) const;
 
-        bool operator<(const Movie&) const;
-
-        string transactionDisplay() const;
-    
-    private:
-        const string Genre = "F";
-
-        string ActorFirstName;
-
-        string ActorLastName;
-
+    // arithmetic operator, sort by title and then year release
+    virtual bool operator<(const InventoryDatabase&) const;
+    virtual bool operator<=(const InventoryDatabase&) const;
+    virtual bool operator>(const InventoryDatabase&) const;
+    virtual bool operator>=(const InventoryDatabase&) const;
+    virtual bool operator==(const InventoryDatabase&) const;
+    virtual bool operator!=(const InventoryDatabase&) const;
+    virtual InventoryDatabase& operator=(const InventoryDatabase&);
 };
+#endif

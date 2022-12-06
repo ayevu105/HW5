@@ -1,40 +1,28 @@
 /* @file history.h
  * @brief The following code gives the declarations of the history class.
- *  This class creates and retrieves the history of customers and is the child class of transacton.
+ *  This class shows the histroy of a transaction and is the child class of command.
  * @author Anthony Vu
  * @date 12/05/2022
  */
 
-#pragma once
-#include "customer.h"
-#include "transaction.h"
-#include "hashTable.h"
-#include "movie.h"
-#include <fstream>
-#include <vector>
+#ifndef _HISTORY_H_
+#define _HISTORY_H_
+#include "command.h"
 
-class History : public Transaction {
-    public:
-      //history contructor
-        History();
+class History : public Command {
+    friend ostream& operator<<(ostream&, const History&);
 
-       //destructor
-        ~History();
+public:
+    History();
 
-        virtual bool setData(ifstream&);
+    ~History();
 
-        virtual void doTransactionCommand(const vector<Movie*>&, 
-                                          const HashTable&);
+    bool setData(ifstream& stream);
 
-        virtual void display() const;
+    bool processHistory(CustomerDatabase&);
 
-        virtual char getCommand() const;
+private:
 
-        Movie* getTitleMovie() const;
-
-    protected:
-        const char command = 'H';
-
-    private: 
-        int customerID;
+    virtual ostream& out(ostream&) const override;
 };
+#endif

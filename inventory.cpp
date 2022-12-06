@@ -3,39 +3,26 @@
  * @author Anthony Vu
  * @date 12/05/2022
  */
- 
 #include "inventory.h"
 
 //inventory constructor
-Inventory::Inventory() {}
+Inventory::Inventory() {
+    this->commandCase = CommandCase::InventoryCase;
+}
 
-//inventory destructor
+//destructor
 Inventory::~Inventory() {}
 
-/* setData sets the data from the commands file. 
- * @param commands file
+/* processInventory displays the current inventory
  */
-bool Inventory::setData(ifstream&) {
-  return true;
+void Inventory::processInventory(Database& Datab) {
+    cout << "Inventory:" << endl;
+    Datab.display();
 }
 
-/* doTransactionCommand processes the transaction command
+/* operator<< prints the command inventory data 
  */
-void Inventory::doTransactionCommand(const vector<Movie*>&, const HashTable&) {
-}
-
-/* display displays the transaction
- */
-void Inventory::display() const {}
-
-/* getCommand is the getter for command
- */
-char Inventory::getCommand() const {
-  return command;
-}
-
-/* getTitleMovie finds the movie
- */
-Movie* Inventory::getTitleMovie() const {
-  return nullptr;
+ostream& operator<<(ostream& stream, const Inventory& command) {
+    stream << command.commandCase;
+    return stream;
 }

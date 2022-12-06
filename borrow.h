@@ -1,49 +1,30 @@
 /* @file borrow.h
  * @brief The following code gives the declarations of the borrow class.
  *  When a customer borrows a movie from the store this class deals with that command. 
- *  The class is also the child class of transaction.
+ *  The class is also the child class BorrowOrReturn
  * @author Anthony Vu
  * @date 12/05/2022
  */
 
-#pragma once
-#include "customer.h"
-#include "hashTable.h"
-#include "movie.h"
-#include "movieFactory.h"
-#include "transaction.h"
-#include <fstream>
-#include <set>
+#ifndef _BORROW_H_
+#define _BORROW_H_
+#include "borroworreturn.h"
 
-class Borrow : public Transaction {
-    public:
-       
-        //borrow constructor
-        Borrow();
+class Borrow : public BorrowOrReturn {
 
-        //initialized constructor
-        Borrow(Movie*, int);
+    friend ostream& operator<<(ostream&, const Borrow&);
 
-        //destructor
-        ~Borrow();
+public:
 
-        virtual bool setData(ifstream&);
+    Borrow();
 
-        virtual void doTransactionCommand(const vector<Movie*>&, 
-                                          const HashTable&);
+    ~Borrow();
 
-      
-        virtual void display() const;
+    bool processBorrow(Database&, CustomerDatabase&);
 
-        virtual char getCommand() const;
+private:
 
-        Movie* getTitleMovie() const;
+    virtual ostream& out(ostream&) const override;
 
-    protected:
-        const char command = 'B';
-
-    private: 
-        Movie* titleMovie;
-        
-        int customerID;
 };
+#endif

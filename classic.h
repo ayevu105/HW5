@@ -1,47 +1,59 @@
-/* @file classic.h
- * @brief The following code gives the declarations of the classic class.
- *  This class is used to verify classics and is the child class of movie.
+/* @file borroworreturn.h
+ * @brief The following code gives the declarations of the borroworreturn class.
+ *  When a customer borrows a movie from the store this class deals with that command. 
+ *  The class is also the parent class Borrow
  * @author Anthony Vu
  * @date 12/05/2022
  */
 
-#pragma once
+#ifndef _CLASSIC_H_
+#define	_CLASSIC_H_
 #include "movie.h"
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <string>
 
-class Classic : public Movie {
-    public: 
-       
-       //classic constructor
-        Classic();
+class Classic: public Movie
+{
+    // operator<<
+    friend ostream& operator<<(ostream&, const Classic&);
 
-      //destructor
-        ~Classic();
+public:
+    //constructor
+    Classic();
 
-        string getGenre();
+    //copy constructor
+    Classic(const Classic& classic);
 
-        bool setData(ifstream&);
+    //destructor
+    virtual ~Classic();
 
-        void setTransactionData(ifstream&);
+    //getters
+    int getMonth() const;
+    string getMajorActorFirst() const;
+    string getMajorActorLast() const;
+    virtual MovieType getMovieType() const;
 
-        bool operator==(const Movie&) const;
-        
-        bool operator<(const Movie&) const;
+    //setter
+    void setMonth(int month);
+    void setMajorActorFirst(string first);
+    void setMajorActorLast(string last);
 
-        void display() const;
+    //initial data from movie file
+    bool setData(ifstream& stream);
 
-        string transactionDisplay() const;
-    
-    private:
-        const string Genre = "C";
+    //function
+    void print(ostream& stream) const;
 
-        string ActorFirstName;
+    // arithmetic operator, sort by release date and major actor
+    virtual bool operator<(const InventoryDatabase&) const;
+    virtual bool operator<=(const InventoryDatabase&) const;
+    virtual bool operator>(const InventoryDatabase&) const;
+    virtual bool operator>=(const InventoryDatabase&) const;
+    virtual bool operator==(const InventoryDatabase&) const;
+    virtual bool operator!=(const InventoryDatabase&) const;
+    virtual InventoryDatabase& operator=(const InventoryDatabase&);
 
-        string ActorLastName;
-
-        int Month;
-
+private:
+    string majorActorFirst;
+    string majorActorLast;
+    int month;
 };
+#endif

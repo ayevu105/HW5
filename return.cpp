@@ -1,67 +1,70 @@
+#include "return.h"
 
-#include "Return.h"
+//constructor
+Return::Return(){}
 
-Return::Return() {
-    CustomerID = 0;
-    TitleMovie = nullptr;
-}
+//destructor
+Return::~Return(){}
 
-Return::~Return() {
-    delete TitleMovie;
-}
-
-bool Return::SetData(ifstream& FileName)
+//processReturn: process the return command
+bool Return::processReturn(Database& Datab, CustomerDatabase& cusDatab)
 {
-    string Genre;
-    FileName >> CustomerID >> MediaType >> Genre; 
-    TitleMovie = MovieFactory::create(Genre);
-    if (!TitleMovie) {
-        return false;
-    }
-    TitleMovie->SetTransactionData(FileName);
-    return true;
+	Customer* cusRetriever;
+
+	//check if customer exist
+	if (cusDatab.retrieveCustomer(this->getCustomerID(), cusRetriever))
+	{
+		//check if command contain media
+		if (this->media != nullptr) 
+		{
+			//check if media exist
+			InventoryDatabase* meRetriever = nullptr;
+			if (Datab.retrieve(*this->media, meRetriever)) 
+			{
+				//customer return media
+				if (cusRetriever->returnMedia(this->media)) 
+				{
+					//delete command media
+					delete this->media;
+					this->media = nullptr;
+
+					//add 1 to the stock
+					meRetriever->addStock(1);
+
+					//add to the customer history
+					cusRetriever->addHistory(this);
+					return true;
+				}
+			}
+
+			//media doesn't exist
+			else
+				cerr << "Command, media is not in the Database:" << '\n' << "  " << this->fullCommand << endl;
+		}
+
+		// command doesn't contain media
+		else
+			cerr << "Command, this command doesn't contain media:" << '\n' << "  " << this->fullCommand << endl;
+	}
+
+	//customer doesn't exist
+	else
+		cerr << "Command, customer does not exist:" << '\n' << "  " << this->fullCommand << endl;
+
+	//fail to return
+	return false;
 }
 
-void Return::DoTransactionCommand(const vector<Movie*>& Mov, 
-                                  const HashTable& Customers) {
-    Customer* TempCustomer; 
-    TempCustomer = Customers.GetItem(CustomerID);
-    if (!TempCustomer) {
-        cout << "Customer " << CustomerID << " not found!" <<endl;
-    }
-
-    Movie* Temp = FindMovie(Mov, TitleMovie); 
-    if(!Temp) {
-        cout << "Movie " + TitleMovie->TransactionDisplay() << 
-        " not found!" <<endl;
-    }
-
-    if (TempCustomer && Temp) {
-        if (TempCustomer->isBorrowed(Temp)) {
-            TempCustomer->AddTransactionHistory(this);
-            Temp->IncramentStock();
-        }
-        else { 
-            cout << Temp->TransactionDisplay() + 
-            " Customer did not borrow this movie!" << endl;
-        }
-    }
-    else {
-        cout << "Return Failed" << endl;
-    }
-}
-
-void Return::Display() const {
-  cout << "Return: " << MediaType << " " << 
-  TitleMovie->TransactionDisplay() << endl;
-}
-
-char Return::GetCommand() const
+//out: use to set ostream data
+ostream& Return::out(ostream& out) const 
 {
-  return Command;
+	out << this->fullCommand;
+	return out;
 }
 
-Movie* Return::getTitleMovie() const
+// operator<<: use to print command return data
+ostream& operator<<(ostream& stream, const Return& r) 
 {
-  return TitleMovie;
+	r.out(stream);
+	return stream;
 }

@@ -3,82 +3,54 @@
  * @author Anthony Vu
  * @date 12/05/2022
  */
-
 #include "borrow.h"
 
 //borrow constructor
-Borrow::Borrow() {
-    customerID = 0;
-    titleMovie = nullptr;
-}
-
-//initialized constructor
-Borrow::Borrow(Movie* Mov, int ID) {
-    customerID = ID;
-    titleMovie = Mov; 
-}
+Borrow::Borrow(){}
 
 //destructor
-Borrow::~Borrow() {
-    delete titleMovie;
+Borrow::~Borrow(){}
+
+/* processBorrow checks the inventory and processes the borrow command
+ */
+bool Borrow::processBorrow(Database& Datab, CustomerDatabase& cusDatab) {
+	Customer* cusRetriever;
+	if (cusDatab.retrieveCustomer(this->getCustomerID(), cusRetriever)) {
+		if (this->media != nullptr) {
+			InventoryDatabase* meRetriever = nullptr;
+			if (Datab.retrieve(*this->media, meRetriever)) {
+				if (meRetriever->reduceStock(1)) {
+					cusRetriever->borrowMedia(this->media);
+					this->media = nullptr;
+					cusRetriever->addHistory(this);
+					return true;
+				} else { 
+					cerr << "Command, DVD is out of stock:" << '\n' << "  " << this->fullCommand << endl;
+				}
+			} else {
+				cerr << "Command, DVD is not in the store database:" << '\n' << "  " << this->fullCommand << endl;
+			}
+		} else {
+			cerr << "Command, this command can't operate for this type of media:" << '\n' << "  " << this->fullCommand << endl;
+		}
+	} else {
+		cerr << "Command, customer doesn't exist:" << '\n' << "  " << this->fullCommand << endl;
+	}
+
+	return false;
 }
 
-/* SetData sets the data from the commands file. 
- * @param commands file
+/* out sets out the stream data 
  */
-bool Borrow::setData(ifstream& fileName) {
-    string genre;
-    fileName >> customerID >> mediaType >> genre; 
-    titleMovie = MovieFactory::create(genre);
-    if (titleMovie == nullptr) {
-        return false;
-    }
-    titleMovie->setTransactionData(fileName);
-    return true;
+ostream& Borrow::out(ostream& out) const {
+	out << this->fullCommand;
+	return out;
 }
 
-/* doTransactionCommand processes the transaction command
+
+/* operator<< prints out the command borrow data 
  */
-void Borrow::doTransactionCommand(const vector<Movie*>& mov, 
-                                  const HashTable& customers) {
-    Customer* tempCustomer; 
-    tempCustomer = customers.GetItem(customerID);
-    if (tempCustomer == nullptr) {
-        cout << "Customer " << customerID << " not found!" << endl;
-    }
-
-    Movie* temp = findMovie(mov, titleMovie); 
-    if(temp == nullptr) {
-        cout << "Movie " + titleMovie->transactionDisplay() << 
-        " not found!" <<endl;
-    }
-
-    if (tempCustomer != nullptr && temp != nullptr) {
-        if (temp->getStockQuantity() > 0) {
-            tempCustomer->addTransactionHistory(this);
-            temp->DecrementStock();
-        }
-        else {
-            cout << "This movie has 0 stock." << endl;
-        }
-    }
-}
-
-/* display displays the transaction
- */
-void Borrow::display() const {
-    cout << "Borrow: " << mediaType << " " << 
-    titleMovie->transactionDisplay() << endl;
-}
-
-/* getCommand is the getter for command
- */
-char Borrow::getCommand() const {
-  return command;
-}
-
-/* getTitleMovie finds the movie
- */
-Movie* Borrow::getTitleMovie() const {
-  return titleMovie;
+ostream& operator<<(ostream& stream, const Borrow& b) {
+	b.out(stream);
+	return stream;
 }
